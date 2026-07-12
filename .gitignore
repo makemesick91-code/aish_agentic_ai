@@ -1,0 +1,63 @@
+# ─────────────────────────────────────────────────────────────
+# Aish Agentic AI — repository ignore rules
+# Secrets and credentials MUST never be committed. See SECURITY.md.
+# ─────────────────────────────────────────────────────────────
+
+# Secrets, credentials, environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+credentials/
+*credentials*.json
+*service-account*.json
+*token*.json
+.mcp.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*~
+
+# Logs, dumps, backups
+*.log
+logs/
+*.sql
+*.dump
+*.bak
+backups/
+dumps/
+
+# Dependencies / build (future application code)
+/vendor/
+/node_modules/
+/dist/
+/build/
+/public/build/
+composer.phar
+.phpunit.result.cache
+
+# Python (AI orchestrator, tooling)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Generated knowledge-graph artifacts (config/scripts are committed; large graphs are not)
+/.graphify/
+/graphify.db
+/graphify-graph.json
+scripts/graphify/out/
+
+# Local evidence scratch (curated evidence under docs/evidence/ IS committed)
+/tmp/
+*.tmp
