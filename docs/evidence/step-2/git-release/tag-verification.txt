@@ -1,0 +1,13 @@
+# Step 2 GO Tag Verification — raw evidence (2026-07-13 Asia/Makassar)
+tag: aish-agentic-ai-step-2-persona-pilot-v1.0.0-go
+merged commit (PR #3): abf1d00a15a5d93c01f3beb64eadae364b0c24df
+local main            : abf1d00a15a5d93c01f3beb64eadae364b0c24df
+origin/main           : abf1d00a15a5d93c01f3beb64eadae364b0c24df
+tag object SHA        : 54ddeeb34e8052657020279cdd01cf362b7541a9
+tag peeled commit     : abf1d00a15a5d93c01f3beb64eadae364b0c24df
+remote tag object     : 54ddeeb34e8052657020279cdd01cf362b7541a9
+remote tag peeled     : abf1d00a15a5d93c01f3beb64eadae364b0c24df
+git describe exact    : aish-agentic-ai-step-2-persona-pilot-v1.0.0-go
+foundation tag peeled : ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe (unchanged)
+EXACT-MATCH: local main = origin/main = merged commit = local tag peeled = remote tag peeled = abf1d00
+CI run: 29218803260 (documentation-foundation) conclusion=success headSha=1d88d9a

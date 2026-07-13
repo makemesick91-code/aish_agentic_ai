@@ -5,8 +5,9 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
 ## Truthful state
 - **Documentation & Claude Rules Foundation (Step 1):** MERGED and GO TAGGED
   (`aish-agentic-ai-docs-foundation-v1.0.0-go`, peeled commit `ba1c80f`).
-- **Step 2 — Persona & Pilot Use Cases:** DOCUMENTATION BASELINE on branch
-  `docs/step-2-persona-pilot-use-cases` → delivering via PR/CI/merge/GO tag.
+- **Step 2 — Persona & Pilot Use Cases:** MERGED (PR #3, merge commit `abf1d00`) and GO TAGGED
+  (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, obj `54ddeeb`, peeled `abf1d00`; CI run `29218803260`
+  success). Post-tag evidence finalized via a separate evidence-only branch (tag not moved).
 - **Application implementation:** NOT STARTED. Deployment / pilot readiness / pilot runtime / production:
   NOT STARTED.
 - **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified.

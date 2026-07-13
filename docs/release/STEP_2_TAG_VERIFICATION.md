@@ -12,17 +12,18 @@ does **not** claim application implementation, deployment, live pilot readiness,
 local main == origin/main == merged PR commit == local tag peeled commit == remote tag peeled commit
 ```
 
-## Verification record (finalized at tag creation)
+## Verification record (finalized at tag creation, 2026-07-13)
 | Item | Value |
 |------|-------|
-| Merged commit (`git rev-parse origin/main`) | PENDING |
-| Local `HEAD` (`git rev-parse HEAD`) | PENDING |
-| Tag object SHA | PENDING |
-| Tag peeled commit (`…^{}`) | PENDING |
-| Remote tag ref (`git ls-remote origin refs/tags/…`) | PENDING |
-| Remote tag peeled (`git ls-remote origin refs/tags/…^{}`) | PENDING |
-| `git describe --tags --exact-match HEAD` | PENDING |
-| Exact-match result | PENDING |
+| Merged commit / `origin/main` | `abf1d00a15a5d93c01f3beb64eadae364b0c24df` |
+| Local `main` | `abf1d00a15a5d93c01f3beb64eadae364b0c24df` |
+| Tag object SHA | `54ddeeb34e8052657020279cdd01cf362b7541a9` |
+| Tag peeled commit (`…^{}`) | `abf1d00a15a5d93c01f3beb64eadae364b0c24df` |
+| Remote tag object | `54ddeeb34e8052657020279cdd01cf362b7541a9` |
+| Remote tag peeled (`…^{}`) | `abf1d00a15a5d93c01f3beb64eadae364b0c24df` |
+| `git describe --tags --exact-match` | `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go` |
+| PR | `#3` (merged) · CI run `29218803260` conclusion `success` |
+| **Exact-match result** | **VERIFIED** — local main = origin/main = merged commit = local tag peeled = remote tag peeled |
 
 ## Commands used
 ```bash
