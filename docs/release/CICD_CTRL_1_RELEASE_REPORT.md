@@ -20,11 +20,16 @@ values during draft→ready→merge→tag→release; fields marked _recorded at 
 - Duplicate-SHA runs: 0. Push/PR duplicate runs: 0. Cancelled: 1. Failure: 1. Success: 15.
 - Approximate runner durations recorded (APPROXIMATE FROM RUN DURATION — billing API not exposed).
 
-## Draft / ready CI (filled at release)
-- Draft fast-run IDs: _recorded at release_
-- Ready full-run ID (final head): _recorded at release_ · Final head SHA: _recorded at release_
-- Duplicate full run for final head: target ZERO — _recorded at release_
-- Rerun count (if any, after failure/correction): _recorded truthfully at release_
+## Draft / ready CI
+- Draft fast-run (final): `29259547965` (gate RED on draft, intentional; fast CI green).
+- Ready full-run ID (final head `e04977a`): `29278837952` — success (Full documentation CI + Workflow security CI
+  green; Draft fast CI skipped; Required Gate green).
+- Duplicate FULL run for the final head: **ZERO** (the same SHA also had a draft `synchronize` run `29278774318`
+  which is fast-only + gate-red by design — not a full run).
+- Rerun count (after correction): the final head was re-cut **once** to record the enforced-ruleset + final-CI
+  evidence in-repo — reported truthfully (AFR-126). No "one run forever" claim.
+- Enforced ruleset: `cicd-ctrl-1-main-protection` id `18890571` requires `Required Gate`; force-push + deletion
+  blocked; no admin bypass. Before-state: no protection, empty rulesets.
 
 ## Post-merge / tag
 - Post-merge lightweight run: _recorded at release_
