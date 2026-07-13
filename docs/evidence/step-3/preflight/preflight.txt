@@ -1,0 +1,25 @@
+# Step 3 Preflight — 2026-07-13T05:18:36Z (recorded UTC)
+## Repository identity
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (fetch)
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (push)
+normalized: makemesick91-code/aish_agentic_ai
+## Branch
+docs/step-3-application-architecture-adr-foundation
+## Remote heads
+bed56379c5f5c816919451fd0f07d7457d187329	refs/heads/chore/aish-agentic-ai-docs-foundation-tag-evidence
+8d8808c3c954ce9ca126aaccdf17b0dad5e9a74b	refs/heads/chore/aish-agentic-ai-documentation-foundation
+a6685a0b5bce8db908e23c900d949d7168dca7d8	refs/heads/chore/step-2-post-tag-evidence
+1d88d9a97737b1fcdd00b1419bf9b58a0dfe3ec4	refs/heads/docs/step-2-persona-pilot-use-cases
+74c70926236da37e424bec60f3bc8378cd7eed7e	refs/heads/main
+## Baseline immutable tags (must remain unchanged)
+docs-foundation object:  0937ce2758e86317678752e236eaedc85039d94b
+docs-foundation peeled:  ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe  (expected ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe)
+step-2 object:          54ddeeb34e8052657020279cdd01cf362b7541a9
+step-2 peeled:          abf1d00a15a5d93c01f3beb64eadae364b0c24df  (expected abf1d00a15a5d93c01f3beb64eadae364b0c24df)
+## Canonical versions (working copies)
+Master Source: **Versi:** 2.2.0
+PRD:           **Versi:** 1.1.0  
+Persona:       **Versi:** 1.0.0  
+## Step 3 target GO tag (must NOT yet exist)
+local:  absent (OK)
+remote: absent (OK)
