@@ -4,7 +4,7 @@ Canonical: Master Source v2.5.0 §69. Rule: `.claude/rules/28`, `13`, `19`. This
 values during draft→ready→merge→tag→release; fields marked _recorded at release_ are filled from actual evidence.
 
 ## Overall status
-- Scope status: CI/release-process governance CONFIGURED and locally verified; release execution IN PROGRESS.
+- Scope status: **GO TAGGED** — CI/release-process governance merged, enforced, and evidenced.
 - Application status: **NOT STARTED** (unchanged from canonical state).
 
 ## Canonical sources
@@ -13,7 +13,9 @@ values during draft→ready→merge→tag→release; fields marked _recorded at 
 ## Repository
 - Origin: `makemesick91-code/aish_agentic_ai` · Base: `main`
 - Feature branch: `chore/cicd-ctrl-1-safe-ci-runtime-control`
-- PR: **#9** (opened as draft) · Merge commit: _recorded at release_ · GO tag: _recorded at release_
+- PR: **#9** (opened as draft, marked ready) · Merge commit: **`8cbf564`** · GO tag:
+  **`aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`** (peeled `8cbf564`, annotated object `abf0dbe`)
+- GitHub Release: `.../releases/tag/aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go` (7 evidence artifacts)
 
 ## Baseline (from `docs/evidence/cicd-ctrl-1/baseline/`)
 - Workflows before: 1 (`documentation-foundation.yml`). Historical runs analysed: 17.
@@ -36,9 +38,9 @@ values during draft→ready→merge→tag→release; fields marked _recorded at 
 - Tag exact-match verification: see [Tag Verification](CICD_CTRL_1_TAG_VERIFICATION.md).
 - Prior immutable tags unchanged: _recorded at release_
 
-## Truthful final state (target)
+## Truthful final state (achieved)
 ```
-CICD-CTRL-1:                GO TAGGED (when evidenced)
+CICD-CTRL-1:                GO TAGGED
 Draft Fast CI:              VERIFIED
 Final Full CI:              VERIFIED FOR EXACT FINAL HEAD
 Required Gate:              ENFORCED

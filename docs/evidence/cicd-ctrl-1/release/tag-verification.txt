@@ -1,0 +1,8 @@
+tag=aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go
+local_main=8cbf564321c44a5fb3d89826b0a895c9aae27c70
+origin_main=8cbf564321c44a5fb3d89826b0a895c9aae27c70
+tag_object=abf0dbe0d9e8108fd79c9af5d20bbe7b5ae6366e
+tag_peeled=8cbf564321c44a5fb3d89826b0a895c9aae27c70
+remote_tag_object=abf0dbe0d9e8108fd79c9af5d20bbe7b5ae6366e
+remote_tag_peeled=8cbf564321c44a5fb3d89826b0a895c9aae27c70
+exact_match=true

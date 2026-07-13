@@ -18,14 +18,17 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
   `e61d210`, peeled `3db6ed8`; exact-match local/remote/main). Master Source **v2.4.0**, PRD **v1.3.0**; ADRs
   0033–0041; AFR-073..104; Claude rules 21–27. Independent review: 5 reviewers, no BLOCKER/HIGH surviving.
   Post-tag evidence recorded via a separate evidence-only branch (tag not moved).
-- **CICD-CTRL-1 — Safe CI Runtime Control:** IN PROGRESS on branch `chore/cicd-ctrl-1-safe-ci-runtime-control`
-  (branched from `origin/main` @ `98722ac`). Master Source bumped to **v2.5.0** (PRD unchanged **v1.3.0**;
-  NFR-CI-001..006); ADRs **0042–0046**; AFR-**105..126**; Claude rule **28**. Unified `pr-ci.yml` (draft⇒fast,
-  ready⇒one full CI on the final head, stable `pr-ci / Required Gate`, per-PR concurrency cancellation, pinned
-  actions, least privilege), lightweight `main-post-merge.yml`, manual `full-ci-manual.yml`; old
-  `documentation-foundation.yml` retired (preserved as evidence). Deterministic fail-closed change classifier +
-  local gates + validators, all unit-tested. All local gates green (`scripts/ci/full-local.sh`; query-smoke 64/64).
-  Release/PR/merge/ruleset/tag remain. A CI PASS is valid only for the exact tested SHA.
+- **CICD-CTRL-1 — Safe CI Runtime Control:** MERGED (PR #9, merge commit `8cbf564`; final-head full CI run
+  `29279280476` on `b718dbf`) and GO TAGGED (`aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`, tag
+  object `abf0dbe`, peeled `8cbf564`; exact-match local/remote/main; prior 4 tags unchanged). Master Source
+  **v2.5.0** (PRD unchanged **v1.3.0**; NFR-CI-001..006); ADRs **0042–0046**; AFR-**105..126**; Claude rule **28**.
+  Unified `pr-ci.yml` (draft⇒fast + gate RED on draft, ready⇒one full CI on the final head, stable enforced
+  `pr-ci / Required Gate`, per-PR concurrency cancellation, pinned actions, least privilege), lightweight
+  `main-post-merge.yml` (verified: no full CI re-ran on main), manual `full-ci-manual.yml`; old
+  `documentation-foundation.yml` retired (preserved as evidence). `main` ruleset `18890571` enforces the gate +
+  blocks force-push/deletion (no admin bypass). Independent review: 4 reviewers, 3 HIGH + MEDIUM/LOW all fixed.
+  Post-tag evidence via GitHub Release. One corrective rerun on the final head, reported truthfully (AFR-126). A CI
+  PASS is valid only for the exact tested SHA.
 - **Application implementation:** NOT STARTED. Domain ownership, deployment / live integration / pilot readiness /
   pilot runtime / production readiness: NOT STARTED. No domain owned; no package installed; nothing deployed.
 - **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified.

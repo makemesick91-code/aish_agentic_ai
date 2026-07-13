@@ -78,3 +78,17 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
 - Docs: `docs/ci/*` (12), `docs/quality/CICD_CTRL_1_*` (3), `docs/release/CICD_CTRL_1_*` (4); query-smoke 64/64;
   hooks `[skip ci]` guard + tests; codex CI rules; MCP note; CONTRIBUTING; skills.
 - All local gates green (`scripts/ci/full-local.sh`). Next: draft PR → review → ready full CI → ruleset → merge → tag → release.
+
+## Checkpoint — CICD-CTRL-1 MERGED + GO TAGGED (2026-07-13)
+- PR #9 (draft→ready) MERGED to main; merge commit `8cbf564`. No admin bypass (ruleset-gated).
+- Draft fast-CI only verified (run 29259547965; gate RED on draft by design). One full CI on final head
+  `b718dbf` (run 29279280476: full-doc + workflow-security green, gate green). One corrective rerun (enforced-
+  ruleset evidence), reported truthfully (AFR-126).
+- `main` ruleset `cicd-ctrl-1-main-protection` (id 18890571) active: requires `Required Gate`, blocks force-push +
+  deletion, no admin bypass. Before-state: no protection, empty rulesets (rollback recorded).
+- Post-merge: `main-post-merge` lightweight success on `8cbf564`; no full CI re-ran on main.
+- Immutable annotated GO tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go` (object `abf0dbe`,
+  peeled `8cbf564`); exact-match verified; prior 4 tags unchanged; no full CI on tag.
+- GitHub Release published with 7 post-tag evidence artifacts (no evidence-only full-CI PR).
+- 4 independent report-only reviews (release-gov, security, traceability, architecture): 3 HIGH + MEDIUM/LOW all fixed.
+- This branch `docs/cicd-ctrl-1-post-tag-evidence` = post-tag documentation sync (historical release metadata).

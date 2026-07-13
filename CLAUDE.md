@@ -114,9 +114,11 @@ Architecture & ADR), and Step 4 (Domain, Branding, Environment & SaaS Foundation
 GO TAGGED (`aish-agentic-ai-docs-foundation-v1.0.0-go`; `…step-2-persona-pilot-v1.0.0-go`;
 `…step-3-application-architecture-adr-v1.0.0-go`; `…step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`).
 **CICD-CTRL-1 — Safe CI Runtime Control** (Master Source **v2.5.0**, PRD **v1.3.0** unchanged, ADRs 0042–0046,
-AFR-105..126, rule 28) IN PROGRESS on branch `chore/cicd-ctrl-1-safe-ci-runtime-control`: unified draft-first
-`pr-ci.yml`, lightweight `main-post-merge.yml`, manual `full-ci-manual.yml`, deterministic change classifier, and a
-stable required gate. **Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness,
+AFR-105..126, rule 28) MERGED (PR #9, merge commit `8cbf564`) and GO TAGGED
+(`aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`, peeled `8cbf564`): unified draft-first
+`pr-ci.yml`, lightweight `main-post-merge.yml`, manual `full-ci-manual.yml`, deterministic change classifier, a
+stable enforced required gate (`main` ruleset `18890571`), and a GitHub Release with post-tag evidence.
+**Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness,
 pilot runtime, and production readiness: NOT STARTED. No domain is owned; no package is installed; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks
