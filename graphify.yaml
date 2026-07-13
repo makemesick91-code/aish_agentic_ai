@@ -1,0 +1,71 @@
+# graphify.yaml — Derived knowledge-graph / documentation-index configuration.
+# Canonical: Master Source §66.7. Rule: .claude/rules/15. Docs: docs/tooling/GRAPHIFY.md
+#
+# The branded Graphify skill/CLI/plugin/MCP is NOT installed in this environment and no verified/pinned
+# source exists to install from; it is recorded BLOCKED-OPTIONAL. This config drives a deterministic,
+# reproducible documentation index (scripts/graphify/build.sh + query-smoke.sh) that fulfills the derived
+# knowledge-graph role. Source Markdown remains authoritative; the index never overrides it.
+
+version: 1
+project: aish-agentic-ai
+mode: deterministic-doc-index        # switch to "graphify-native" only when a trusted Graphify is installed
+authoritative: false                 # derived layer; never a source of truth
+
+include:
+  - CLAUDE.md
+  - .claude/rules/**/*.md
+  - .claude/agents/**/*.md
+  - .claude/skills/**/*.md
+  - docs/**/*.md
+  # application source, migrations/schema, tests, CI, ops scripts are added when they exist:
+  - "**/*.php"
+  - "database/migrations/**/*"
+  - "tests/**/*"
+  - ".github/workflows/**/*.yml"
+  - "scripts/**/*.sh"
+
+exclude:
+  - "**/.env"
+  - "**/.env.*"
+  - "**/*.pem"
+  - "**/*.key"
+  - "**/*.p12"
+  - "**/*.pfx"
+  - "**/secrets/**"
+  - "**/credentials/**"
+  - "**/*service-account*.json"
+  - "**/*token*.json"
+  - "**/*.sql"
+  - "**/*.dump"
+  - "**/backups/**"
+  - "**/dumps/**"
+  - "**/vendor/**"
+  - "**/node_modules/**"
+  - "**/dist/**"
+  - "**/build/**"
+  - "scripts/graphify/out/**"
+
+# Canonical query-smoke set — each answer MUST resolve to a canonical file path.
+queries:
+  - id: product-name
+    q: "What is the official product name?"
+    expect_path: docs/canonical/MASTER_SOURCE.md
+  - id: tenant-isolation-surfaces
+    q: "What are the mandatory tenant-isolation surfaces?"
+    expect_path: .claude/rules/03-multi-tenant-and-branch-isolation.md
+  - id: human-approval
+    q: "Which actions require human approval?"
+    expect_path: docs/ai/HUMAN_APPROVAL_MATRIX.md
+  - id: google-review-prohibited
+    q: "What is prohibited in Google Review workflows?"
+    expect_path: docs/integrations/google/GOOGLE_REVIEW_POLICY.md
+  - id: go-gates
+    q: "What gates are required before a GO tag?"
+    expect_path: docs/quality/RELEASE_GATES.md
+  - id: canonical-authority
+    q: "Which document is canonical when the PRD conflicts with the Master Source?"
+    expect_path: docs/canonical/DOCUMENT_AUTHORITY.md
+
+output:
+  manifest: scripts/graphify/out/graph-manifest.json   # git-ignored; compact evidence copied to docs/evidence/graphify/
+  commit_generated_graph: false                        # commit config/scripts/manifest/evidence only

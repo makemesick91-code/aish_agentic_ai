@@ -1,0 +1,29 @@
+{
+  "repository": "makemesick91-code/aish_agentic_ai",
+  "import_date": "2026-07-13",
+  "timezone": "Asia/Makassar",
+  "sources": [
+    {
+      "file": "Aish Agentic AI — Product Requirement Document — v1.0.1.md",
+      "size_bytes": 41343,
+      "modified_utc": "2026-07-12T23:30:16.235805Z",
+      "sha256": "c370071c1c21461c19dfb82cd2b3329f744e11cd3b6a84b7fdf7643504874288",
+      "detected_version": "1.0.0"
+    },
+    {
+      "file": "MASTER SOURCE — Aish Agentic AI — v2.0.0.md.txt",
+      "size_bytes": 60857,
+      "modified_utc": "2026-07-12T23:07:09.286371Z",
+      "sha256": "cad792344c8c0bd6f0acf03eccbff437889498c96abbb73a6b7d6ed537efc21b",
+      "detected_version": "2.0.0"
+    },
+    {
+      "file": "MASTER SOURCE — Aish Agentic AI — v2.1.1.md",
+      "size_bytes": 69878,
+      "modified_utc": "2026-07-12T23:30:09.990825Z",
+      "sha256": "ea5e4b45d37b8618db22c4d3a7565573cc5248022472e66351301ad5f6de246e",
+      "detected_version": "2.1.1"
+    }
+  ],
+  "note": "Originals preserved byte-for-byte in docs/canonical/source/; never overwritten."
+}

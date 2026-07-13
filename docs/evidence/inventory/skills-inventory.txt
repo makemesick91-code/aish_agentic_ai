@@ -1,0 +1,3 @@
+Installed skills (user + plugins): llm-council, context-mode (+ marketplace plugin skills)
+Limit Saver 1 / limit-saver-1 / usage-limit-reducer: NOT INSTALLED -> fallback token-saving protocol active
+Graphify skill/CLI/plugin/MCP: NOT INSTALLED and no verified source -> BLOCKED-OPTIONAL; deterministic doc index used

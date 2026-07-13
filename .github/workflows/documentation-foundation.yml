@@ -1,0 +1,83 @@
+name: documentation-foundation
+
+# Documentation-as-code CI for the Aish Agentic AI documentation & Claude rules foundation.
+# Runs the same gates as scripts/docs/validate.sh on pull requests and on the default branch.
+# Rule: .claude/rules/13, 09. Never remove or weaken these gates.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-foundation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  documentation-gates:
+    name: Documentation gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Make scripts executable
+        run: chmod +x scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh
+
+      - name: Source checksums present
+        run: |
+          test -f docs/evidence/source-checksums/SHA256SUMS.txt
+          echo "OK: source checksums recorded"
+
+      - name: Version + identity consistency
+        run: scripts/docs/check-version-consistency.sh
+
+      - name: Rule frontmatter
+        run: scripts/docs/check-rule-frontmatter.sh
+
+      - name: Internal links
+        run: scripts/docs/check-links.sh
+
+      - name: Foundation coverage
+        run: scripts/docs/check-foundation-coverage.sh
+
+      - name: Secret scan
+        run: scripts/docs/secret-scan.sh
+
+      - name: Safety hook tests (positive + negative)
+        run: scripts/hooks/test-guard.sh
+
+      - name: Graphify build + query smoke
+        run: |
+          scripts/graphify/build.sh
+          scripts/graphify/query-smoke.sh
+
+      - name: Aggregate validate (with evidence)
+        run: scripts/docs/validate.sh
+
+      - name: ShellCheck (lint scripts)
+        run: |
+          sudo apt-get update -y >/dev/null 2>&1 || true
+          sudo apt-get install -y shellcheck >/dev/null 2>&1 || true
+          if command -v shellcheck >/dev/null 2>&1; then
+            shellcheck -S warning scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh || true
+          else
+            echo "shellcheck unavailable; skipping (non-blocking lint)"
+          fi
+
+  secret-scanning-note:
+    name: Secret scanning note
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Repository has GitHub secret-scanning push protection enabled (see SECURITY.md)."
