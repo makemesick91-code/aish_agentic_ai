@@ -38,6 +38,10 @@ Wrong repository · canonical conflict · missing fundamental ADR · incomplete 
 approval · review gating · secret found · Codex safety test fails · critical traceability orphan · CI failing ·
 PR not merged · merge unauthorized · tag failure/mismatch.
 
-## Decision
-**Provisional: GO once the PENDING rows above are satisfied with evidence.** Merge/tag require green CI and
-(if branch protection requires) human authorization; a truthful blocker is reported otherwise.
+## Decision — GO TAGGED
+All required gates satisfied with evidence: full `validate.sh` ALL GATES PASSED; 6 independent reviews returned
+**0 BLOCKER / 0 HIGH**; PR **#5 merged** (merge commit `764a4849`); CI run `29231902612` **success**; annotated
+GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` **exact-matches** the merged commit on
+local, remote, and `main` (peeled `764a4849`); baseline tags `ba1c80f`/`abf1d00` unchanged. **Result: GO TAGGED**
+— documentation/architecture/tooling readiness only. Application implementation, deployment, live integration,
+pilot readiness, pilot runtime, and production readiness remain **NOT STARTED**.

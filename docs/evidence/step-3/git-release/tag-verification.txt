@@ -1,0 +1,14 @@
+# Step 3 GO Tag Verification — post-tag evidence (recorded 2026-07-13T09:40:24Z UTC)
+PR: #5 (MERGED)  merge commit: 764a48492ab18488860e9e03dea1788f69725107
+CI run: 29231902612 conclusion=success (Documentation gates PASS, Secret scanning note PASS)
+Tag: aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go (annotated)
+  tag object (local)  : 3c484f4b5a375f88829daa9c1cd9cbb36f9de038
+  tag object (remote) : 3c484f4b5a375f88829daa9c1cd9cbb36f9de038
+  peeled (local)      : 764a48492ab18488860e9e03dea1788f69725107
+  peeled (remote)     : 764a48492ab18488860e9e03dea1788f69725107
+  HEAD / origin/main  : 764a48492ab18488860e9e03dea1788f69725107 / 764a48492ab18488860e9e03dea1788f69725107
+  EXACT-MATCH         : local main = origin/main = merged commit = local tag peeled = remote tag peeled = 764a48492ab18488860e9e03dea1788f69725107
+Baseline immutable tags UNCHANGED:
+  docs-foundation peeled: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe  (ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe)
+  step-2 peeled:          abf1d00a15a5d93c01f3beb64eadae364b0c24df  (abf1d00a15a5d93c01f3beb64eadae364b0c24df)
+No force-push, tag move/delete, or history rewrite was used.

@@ -7,9 +7,11 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
   (`aish-agentic-ai-docs-foundation-v1.0.0-go`, peeled commit `ba1c80f`).
 - **Step 2 — Persona & Pilot Use Cases:** MERGED and GO TAGGED
   (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, peeled `abf1d00`).
-- **Step 3 — Application Architecture & ADR Foundation:** IN PROGRESS on branch
-  `docs/step-3-application-architecture-adr-foundation` (branched from `origin/main`). Master Source **v2.3.0**,
-  PRD **v1.2.0**; ADRs 0009–0032; AFR-001..072; Claude rule 20; AGENTS chain; Codex foundation; Step 3 gates.
+- **Step 3 — Application Architecture & ADR Foundation:** MERGED (PR #5, merge commit `764a4849`; CI run
+  `29231902612` success) and GO TAGGED (`aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`, object
+  `3c484f4b`, peeled `764a4849`; exact-match local/remote/main). Master Source **v2.3.0**, PRD **v1.2.0**; ADRs
+  0009–0032; AFR-001..072; Claude rule 20; AGENTS chain; Codex foundation; Step 3 gates. Post-tag evidence
+  finalized via a separate evidence-only branch (tag not moved).
 - **Application implementation:** NOT STARTED. Deployment / live integration / pilot readiness / pilot runtime /
   production readiness: NOT STARTED.
 - **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified.
@@ -30,9 +32,9 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
   query-smoke queries, wired into `validate.sh` + CI.
 
 ## Remaining
-- Create Step 3 release docs + evidence; run full `validate.sh`; independent subagent reviews; fix findings;
-  re-run → commit → push → PR → green CI → merge (human authorization if branch protection requires) →
-  annotated GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` with exact-match verification.
+- Step 3 is MERGED and GO TAGGED. Only the post-tag evidence-only PR remains to land on `main` (tag not moved).
+- Next: **Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning** (no feature code
+  in Step 3).
 
 ## Tooling status (Step 3)
 - Codex CLI: NOT INSTALLED — `.codex/` authored + statically validated; `execpolicy`/hook runtime not run (OD-07).

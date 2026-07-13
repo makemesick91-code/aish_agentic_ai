@@ -39,9 +39,11 @@ New Changelog Entry: Master Source §6 "Version 2.3.0 — Application Architectu
 ```
 
 ## Overall Status
-- Overall: release in progress (local gates passing; PR/CI/merge/tag PENDING).
-- Scope status: architecture/documentation baseline authored + validated locally.
+- Overall: **GO TAGGED** — PR #5 merged (`764a4849`), CI `29231902612` success, annotated tag exact-match.
+- Scope status: architecture/documentation baseline COMPLETE.
 - Application implementation status: **NOT STARTED**.
+- GO tag: `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` — object `3c484f4b…`, peeled `764a4849…`,
+  local = remote = origin/main. Baseline tags `ba1c80f`/`abf1d00` unchanged.
 
 ## Canonical Sources
 - Master Source: v2.3.0 · PRD: v1.2.0 · Architecture Baseline: 1.0.0 · ADR Index: 0009–0032 ·

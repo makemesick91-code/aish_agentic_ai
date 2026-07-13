@@ -1,6 +1,6 @@
 # Step 3 Application Architecture & ADR Foundation — Release Manifest
 
-**Status:** pre-merge (release in progress) · **Rules:** `.claude/rules/13`, `20`.
+**Status:** COMPLETE — GO TAGGED · **Rules:** `.claude/rules/13`, `20`.
 **Target GO tag:** `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`
 
 ## Repository
@@ -27,12 +27,12 @@ Business feature implementation, production controllers/routes/models/migrations
 runtime, real credentials/customer data, and any deployment. Directory scaffold is empty and marked
 `FUTURE IMPLEMENTATION SCAFFOLD — NO RUNTIME IMPLEMENTATION`.
 
-## Release trail (to be completed with evidence)
-- Commits: see `git log` on the feature branch (logical commits).
-- PR: PENDING (`docs: establish Step 3 application architecture and ADR foundation`).
-- CI: PENDING (real conclusion recorded under `docs/evidence/step-3/ci/`).
-- Merge commit: PENDING.
-- GO tag object / peeled commit: PENDING (see `STEP_3_ARCHITECTURE_TAG_VERIFICATION.md`).
+## Release trail (verified)
+- Commits: 9 logical commits on the feature branch.
+- PR: **#5 MERGED** (`docs: establish Step 3 application architecture and ADR foundation`).
+- CI: run `29231902612` — conclusion **success** (evidence `docs/evidence/step-3/ci/ci-run.json`).
+- Merge commit: `764a48492ab18488860e9e03dea1788f69725107`.
+- GO tag object `3c484f4b…` / peeled commit `764a4849…` — exact-match (see `STEP_3_ARCHITECTURE_TAG_VERIFICATION.md`).
 
 ## Truthful claim
 Documentation/architecture baseline only. Application implementation, deployment, live integration, pilot
