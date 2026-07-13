@@ -31,6 +31,16 @@ IS_DRAFT="${IS_DRAFT:-false}"
 fail=0
 note() { echo "  - $1"; }
 
+# A draft PR NEVER satisfies the required gate: it runs fast CI only, so a green here
+# on a draft could satisfy branch protection on the same SHA once the PR is marked ready
+# (GitHub keys mergeability by SHA). The gate stays RED until a ready run posts a real
+# green. (Skipping the job instead would post a `skipped` conclusion that branch
+# protection treats as passing — the exact hole this avoids.)
+if [ "$IS_DRAFT" = "true" ]; then
+  echo "DECISION: FAIL (draft — required gate is satisfied only on a ready PR with full CI)"
+  exit 1
+fi
+
 # Classification must have succeeded — without it routing is unknown (fail closed).
 if [ "$CLASSIFY_RESULT" != "success" ]; then
   note "classification job did not succeed (result='$CLASSIFY_RESULT') -> fail closed"; fail=1
@@ -47,10 +57,15 @@ for kv in "classify=$CLASSIFY_RESULT" "fast=$FAST_RESULT" "full-doc=$FULL_DOC_RE
   esac
 done
 
-# Ready (non-draft) PRs MUST have actually run the full documentation gate.
+# Ready (non-draft) PRs MUST have actually run the full documentation gate AND the
+# workflow-security gate (the latter runs unconditionally on every ready PR — a security
+# gate is never routed away, AFR-119 — so a `skipped` result on a ready PR is a failure).
 if [ "$IS_DRAFT" != "true" ]; then
   if [ "$FULL_DOC_RESULT" != "success" ]; then
     note "ready PR requires the full documentation gate to succeed (result='$FULL_DOC_RESULT')"; fail=1
+  fi
+  if [ "$WF_SEC_RESULT" != "success" ]; then
+    note "ready PR requires the workflow-security gate to succeed (result='$WF_SEC_RESULT')"; fail=1
   fi
 fi
 

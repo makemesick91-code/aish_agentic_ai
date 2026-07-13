@@ -10,8 +10,8 @@ Enforced by `scripts/ci/validate-workflow-security.sh`.
 | Least privilege | top-level `permissions:` present; default `contents: read`; no `write-all` | validator §2 (CI-SEC-04) |
 | No untrusted privileged exec | no `pull_request_target` | validator §3 (CI-SEC-05) |
 | No remote-script exec | no `curl\|sh` / `wget\|bash` | validator §4 |
-| No script injection | untrusted PR title/body/ref not interpolated into a `run:` shell (warn+review) | validator §5 |
-| Bounded jobs | every job has `timeout-minutes` | validator §6 |
+| No script injection | untrusted PR title/body/ref/`inputs.*`/comment/commit-message not interpolated into a `run:` shell (FAIL; `env:` assignment is the safe remediation) | validator §5 |
+| Bounded jobs | every job declares its own job-level `timeout-minutes` (per-job scan) | validator §6 |
 | No skip bypass | no `[skip ci]`/`skip-checks` enablement in mandatory workflows | validator §7 |
 | Secret hygiene | no committed secret patterns; no tracked `.env` | `scripts/docs/secret-scan.sh` |
 

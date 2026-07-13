@@ -5,6 +5,8 @@ asserts, and where its evidence lands. All validators are read-only and determin
 
 | ID | Validator | Asserts | Evidence |
 |----|-----------|---------|----------|
+| CI-DRAFT-01 | `pr-ci.yml` `draft-fast-ci` + `scripts/ci/test-required-gate.sh` | a draft PR runs fast CI only (full jobs skipped); draft fast-only passes the gate | draft run job list (`ci/draft-fast-run.txt`) |
+| CI-FULL-01 | `pr-ci.yml` `full-documentation-ci` + `scripts/ci/test-required-gate.sh` | a ready PR runs one full release CI on the final head; ready requires full-doc success | ready run job list |
 | CI-CLASS-01 | `scripts/ci/test-change-classifier.sh` | docs-only ≠ full; unknown/backend/database/dependency/mixed ⇒ full safe suite; space + deleted-file safety | `local-validation/*-change-classifier-tests.log` |
 | CI-CLASS-02 | `scripts/ci/classify-changes.sh` | runtime suites routed but NOT-YET-AVAILABLE; deterministic JSON output | `change-classifier/last-classification.json` |
 | CI-GATE-01 | `scripts/ci/test-required-gate.sh` | draft fast-only passes; ready requires full-doc success; any failure/cancel/missing ⇒ fail closed | `local-validation/*-required-gate-tests.log` |

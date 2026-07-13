@@ -22,13 +22,25 @@ Old `documentation-foundation.yml` is retired and preserved as non-executable ev
 ```
 classify-changes ──► draft-fast-ci        (if draft)
                 └──► full-documentation-ci (if ready)
-                └──► workflow-security-ci  (if ready AND workflow/full route)
-                                    └──► Required Gate  (if: always())
+                └──► workflow-security-ci  (if ready — ALWAYS, never routed away)
+                                    └──► Required Gate  (if: always(); RED on drafts)
 ```
 - `classify-changes` computes categories + routing flags from the PR base/head SHA (internal routing — no
-  top-level `paths:` filter on this mandatory workflow).
-- `Required Gate` is the single stable required check (`pr-ci / Required Gate`). It fails on any job failure,
-  unexpected cancel, missing classification, or (on a ready PR) a full-documentation job that did not succeed.
+  top-level `paths:` filter on this mandatory workflow). Its `run_workflow_security` flag is informational only.
+- `workflow-security-ci` runs on **every** ready PR regardless of classification — a security gate is never
+  routed away (AFR-119), so it cannot be skipped by a change that self-classifies as docs-only.
+- `Required Gate` is the single stable required check (`pr-ci / Required Gate`), running on both draft and ready
+  (`always()`). On a **draft** it deliberately exits RED (a draft's fast-CI-only pass must never satisfy branch
+  protection on the same SHA once the PR is marked ready). On a **ready** PR it fails on any job failure, an
+  unexpected cancel, a missing classification, or a full-documentation / workflow-security job that did not
+  succeed. (The job is not `if:`-skipped on drafts, because a skipped required check is treated as *passing* by
+  branch protection.)
+
+## Self-validating CI (residual risk)
+A PR that edits `.github/workflows/*` or `scripts/ci/validate-*.sh` runs the *modified* validators, so a weakening
+change could in principle validate itself. Compensating controls: `main-post-merge.yml` re-runs workflow-security
+on `main` (detective), the `main` ruleset requires the gate with **no admin bypass**, and independent human review
+of the workflow diff is required before merge (see [Required Check Governance](REQUIRED_CHECK_GOVERNANCE.md)).
 
 ## Concurrency
 `concurrency: pr-ci-<PR number>` with `cancel-in-progress: true` — a new head cancels the prior run for the same PR.

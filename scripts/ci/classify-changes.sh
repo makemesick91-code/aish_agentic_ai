@@ -39,8 +39,11 @@ fi
 # an unusable base boundary (fail closed).
 files=()
 if [ -n "$BASE_SHA" ] && git rev-parse --verify -q "$BASE_SHA" >/dev/null 2>&1; then
+  # --no-renames splits a rename into (delete old path + add new path) so a sensitive
+  # old path (e.g. app/** or .github/workflows/**) still re-classifies and fails closed,
+  # instead of a rename emitting only the new (possibly docs) path (fail-open).
   while IFS= read -r -d '' f; do files+=("$f"); done \
-    < <(git diff --name-only -z --diff-filter=ACMRTD "$BASE_SHA" "$HEAD_SHA" 2>/dev/null || true)
+    < <(git diff --name-only -z --no-renames --diff-filter=ACMD "$BASE_SHA" "$HEAD_SHA" 2>/dev/null || true)
 else
   # No usable base => cannot scope safely => classify as unknown (fail closed).
   files=("__UNRESOLVED_BASE__")

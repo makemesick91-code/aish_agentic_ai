@@ -33,24 +33,32 @@ eq "$LOCAL_MAIN" "$ORIGIN_MAIN"      || { echo "FAIL: local main != origin/main"
 eq "$TAG_PEELED" "$LOCAL_MAIN"       || { echo "FAIL: tag peeled commit != local main"; fail=1; }
 eq "$REMOTE_TAG_PEELED" "$TAG_PEELED"|| { echo "FAIL: remote tag peeled != local tag peeled"; fail=1; }
 
-# Annotated (not lightweight): tag object differs from the commit it points to.
-if [ -n "$TAG_OBJ" ] && [ "$TAG_OBJ" = "$TAG_PEELED" ]; then
-  echo "WARN: $TAG appears lightweight (tag object == commit); an annotated tag is required"
+# Annotated (not lightweight) is a MUST: the tag object differs from the commit it points to.
+if [ -z "$TAG_OBJ" ]; then
+  echo "FAIL: $TAG not found locally"; fail=1
+elif [ "$TAG_OBJ" = "$TAG_PEELED" ]; then
+  echo "FAIL: $TAG is lightweight (tag object == commit); an annotated tag is required (rule 13, 28)"; fail=1
 fi
 
-# Prior immutable tags unchanged (compare local vs remote peeled commit).
-PRIOR=(
-  aish-agentic-ai-docs-foundation-v1.0.0-go
-  aish-agentic-ai-step-2-persona-pilot-v1.0.0-go
-  aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go
-  aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go
+# Prior immutable tags unchanged: pin against the recorded known-good peeled commits (prefix match),
+# and treat a MISSING prior tag (local or remote) as a failure — a deleted/moved tag must not pass.
+declare -A PRIOR_KNOWN=(
+  [aish-agentic-ai-docs-foundation-v1.0.0-go]="ba1c80f"
+  [aish-agentic-ai-step-2-persona-pilot-v1.0.0-go]="abf1d00"
+  [aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go]="764a484"
+  [aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go]="3db6ed8"
 )
-for t in "${PRIOR[@]}"; do
+for t in "${!PRIOR_KNOWN[@]}"; do
+  known="${PRIOR_KNOWN[$t]}"
   l="$(git rev-parse "${t}^{}" 2>/dev/null || true)"
   r="$(git ls-remote origin "refs/tags/${t}^{}" 2>/dev/null | awk '{print $1}')"
-  if [ -n "$l" ] && [ -n "$r" ] && [ "$l" != "$r" ]; then
-    echo "FAIL: prior tag $t changed (local $l != remote $r)"; fail=1
-  fi
+  if [ -z "$l" ]; then echo "FAIL: prior tag $t missing locally"; fail=1; continue; fi
+  if [ -z "$r" ]; then echo "FAIL: prior tag $t missing on origin (deleted/moved?)"; fail=1; continue; fi
+  if [ "$l" != "$r" ]; then echo "FAIL: prior tag $t changed (local $l != remote $r)"; fail=1; continue; fi
+  case "$l" in
+    "$known"*) : ;;  # matches recorded known-good peeled commit
+    *) echo "FAIL: prior tag $t peeled $l != recorded known-good ${known}…"; fail=1 ;;
+  esac
 done
 
 {

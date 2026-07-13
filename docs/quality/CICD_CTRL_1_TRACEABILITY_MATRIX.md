@@ -32,4 +32,6 @@ Canonical: Master Source v2.5.0 §69; ADRs 0042–0046; AFR-105..126; PRD v1.3.0
 
 ## Orphan check
 - Every AFR-105..126 maps to a Master Source clause, an ADR (0042–0046), Claude rule 28, an AGENTS instruction,
-  a workflow/validator, and an evidence path. No critical orphan. Validators are unit-tested and self-passing.
+  and an evidence path. Enforcement is by either a **validator script** (`scripts/ci/*`, unit-tested and
+  self-passing) or **workflow-enforced behavior with live run evidence** (e.g. AFR-107/108 via the `pr-ci.yml`
+  draft/full jobs, cross-checked by `CI-DRAFT-01`/`CI-FULL-01`/`CI-GATE-01`). No critical orphan.

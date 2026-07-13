@@ -38,6 +38,9 @@ run block "gcloud dns record-sets transaction start"
 # CICD-CTRL-1 safeguards (must block)
 run block "git commit -m 'wip [skip ci]'"
 run block "git commit -m 'x [ci skip]'"
+run block "git commit -m 'x [no ci]'"
+run block "git commit -m 'x [skip actions]'"
+run block "git commit -m 'x ***NO_CI***'"
 
 # Positive (must allow)
 run allow "git status"

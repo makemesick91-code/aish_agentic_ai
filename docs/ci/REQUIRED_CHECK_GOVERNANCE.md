@@ -6,11 +6,13 @@ Canonical: Master Source v2.5.0 §69.5. Rule: `.claude/rules/28`, `13`. ADR 0046
 The single required status context is **`pr-ci / Required Gate`** (workflow `pr-ci` / job `Required Gate`). The
 name is kept **stable** so branch protection does not need frequent updates. The gate uses `if: always()`, inspects
 the results of the routed jobs, and:
-- fails on any job `failure`;
-- fails on an unexpected `cancelled` required input;
-- fails on a missing classification (fail closed);
-- on a **ready** PR, fails unless the full-documentation job succeeded;
-- passes on `success` and intentional `skipped` per routing (e.g. draft skips the full job).
+- is **RED on a draft PR** (a draft runs fast CI only; its pass must never satisfy branch protection on the same
+  SHA once the PR is marked ready). The job is deliberately **run-and-fail**, not `if:`-skipped — a *skipped*
+  required check is treated as **passing** by branch protection, which would reopen the stale-green hole;
+- on a **ready** PR: fails on any job `failure`, an unexpected `cancelled` required input, a missing classification
+  (fail closed), or unless BOTH the full-documentation job AND the workflow-security job succeeded;
+- passes only on a ready PR with all required jobs green (intentional `skipped` of the draft-fast job on a ready PR
+  is fine).
 
 Decision logic lives in `scripts/ci/required-gate-decision.sh` and is unit-tested by
 `scripts/ci/test-required-gate.sh`.

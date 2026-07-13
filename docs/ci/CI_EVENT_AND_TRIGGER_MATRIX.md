@@ -4,9 +4,9 @@ Canonical: Master Source v2.5.0 §69.2. Rule: `.claude/rules/28`. AFR-107,108,11
 
 | Event | Workflow | Jobs that run | Full release suite? | Notes |
 |-------|----------|---------------|---------------------|-------|
-| PR opened/reopened as **draft** | `pr-ci.yml` | classify-changes → draft-fast-ci → Required Gate | No | Fast CI only (AFR-107) |
-| PR `synchronize` while **draft** | `pr-ci.yml` | classify-changes → draft-fast-ci → Required Gate | No | Stale draft run cancelled (AFR-111) |
-| PR `ready_for_review` | `pr-ci.yml` | classify-changes → full-documentation-ci (+ workflow-security-ci if routed) → Required Gate | **Yes** | One full CI on the final head (AFR-108) |
+| PR opened/reopened as **draft** | `pr-ci.yml` | classify-changes → draft-fast-ci → Required Gate (**RED**) | No | Fast CI only (AFR-107); required gate is intentionally red on drafts |
+| PR `synchronize` while **draft** | `pr-ci.yml` | classify-changes → draft-fast-ci → Required Gate (RED) | No | Stale draft run cancelled (AFR-111) |
+| PR `ready_for_review` | `pr-ci.yml` | classify-changes → full-documentation-ci + workflow-security-ci (**always**) → Required Gate | **Yes** | One full CI on the final head (AFR-108); workflow-security never routed away |
 | PR `synchronize` while **ready** | `pr-ci.yml` | full suite on new head | **Yes** | New SHA ⇒ new full CI (AFR-109); prior run cancelled |
 | `push: main` (merge) | `main-post-merge.yml` | post-merge-verify | No | Lightweight integrity only (AFR-115) |
 | Tag push | — | (none) | No | No full CI on tags; `verify-immutable-tag.sh` runs locally/at release (AFR-116) |

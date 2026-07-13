@@ -1,0 +1,13 @@
+# Draft fast-CI acceptance evidence
+run_id=29258287948
+event=pull_request (synchronize)
+pr=9 (draft)
+head_sha=5df50c85f89af4b5004aaf568eea04a3b30a0342
+result=draft runs FAST CI only (full-documentation-ci + workflow-security-ci SKIPPED)
+---jobs---
+Classify changes | success
+Draft fast CI | success
+Full documentation CI | skipped
+Workflow security CI | skipped
+Required Gate | success
+NOTE: first pr-ci run needed a synchronize push (GitHub did not dispatch the new workflow on 'opened').

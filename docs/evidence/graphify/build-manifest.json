@@ -1,7 +1,7 @@
 {
   "authoritative": false,
-  "edge_count": 583,
+  "edge_count": 584,
   "mode": "deterministic-doc-index",
-  "node_count": 318,
+  "node_count": 323,
   "schema": "aish-agentic-ai/doc-index/v1"
 }

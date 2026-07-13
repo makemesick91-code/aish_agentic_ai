@@ -73,6 +73,17 @@ expect "mixed (>=3 cats) => full safe suite" 'full_safe_suite=true' "$out"
 git rm -q seed.md >/dev/null 2>&1; git commit -qm del >/dev/null 2>&1
 out="$(BASE_SHA="$BASE" HEAD_SHA=HEAD bash "$CLASSIFIER" 2>/dev/null)"
 git reset -q --hard "$BASE" >/dev/null 2>&1
+git clean -fdq >/dev/null 2>&1
 expect "deleted file classified without crash" 'full_safe_suite=(true|false)' "$out"
+
+# Rename fail-open: moving a sensitive backend file to docs must NOT classify docs-only.
+mkdir -p app/Services; echo "sensitive" > app/Services/PaymentService.php
+git add -A >/dev/null 2>&1; git commit -qm "add backend" >/dev/null 2>&1
+RB="$(git rev-parse HEAD)"
+mkdir -p docs/notes; git mv app/Services/PaymentService.php docs/notes/payment.md >/dev/null 2>&1
+git commit -qm "rename backend->docs" >/dev/null 2>&1
+out="$(BASE_SHA="$RB" HEAD_SHA=HEAD bash "$CLASSIFIER" 2>/dev/null)"
+git reset -q --hard "$BASE" >/dev/null 2>&1; git clean -fdq >/dev/null 2>&1
+expect "rename backend->docs fails closed (not docs-only)" 'full_safe_suite=true' "$out"
 
 if [ "$fail" -eq 0 ]; then echo "PASS: change classifier tests"; else echo "test-change-classifier: FAILED"; exit 1; fi

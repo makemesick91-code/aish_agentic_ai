@@ -31,11 +31,16 @@ jobs:
         with:
           fetch-depth: 0
       - name: Record dispatch metadata
+        env:
+          ACTOR: ${{ github.actor }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          REASON: ${{ inputs.reason }}
         run: |
-          echo "actor=${{ github.actor }}"
-          echo "ref=${{ github.ref }}"
-          echo "sha=${{ github.sha }}"
-          echo "reason=${{ inputs.reason }}"
+          echo "actor=$ACTOR"
+          echo "ref=$REF"
+          echo "sha=$SHA"
+          echo "reason=$REASON"
       - name: Make scripts executable
         run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh scripts/release/*.sh .codex/hooks/*.sh
       - name: CI validators

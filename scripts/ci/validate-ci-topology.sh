@@ -27,7 +27,9 @@ if [ -f "$PR" ]; then
   grep -Eq '^[[:space:]]*pull_request:' "$PR" || { echo "FAIL: $PR must trigger on pull_request"; fail=1; }
   grep -Eq 'ready_for_review' "$PR" || { echo "FAIL: $PR must react to ready_for_review"; fail=1; }
   # No feature-branch push trigger on the full PR workflow (avoid duplicate push+PR CI).
-  if awk '/^on:/{o=1} o&&/^[[:space:]]+push:/{print; found=1} END{exit !found}' "$PR" >/dev/null 2>&1; then
+  # Scope the scan to the `on:` mapping only: set state at `^on:` and clear it at the next
+  # top-level key, so an unrelated `push:` elsewhere cannot cause a false FAIL.
+  if awk '/^on:[[:space:]]*$/{o=1;next} /^[A-Za-z]/{o=0} o&&/^[[:space:]]+push:/{found=1} END{exit !found}' "$PR" >/dev/null 2>&1; then
     echo "FAIL: $PR must not use a push: trigger (duplicate push+PR CI risk)"; fail=1
   fi
   grep -Eq '^[[:space:]]*concurrency:' "$PR" || { echo "FAIL: $PR missing concurrency"; fail=1; }

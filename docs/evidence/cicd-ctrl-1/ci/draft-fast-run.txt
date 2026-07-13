@@ -1,0 +1,5 @@
+Classify changes | success
+Draft fast CI | success
+Full documentation CI | skipped
+Workflow security CI | skipped
+Required Gate | success

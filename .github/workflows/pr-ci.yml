@@ -98,7 +98,10 @@ jobs:
   workflow-security-ci:
     name: Workflow security CI
     needs: classify-changes
-    if: github.event.pull_request.draft == false && needs.classify-changes.outputs.run_workflow_security == 'true'
+    # Security gate: runs on EVERY ready PR, never gated by change classification
+    # (AFR-119 — security gates are never optimized/routed away). The classifier's
+    # run_workflow_security flag is informational only; it cannot skip this job.
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -116,6 +119,11 @@ jobs:
   required-gate:
     name: Required Gate
     needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci]
+    # Runs on BOTH draft and ready (always()). On a draft the decision script exits
+    # NON-ZERO on purpose, so `pr-ci / Required Gate` is RED until a ready run posts a
+    # real green — a draft's fast-CI-only pass can never satisfy branch protection on
+    # the same SHA after "ready". (A job skipped via `if:` would post a `skipped`
+    # conclusion, which branch protection treats as PASSING — hence run-and-fail, not skip.)
     if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
