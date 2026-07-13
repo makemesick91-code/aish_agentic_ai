@@ -1,0 +1,33 @@
+# Step 2 Tooling Inventory — Aish Agentic AI (2026-07-13, Asia/Makassar)
+
+## Limit Saver
+Status: NOT INSTALLED — FALLBACK ACTIVE.
+No skill named "Limit Saver 1" / "limit-saver" / "usage-limit-reducer" (or a clearly equivalent trusted
+skill) is installed. Fallback token-saving protocol applied per docs/tooling/LIMIT_SAVER.md and
+.claude/rules/14: checkpoints, concise handoff, file-based state, targeted reads, subagent fan-out returning
+concise findings. No validation, security, traceability, or evidence was weakened. Non-blocking.
+
+## Graphify (branded knowledge graph)
+Status: BLOCKED-OPTIONAL. No verifiable branded Graphify product/source available. The derived documentation
+index is realized deterministically by scripts/graphify/build.sh (idempotent manifest, secrets/PII excluded)
+and validated by scripts/graphify/query-smoke.sh. Master Source remains the canonical authority; the index is
+derived, never authoritative. Build: 123 nodes, 218 edges. Query smoke: 14/14 (incl. 8 Step 2 queries). Drift:
+deterministic. Non-blocking because deterministic query + drift gates pass.
+
+## MCP
+Status: minimal, secret-free. Repository .mcp.json holds no secrets/tokens; credentials are env-var
+references only. GitHub operations use the authenticated gh CLI (account makemesick91-code). No speculative or
+destructive MCP server added for Step 2. Empty/minimal server set is valid per .claude/rules/15.
+
+## Skills used (repeatable, no unsafe auto-mutation)
+master-source-update, documentation-gate, release-evidence, graphify-refresh — invoked as workflows; none
+merges, tags, publishes, deploys, or deletes data on its own.
+
+## Subagents (report-only, least privilege)
+product-requirements-reviewer, architecture-reviewer, security-privacy-reviewer, ai-governance-reviewer,
+qa-traceability-reviewer, release-governance-reviewer. Used for independent Step 2 review; findings recorded
+under docs/evidence/step-2/reviews/. Reviewers cannot merge, tag, publish, or run destructive operations.
+
+## Toolchain
+gh CLI authenticated (makemesick91-code, keyring). Python3 available (link/graph gates). shellcheck lint runs
+in CI (non-blocking warnings). All Step 2 local gates: ALL GATES PASSED.

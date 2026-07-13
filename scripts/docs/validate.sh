@@ -40,6 +40,7 @@ run version-consistency   scripts/docs/check-version-consistency.sh
 run internal-links        scripts/docs/check-links.sh
 run rule-frontmatter      scripts/docs/check-rule-frontmatter.sh
 run foundation-coverage   scripts/docs/check-foundation-coverage.sh
+run step2-coverage        scripts/docs/check-step2-coverage.sh
 run secret-scan           scripts/docs/secret-scan.sh
 run hook-guard-tests      scripts/hooks/test-guard.sh
 run graphify-build        scripts/graphify/build.sh
