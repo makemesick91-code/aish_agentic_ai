@@ -6,6 +6,33 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — CICD-CTRL-1: Safe CI Runtime Control and Single-Final-Head Release Gate
+
+Target release: annotated tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`.
+Base branch `main`; feature branch `chore/cicd-ctrl-1-safe-ci-runtime-control`.
+
+### Added
+- Master Source **v2.5.0** (§69 CICD-CTRL-1; NFR-CI-001..006); PRD unchanged at **v1.3.0**. ADRs **0042–0046**,
+  **AFR-105..126**, **Claude rule 28**.
+- Unified `pr-ci.yml` (draft⇒fast CI, ready⇒one full release CI on the final head, internal fail-closed change
+  routing, stable `pr-ci / Required Gate` with `if: always()`, per-PR concurrency cancellation, pinned actions,
+  least-privilege `contents: read`).
+- `main-post-merge.yml` (lightweight integrity only) and `full-ci-manual.yml` (`workflow_dispatch`); old
+  `documentation-foundation.yml` retired and preserved as non-executable evidence.
+- `scripts/ci/`: `classify-changes.sh` + tests, `required-gate-decision.sh` + tests, `validate-ci-topology.sh`,
+  `validate-workflow-security.sh`, `fast-local.sh`, `full-local.sh`, `audit-ci-runs.sh`; `scripts/release/verify-immutable-tag.sh`.
+- CI docs (`docs/ci/*`), CICD-CTRL-1 quality docs (traceability, validation catalog, GO/WATCH/NO-GO), release docs,
+  and baseline/evidence under `docs/evidence/cicd-ctrl-1/`.
+
+### Changed
+- `check-version-consistency.sh` (active Master Source v2.5.0 + snapshot), `check-agents.sh` (v2.5.0),
+  `check-adr.sh` (sequence 0001..0046). Query-smoke extended with CICD-CTRL-1 questions.
+
+### Truthful status
+- CI/release-process governance only. A CI PASS is valid only for the exact tested SHA; reruns after failures are
+  legitimate and reported truthfully. Application implementation, deployment, pilot readiness, pilot runtime, and
+  production readiness remain **NOT STARTED**. No domain owned, no package installed, nothing deployed.
+
 ## [Unreleased] — Step 4: Domain, Branding, Environment, and SaaS Foundation Planning
 
 Target release: annotated tag `aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`.

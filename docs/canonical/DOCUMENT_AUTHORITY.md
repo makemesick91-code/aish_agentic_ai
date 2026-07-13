@@ -5,8 +5,8 @@ Canonical rule: `.claude/rules/00-document-authority.md`. Canonical source: Mast
 ## Authority order (highest first)
 
 1. **Latest explicit product-owner decision.**
-2. **Highest-version canonical Master Source** — `MASTER_SOURCE.md` (active **v2.1.1**).
-3. **Newest approved PRD** — `PRD.md` (**v1.0.1**).
+2. **Highest-version canonical Master Source** — `MASTER_SOURCE.md` (active **v2.5.0**).
+3. **Newest approved PRD** — `PRD.md` (**v1.3.0**).
 4. **Approved ADRs and decision-log entries** — `../decisions/adr/`, `../architecture/adr/`, `../decisions/DECISION_LOG.md`.
 5. **Other repository documentation.**
 6. **Generated or derived artifacts.**
