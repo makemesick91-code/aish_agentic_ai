@@ -12,11 +12,12 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
   `3c484f4b`, peeled `764a4849`; exact-match local/remote/main). Master Source **v2.3.0**, PRD **v1.2.0**; ADRs
   0009–0032; AFR-001..072; Claude rule 20; AGENTS chain; Codex foundation; Step 3 gates. Post-tag evidence
   finalized via a separate evidence-only branch (tag not moved).
-- **Step 4 — Domain, Branding, Environment & SaaS Foundation Implementation Planning:** IN PROGRESS on branch
-  `docs/step-4-domain-branding-environment-saas-foundation-planning`; canonical **Master Source v2.4.0**, **PRD
-  v1.3.0**; ADRs 0033–0041; AFR-073..104; Claude rules 21–27; Step 4 gates + CI; independent review complete
-  (5 reviewers, no BLOCKER/HIGH surviving; all fixes applied); `validate.sh` ALL GATES PASSED. **Awaiting commit
-  → PR → CI → merge → GO tag.**
+- **Step 4 — Domain, Branding, Environment & SaaS Foundation Implementation Planning:** MERGED (PR #7, merge
+  commit `3db6ed8`; CI run `29252500375` success) and GO TAGGED
+  (`aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`, tag object
+  `e61d210`, peeled `3db6ed8`; exact-match local/remote/main). Master Source **v2.4.0**, PRD **v1.3.0**; ADRs
+  0033–0041; AFR-073..104; Claude rules 21–27. Independent review: 5 reviewers, no BLOCKER/HIGH surviving.
+  Post-tag evidence recorded via a separate evidence-only branch (tag not moved).
 - **Application implementation:** NOT STARTED. Domain ownership, deployment / live integration / pilot readiness /
   pilot runtime / production readiness: NOT STARTED. No domain owned; no package installed; nothing deployed.
 - **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified.
