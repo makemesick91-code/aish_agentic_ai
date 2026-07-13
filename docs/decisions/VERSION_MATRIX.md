@@ -5,9 +5,10 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 ## Canonical documents
 | Document | Active version | Working copy | Preserved original | Notes |
 |----------|----------------|--------------|--------------------|-------|
-| Master Source | **2.4.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.4.0.md` | Step 4 Domain/Branding/Environment/SaaS-Foundation planning baseline |
-| PRD | **1.3.0** | `../canonical/PRD.md` | `../canonical/source/PRD_AISH_AGENTIC_AI_v1.3.0.md` | Step 4 baseline; canonical source = Master Source v2.4.0 |
+| Master Source | **2.5.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.5.0.md` | CICD-CTRL-1 Safe CI Runtime Control governance (§69) |
+| PRD | **1.3.0** | `../canonical/PRD.md` | `../canonical/source/PRD_AISH_AGENTIC_AI_v1.3.0.md` | Step 4 baseline; unchanged by CICD-CTRL-1 (CI = non-functional release assurance, NFR-CI-001..006 in Master Source §6) |
 | Persona & Pilot Use Cases | **1.0.0** | `../product/PERSONA_AND_PILOT_USE_CASES.md` | `../canonical/source/PERSONA_AND_PILOT_USE_CASES_v1.0.0.md` | Canonical Step 2 persona/pilot source (unchanged) |
+| Master Source (historical) | 2.4.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.4.0.md` | Historical; superseded by 2.5.0 |
 | Master Source (historical) | 2.3.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.3.0.md` | Historical; superseded by 2.4.0 |
 | PRD (historical) | 1.2.0 | — | `../canonical/source/PRD_AISH_AGENTIC_AI_v1.2.0.md` | Historical; superseded by 1.3.0 |
 | Master Source (historical) | 2.2.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.2.0.md` | Historical; superseded by 2.3.0 → 2.4.0 |
@@ -20,9 +21,10 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 `2.0.0` (unified baseline) → `2.0.1` (PRD baseline) → `2.1.0` (Claude docs & rules foundation) →
 `2.1.1` (canonical repository established) → `2.2.0` (Persona & Pilot Use Case baseline / Step 2) →
 `2.3.0` (Application Architecture & ADR foundation / Step 3) →
-`2.4.0` (Domain/Branding/Environment/SaaS-Foundation planning / Step 4).
-**Active: 2.4.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
-`1.3.0` (Step 4).
+`2.4.0` (Domain/Branding/Environment/SaaS-Foundation planning / Step 4) →
+`2.5.0` (CICD-CTRL-1 Safe CI Runtime Control governance).
+**Active: 2.5.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
+`1.3.0` (Step 4; unchanged by CICD-CTRL-1).
 **Active PRD: 1.3.0.**
 
 ## Documentation-foundation release (Step 1)
@@ -60,6 +62,15 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 | Feature branch | `docs/step-4-domain-branding-environment-saas-foundation-planning` |
 | Scope | Master Source v2.4.0 / PRD v1.3.0; ADRs 0033–0041; AFR-073..104; Claude rules 21–27; domain/brand/environment/dependency/SaaS-Foundation planning docs; Step 4 gates; CI; evidence |
 | Claim | Planning/documentation baseline only — no domain owned, no package installed, nothing deployed; application implementation, deployment, pilot readiness, pilot runtime, and production readiness remain NOT STARTED |
+
+## CICD-CTRL-1 release (Safe CI Runtime Control)
+| Item | Value |
+|------|-------|
+| Target GO tag | `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go` (annotated, immutable) |
+| Base branch | `main` |
+| Feature branch | `chore/cicd-ctrl-1-safe-ci-runtime-control` |
+| Scope | Master Source v2.5.0 (PRD unchanged v1.3.0); ADRs 0042–0046; AFR-105..126; Claude rule 28; `pr-ci.yml`/`main-post-merge.yml`/`full-ci-manual.yml`; classifier + local gates + validators; ruleset enforcement; CI docs; evidence |
+| Claim | CI/release-process governance only — application implementation, deployment, pilot readiness, pilot runtime, and production readiness remain NOT STARTED. A CI PASS is valid only for the exact tested SHA |
 
 ## Toolchain (Step 3 time)
 | Component | Version / status |

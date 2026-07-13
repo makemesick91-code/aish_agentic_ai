@@ -1,0 +1,4 @@
+aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go
+aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go
+aish-agentic-ai-step-2-persona-pilot-v1.0.0-go
+aish-agentic-ai-docs-foundation-v1.0.0-go

@@ -5,13 +5,13 @@ knowledge. It stays in sync with `CLAUDE.md` and `.claude/rules/` — there is *
 
 ## Authority (read before acting)
 1. Latest explicit product-owner decision.
-2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.4.0**).
+2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.5.0**).
 3. PRD — `docs/canonical/PRD.md` (active **v1.3.0**).
-4. Approved ADRs — `docs/decisions/adr/` (0001–0041) and `docs/decisions/DECISION_LOG.md`.
-5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..104).
+4. Approved ADRs — `docs/decisions/adr/` (0001–0046) and `docs/decisions/DECISION_LOG.md`.
+5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..126).
 6. Other repo docs → derived artifacts → graph/index (**never** authoritative).
 
-Full rules live in `.claude/rules/00`–`27`. Nested `AGENTS.md` files add area-specific rules
+Full rules live in `.claude/rules/00`–`28`. Nested `AGENTS.md` files add area-specific rules
 (`docs/*/AGENTS.md`, `scripts/AGENTS.md`, `app/AGENTS.md`, `tests/AGENTS.md`).
 
 ## Canonical repository
@@ -34,9 +34,18 @@ stop with `NO-GO: WRONG REPOSITORY`.
 - Manual fallback: core workflow works without AI (AFR-045). Secrets never committed; OAuth encrypted (AFR-023,024).
 - Audit + cost + prompt/model versioning recorded (AFR-043,044,059). Truthful states only (AFR-036,068).
 
+## CI runtime control (CICD-CTRL-1, AFR-105..126; rule 28)
+- Local-first: run `scripts/ci/fast-local.sh` during work; `scripts/ci/full-local.sh` before marking a PR ready.
+- Draft-first PR: open feature PRs as drafts (fast CI only); mark ready only after review — one full CI on the
+  final head. A CI PASS is valid only for the exact tested SHA; a new commit requires a new full CI (AFR-105,109).
+- Never trigger full CI from a feature-branch `push`; never bypass mandatory checks with `[skip ci]`; never
+  create a post-tag full-CI PR; never unpin an action; never broaden `GITHUB_TOKEN` beyond need (AFR-110..123).
+- Post-tag evidence defaults to a GitHub Release artifact (AFR-117). Report reruns truthfully — no "one run forever" claim (AFR-126).
+
 ## Mandatory validation before commit/PR
-`scripts/docs/validate.sh` (documentation + Step 2 + Step 3 + Step 4 gates), `scripts/docs/secret-scan.sh`,
-`scripts/codex/check-agents.sh`. Never weaken, skip, or fake a gate (AFR-054,066,072).
+`scripts/docs/validate.sh` (documentation + Step 2 + Step 3 + Step 4 gates), `scripts/ci/fast-local.sh`
+(classifier/gate/topology/workflow-security), `scripts/docs/secret-scan.sh`, `scripts/codex/check-agents.sh`.
+Never weaken, skip, or fake a gate (AFR-054,066,072,124).
 
 ## Forbidden
 Force-push · tag move/delete/recreate · history rewrite · reading `.env`/secrets/keys/dumps · destructive DB/
@@ -44,7 +53,8 @@ production commands · bypassing branch protection or approval · claiming the a
 pilot-ready without evidence (AFR-066,067,068).
 
 ## Truthful status (current)
-Documentation, Step 2 persona/pilot, Step 3 architecture (GO tagged), and Step 4 domain/branding/environment/
-SaaS-Foundation planning are documentation/governance/planning baselines. No domain is owned; no package is
+Documentation, Step 2 persona/pilot, Step 3 architecture, and Step 4 domain/branding/environment/SaaS-Foundation
+planning are GO-tagged documentation/governance/planning baselines. CICD-CTRL-1 (Master Source v2.5.0) adds CI
+runtime-control governance; CI/release process is configured and evidenced. No domain is owned; no package is
 installed; nothing is deployed. **Application implementation: NOT STARTED.** Domain ownership, deployment, pilot
 readiness, pilot runtime, and production readiness: **NOT STARTED.**

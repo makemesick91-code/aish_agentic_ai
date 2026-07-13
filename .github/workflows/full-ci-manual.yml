@@ -1,0 +1,58 @@
+name: full-ci-manual
+
+# CICD-CTRL-1 optional manual full CI (rule 28; §11 of the initiative).
+# On-demand full revalidation for incident investigation, dependency verification,
+# release-candidate recheck, or branch-protection troubleshooting. It does NOT run
+# automatically on push and does NOT replace the required final-head PR check.
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why full CI is being run manually (recorded in the run log)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: full-ci-manual-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  full-ci:
+    name: Manual full CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Record dispatch metadata
+        env:
+          ACTOR: ${{ github.actor }}
+          REF: ${{ github.ref }}
+          SHA: ${{ github.sha }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          echo "actor=$ACTOR"
+          echo "ref=$REF"
+          echo "sha=$SHA"
+          echo "reason=$REASON"
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh scripts/release/*.sh .codex/hooks/*.sh
+      - name: CI validators
+        run: |
+          scripts/ci/test-change-classifier.sh
+          scripts/ci/test-required-gate.sh
+          scripts/ci/validate-ci-topology.sh
+          scripts/ci/validate-workflow-security.sh
+      - name: Full documentation-as-code suite
+        run: scripts/docs/validate.sh
+      - name: ADR / AGENTS / codex gates
+        run: |
+          scripts/docs/check-adr.sh
+          scripts/codex/check-agents.sh
+          scripts/codex/check-codex.sh

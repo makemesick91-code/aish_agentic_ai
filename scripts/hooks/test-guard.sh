@@ -35,6 +35,12 @@ run block "terraform apply"
 run block "kubectl apply -f deploy.yaml"
 run block "docker push registry/aish:latest"
 run block "gcloud dns record-sets transaction start"
+# CICD-CTRL-1 safeguards (must block)
+run block "git commit -m 'wip [skip ci]'"
+run block "git commit -m 'x [ci skip]'"
+run block "git commit -m 'x [no ci]'"
+run block "git commit -m 'x [skip actions]'"
+run block "git commit -m 'x ***NO_CI***'"
 
 # Positive (must allow)
 run allow "git status"
@@ -46,5 +52,6 @@ run allow "git tag -a aish-agentic-ai-docs-foundation-v1.0.0-go -m msg"
 run allow "scripts/docs/validate.sh"
 run allow "cat README.md"
 run allow "rm -f /tmp/scratch.txt"
+run allow "git commit -m 'ci: add safe CI runtime control'"
 
 if [ "$fail" -eq 0 ]; then echo "PASS: all guard hook tests passed"; else echo "GUARD TESTS FAILED"; exit 1; fi

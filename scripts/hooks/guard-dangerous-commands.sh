@@ -46,4 +46,8 @@ printf '%s' "$cmd" | grep -Eq '(npm|composer)[[:space:]]+publish([[:space:]]|$)'
 printf '%s' "$cmd" | grep -Eq 'terraform[[:space:]]+(apply|destroy)|pulumi[[:space:]]+up|kubectl[[:space:]]+(apply|delete)|docker[[:space:]]+push' && block "cloud provisioning / deployment is out of scope in planning"
 printf '%s' "$cmd" | grep -Eq 'nsupdate|route53[[:space:]]+[^|]*(change|create|delete)|gcloud[[:space:]]+dns' && block "DNS mutation is out of scope in planning"
 
+# CICD-CTRL-1 safeguards: skip directives MUST NOT bypass mandatory CI (AFR-118; rule 28).
+# Covers every GitHub-recognized skip-CI directive form.
+printf '%s' "$cmd" | grep -Eiq 'git[[:space:]]+commit[^|]*(\[(skip ci|ci skip|no ci|skip actions|actions skip)\]|\*\*\*NO_CI\*\*\*)' && block "skip-CI directive on mandatory CI is prohibited (rule 28, AFR-118)"
+
 exit 0

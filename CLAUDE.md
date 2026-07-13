@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.4.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.5.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -95,6 +95,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `25-dependency-and-supply-chain.md` | Dependency baseline, official-source verification, pinning, typosquat/SBOM, no unapproved install |
 | `26-saas-foundation-implementation-planning.md` | SaaS Foundation sequence, epics/sprints, DoR/DoD, deployment-target class, readiness gates |
 | `27-truthful-planning-states.md` | Planning ≠ implementation; domain candidate ≠ ownership; plan ≠ deployed; GO-tag scope |
+| `28-safe-ci-runtime-control.md` | Local-first + draft-first CI, one final-head full gate, SHA-bound evidence, internal fail-closed routing, stable required gate, lightweight post-merge/post-tag, workflow security, no false one-run claim |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -108,15 +109,15 @@ For this documentation foundation also distinguish: `DOCUMENTATION BASELINE COMP
 `FOUNDATION CONFIGURED`, `GO TAGGED`, and `APPLICATION IMPLEMENTATION NOT STARTED`.
 Never say “done”, “GO”, “merged”, “deployed”, or “verified” without the corresponding evidence.
 
-**Current truthful state:** Documentation & Claude Rules Foundation MERGED and GO TAGGED
-(`aish-agentic-ai-docs-foundation-v1.0.0-go`, peeled `ba1c80f`). Step 2 — Persona & Pilot Use Cases MERGED and
-GO TAGGED (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, peeled `abf1d00`). Step 3 — Application Architecture
-& ADR Foundation MERGED and GO TAGGED (`aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`, peeled
-`764a484`). Step 4 — Domain, Branding, Environment & SaaS Foundation Implementation Planning (Master Source
-**v2.4.0**, PRD **v1.3.0**, ADRs 0033–0041, AFR-073..104, rules 21–27) IN PROGRESS on branch
-`docs/step-4-domain-branding-environment-saas-foundation-planning`.
-**Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness, pilot runtime, and
-production readiness: NOT STARTED. No domain is owned; no package is installed; nothing is deployed.
+**Current truthful state:** Documentation & Claude Rules Foundation, Step 2 (Persona & Pilot), Step 3 (Application
+Architecture & ADR), and Step 4 (Domain, Branding, Environment & SaaS Foundation Planning) are all MERGED and
+GO TAGGED (`aish-agentic-ai-docs-foundation-v1.0.0-go`; `…step-2-persona-pilot-v1.0.0-go`;
+`…step-3-application-architecture-adr-v1.0.0-go`; `…step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`).
+**CICD-CTRL-1 — Safe CI Runtime Control** (Master Source **v2.5.0**, PRD **v1.3.0** unchanged, ADRs 0042–0046,
+AFR-105..126, rule 28) IN PROGRESS on branch `chore/cicd-ctrl-1-safe-ci-runtime-control`: unified draft-first
+`pr-ci.yml`, lightweight `main-post-merge.yml`, manual `full-ci-manual.yml`, deterministic change classifier, and a
+stable required gate. **Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness,
+pilot runtime, and production readiness: NOT STARTED. No domain is owned; no package is installed; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks
 

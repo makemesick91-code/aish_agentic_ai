@@ -120,9 +120,47 @@ check "brand token accessibility target" \
 check "roadmap step after Step 4" \
       "docs/product/ROADMAP.md" "Step 5"
 
+# --- CICD-CTRL-1 canonical query smoke (safe CI runtime control) ---
+check "draft PR CI policy" \
+      "docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md" "draft.*fast CI|DRAFT PR"
+check "when the full CI runs" \
+      "docs/ci/CI_EVENT_AND_TRIGGER_MATRIX.md" "ready_for_review"
+check "may a full CI result be reused from an old SHA" \
+      ".claude/rules/28-safe-ci-runtime-control.md" "exact tested commit SHA"
+check "what happens when a commit changes after full CI" \
+      "docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md" "new.*full CI"
+check "how stale runs are cancelled" \
+      "docs/ci/CI_ARCHITECTURE.md" "cancel-in-progress"
+check "does a feature push run full CI" \
+      "docs/ci/CI_EVENT_AND_TRIGGER_MATRIX.md" "no.*feature-branch.*push"
+check "how changed files are routed" \
+      "docs/ci/CI_CHANGE_CLASSIFICATION.md" "category|routing"
+check "what happens for unknown changes" \
+      "docs/ci/CI_CHANGE_CLASSIFICATION.md" "fail.closed|full safe suite"
+check "the stable required check" \
+      "docs/ci/REQUIRED_CHECK_GOVERNANCE.md" "pr-ci / Required Gate"
+check "may a path-filtered workflow be a required check" \
+      "docs/ci/CI_CHANGE_CLASSIFICATION.md" "pending"
+check "what runs after merge to main" \
+      "docs/ci/POST_MERGE_VERIFICATION.md" "integrity verification only"
+check "what runs after a tag" \
+      "docs/ci/POST_TAG_EVIDENCE_POLICY.md" "no full CI"
+check "where post-tag evidence is stored" \
+      "docs/ci/POST_TAG_EVIDENCE_POLICY.md" "GitHub Release"
+check "when a full CI may rerun" \
+      "docs/ci/CI_RUN_BUDGET.md" "rerun"
+check "rule forbidding skip-ci on mandatory checks" \
+      ".claude/rules/28-safe-ci-runtime-control.md" "skip directives|\\[skip ci\\]"
+check "rule forbidding security gate removal for speed" \
+      ".claude/rules/28-safe-ci-runtime-control.md" "removed for speed"
+check "exact target GO tag for CICD-CTRL-1" \
+      "docs/release/CICD_CTRL_1_RELEASE_MANIFEST.md" "aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go"
+check "current application implementation status" \
+      "docs/ci/CI_ARCHITECTURE.md" "NOT STARTED"
+
 echo "---" | tee -a "$OUT"
 if [ "$fail" -eq 0 ]; then
-  echo "PASS: 46/46 canonical queries resolved to canonical file paths" | tee -a "$OUT"
+  echo "PASS: 64/64 canonical queries resolved to canonical file paths" | tee -a "$OUT"
 else
   echo "query-smoke: FAILED" | tee -a "$OUT"; exit 1
 fi

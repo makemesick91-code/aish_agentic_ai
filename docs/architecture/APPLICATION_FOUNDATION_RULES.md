@@ -134,3 +134,39 @@ and enforced by `scripts/docs/check-step4-coverage.sh` / `check-brand-tokens.sh`
 **104 AFRs total (72 Step 3 + 32 Step 4).** Step 4 AGENTS-instruction and rule coverage is asserted in
 [Step 4 Rule Coverage](../quality/STEP_4_RULE_COVERAGE.md); evidence pointers in the
 [Step 4 Traceability Matrix](../quality/STEP_4_REQUIREMENTS_TRACEABILITY_MATRIX.md). No orphan permanent decision.
+
+## CICD-CTRL-1 — Safe CI Runtime Control (AFR-105..126)
+
+**Status:** CI/RELEASE GOVERNANCE — CONFIGURED and evidenced. **Application implementation: NOT STARTED.**
+**Canonical:** Master Source v2.5.0 §69; PRD v1.3.0 (unchanged) · **ADRs:** 0042–0046 · **Claude rule:** 28.
+`CI-*` are CICD-CTRL-1 validators (`scripts/ci/*`) enforced by `pr-ci.yml`; the [CICD-CTRL-1 Validation
+Catalog](../quality/CICD_CTRL_1_VALIDATION_CATALOG.md) maps each AFR to a validator and to GitHub run evidence.
+
+| AFR | Statement (MUST / MUST NOT) | ADR | Rule | FF/Gate |
+|-----|-----------------------------|-----|------|---------|
+| AFR-105 | A CI PASS MUST be valid only for the exact tested commit SHA; a result MUST NOT be reused after the head changes | 0042 | 28 | CI-SHA-01 |
+| AFR-106 | Validation MUST be runnable locally; CI MUST NOT be the substitute for local validation | 0042 | 28 | CI-LOCAL-01 |
+| AFR-107 | Feature PRs MUST open as drafts; a draft PR MUST run fast CI only | 0042 | 28 | CI-DRAFT-01 |
+| AFR-108 | After review, the PR MUST be marked ready and one full release CI MUST be targeted at the final head | 0042 | 28 | CI-FULL-01 |
+| AFR-109 | Any commit after a full CI MUST invalidate the old result and MUST require a new full CI | 0042 | 28 | CI-SHA-01 |
+| AFR-110 | A feature branch MUST NOT run full CI separately for `push` and `pull_request` on the same SHA | 0042 | 28 | CI-TOPO-01 |
+| AFR-111 | Stale runs for the same PR MUST be cancelled when a new head arrives (concurrency cancel-in-progress) | 0042 | 28 | CI-TOPO-02 |
+| AFR-112 | There MUST be exactly one stable required gate (`pr-ci / Required Gate`) that always reports a conclusion | 0043 | 28 | CI-GATE-01 |
+| AFR-113 | A mandatory workflow MUST NOT be skipped via a top-level path filter; change classification MUST be internal | 0043 | 28 | CI-TOPO-03 |
+| AFR-114 | Unknown / mixed / unclassified changes MUST run the full safe suite (fail closed) | 0043 | 28 | CI-CLASS-01 |
+| AFR-115 | Push to main MUST run lightweight integrity verification only, not the full release suite | 0044 | 28 | CI-POST-01 |
+| AFR-116 | Tag creation MUST run exact-match/integrity verification only and MUST NOT run full CI | 0044 | 28 | CI-TAG-01 |
+| AFR-117 | Post-tag evidence MUST NOT trigger full CI; it defaults to a GitHub Release artifact | 0044 | 28 | CI-TAG-02 |
+| AFR-118 | Commit-message skip directives MUST NOT bypass mandatory release checks | 0043 | 28 | CI-SEC-01 |
+| AFR-119 | Secret scan, workflow-security, tenant-isolation, and release-integrity gates MUST NOT be removed for speed | 0043 | 28,04 | CI-SEC-02 |
+| AFR-120 | Third-party and official actions MUST be pinned to an immutable 40-hex commit SHA | 0045 | 28,25 | CI-SEC-03 |
+| AFR-121 | Default `GITHUB_TOKEN` permission MUST be read-only; write MUST be granted only where required | 0045 | 28 | CI-SEC-04 |
+| AFR-122 | `pull_request_target` MUST NOT execute untrusted PR head code with a privileged token | 0045 | 28,04 | CI-SEC-05 |
+| AFR-123 | `main` SHOULD enforce a ruleset requiring the stable required gate and blocking force-push/deletion; admin bypass MUST NOT be used | 0046 | 28,13 | CI-RULE-01 |
+| AFR-124 | A run-budget MUST NOT turn a failure into a success; failures MUST NOT be hidden or falsely marked flaky | 0042 | 28,09 | CI-BUD-01 |
+| AFR-125 | Runtime suites (backend/frontend/database) MUST be routed but recorded NOT-YET-AVAILABLE until the application exists; no fake Laravel runtime gate | 0043 | 28,23 | CI-CLASS-02 |
+| AFR-126 | CI-efficiency claims MUST be backed by actual GitHub run evidence; reruns MUST be reported truthfully (no false "one run forever" claim) | 0042 | 28,27 | CI-EVID-01 |
+
+**126 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1).** CICD-CTRL-1 AGENTS-instruction and rule coverage is
+asserted in the [CICD-CTRL-1 Traceability Matrix](../quality/CICD_CTRL_1_TRACEABILITY_MATRIX.md); every AFR maps to
+an ADR, Claude rule 28, an AGENTS instruction, a validator, and actual GitHub run evidence. No orphan permanent decision.
