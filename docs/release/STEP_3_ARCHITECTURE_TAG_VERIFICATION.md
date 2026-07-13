@@ -1,6 +1,6 @@
 # Step 3 Application Architecture & ADR Foundation — Tag Verification
 
-**Status:** pre-tag (to be completed after merge) · **Rules:** `.claude/rules/13`, `20`.
+**Status:** COMPLETE — GO TAGGED (post-tag evidence) · **Rules:** `.claude/rules/13`, `20`.
 **Target GO tag:** `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` (annotated, immutable).
 
 ## Procedure (read-only; run after the PR is merged to `main`)
@@ -23,17 +23,19 @@ git describe --tags --exact-match HEAD
 local main = origin/main = merged commit = local tag peeled commit = remote tag peeled commit
 ```
 
-## Results (to be filled with evidence — no fabrication)
+## Results (verified — no fabrication)
 | Field | Value |
 |-------|-------|
-| Tag object SHA | PENDING |
-| Peeled commit SHA | PENDING |
-| Local `main` | PENDING |
-| `origin/main` | PENDING |
-| Merged commit | PENDING |
-| Remote tag peeled | PENDING |
-| Exact-match | PENDING |
-| Prior tags unchanged (`ba1c80f`, `abf1d00`) | verified pre-flight; re-verify post-tag |
+| PR | #5 (MERGED) |
+| CI run | `29231902612` — conclusion `success` |
+| Tag object SHA (local = remote) | `3c484f4b5a375f88829daa9c1cd9cbb36f9de038` |
+| Peeled commit SHA | `764a48492ab18488860e9e03dea1788f69725107` |
+| Local `main` | `764a48492ab18488860e9e03dea1788f69725107` |
+| `origin/main` | `764a48492ab18488860e9e03dea1788f69725107` |
+| Merged commit | `764a48492ab18488860e9e03dea1788f69725107` |
+| Remote tag peeled | `764a48492ab18488860e9e03dea1788f69725107` |
+| Exact-match | **YES** (all five equal) |
+| Prior tags unchanged | `docs-foundation` peeled `ba1c80f` ✓, `step-2` peeled `abf1d00` ✓ |
 
 ## Immutability
 No `git push --force`, `git tag -f`, tag deletion/move, or history rewrite is used. If tag/push/merge permission
