@@ -1,0 +1,6 @@
+MCP servers present in environment (developer-local, NOT committed):
+- claude.ai Higgsfield (remote HTTP) — not used by this foundation
+- claude.ai Supabase (remote HTTP) — not used by this foundation
+- plugin context-mode (local/stdio) — local efficiency only
+GitHub operations: authenticated gh CLI (token in keyring, never committed)
+Committed project MCP (.mcp.json): empty mcpServers set + governance in docs/tooling/MCP.md
