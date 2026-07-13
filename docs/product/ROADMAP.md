@@ -33,10 +33,17 @@ v2.3.0, PRD v1.2.0. Delivered via branch `docs/step-3-application-architecture-a
 `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` tag. It introduces **no** application code — only
 empty scaffold markers — and does **not** claim implementation, deployment, or pilot/production readiness.
 
-## Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning (next)
-After Step 3 is merged and GO-tagged: the next step is implementation **planning** for the SaaS foundation
-(domain/branding, environment provisioning strategy, and the first implementation slice per Master Source §62),
-beginning only after Step 3 is GO-tagged. Step 3 introduces no feature implementation within its own release.
+## Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning (this release)
+Domain strategy (`aishagentic.ai` preferred, point-in-time verified, not owned), brand foundation + accessible
+planning tokens, six-environment matrix + data policy, dependency baseline (Laravel 12/PHP 8.4/PostgreSQL 17/
+Redis 7.x, nothing installed), and the SaaS Foundation implementation plan (16 epics, 9 sprints). Backed by
+ADRs 0033–0041, Claude rules 21–27, AFR-073..104. Planning only — no domain owned, nothing deployed,
+**application implementation NOT STARTED**.
+
+## Step 5 — SaaS Foundation Implementation (next)
+After Step 4 is merged and GO-tagged: begin **SPRINT-SF-00** (repository runtime bootstrap + local/CI
+environment) per `docs/planning/NEXT_IMPLEMENTATION_SPRINT.md`, then follow the sprint roadmap. This is the
+first step that produces application code, gated by the Step 4 Definition of Ready and each sprint's GO/WATCH/NO-GO.
 
 ## Default implementation order (Master Source §62)
 SaaS Foundation → Survey/CSAT → Feedback Inbox → Recovery Ticket → Basic AI → Google Review Integration →
@@ -44,7 +51,7 @@ AI Reply Draft → Human Approval → Agentic Orchestration → Analytics → Bi
 Autonomous agents are not built before basic workflows are stable.
 
 ## Next recommended action
-After Step 3 reaches GO: **Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation
-Planning**, unless a newer owner decision or updated canonical roadmap says otherwise.
+After Step 4 reaches GO: **Step 5 — SaaS Foundation Implementation, SPRINT-SF-00** (runtime bootstrap +
+local/CI environment), unless a newer owner decision or updated canonical roadmap says otherwise.
 
 **Status:** roadmap baseline documented. Application implementation NOT STARTED.

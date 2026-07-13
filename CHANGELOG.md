@@ -6,6 +6,30 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — Step 4: Domain, Branding, Environment, and SaaS Foundation Planning
+
+Target release: annotated tag `aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`.
+Base branch `main`; feature branch `docs/step-4-domain-branding-environment-saas-foundation-planning`.
+
+### Added
+- Canonical version bumps: Master Source **v2.4.0** and PRD **v1.3.0** (Step 4 planning baseline; §68).
+- Domain strategy docs (`docs/domain/`) with point-in-time RDAP availability evidence (all 7 candidates AVAILABLE
+  2026-07-13; **no domain owned/claimed**); preferred `aishagentic.ai` + fallbacks; DNS/TLS/email + OAuth redirect plan.
+- Brand foundation (`docs/brand/`) + machine-readable planning tokens (`docs/brand/tokens/brand-tokens.v1.json`,
+  WCAG 2.2 AA target, not implemented in UI); working tagline (APPROVED WORKING BASELINE).
+- Environment strategy (`docs/environments/`): six environments, isolation, synthetic-default data policy,
+  configuration/secret matrix, promotion policy, local/CI/staging/pilot/production plans.
+- Dependency baseline + supply-chain governance (`docs/dependencies/`); nothing installed, no lock file.
+- SaaS Foundation implementation plan (`docs/planning/`): 16 epics (EPIC-SF-01..16), 9 sprints (SPRINT-SF-00..08),
+  DoR/DoD, test/evidence plan, risk register, cost model, first sprint SPRINT-SF-00.
+- **ADRs 0033–0041** (9 decisions) with required sections + non-claims; **AFR-073..104**; **Claude rules 21–27**.
+- Step 4 gates: `check-step4-coverage.sh`, `check-brand-tokens.sh`; new query-smoke queries; wired into
+  `validate.sh` + CI. Operations Step 4 plans; Step 4 quality docs (RTM, rule coverage, validation catalog, GO/WATCH/NO-GO).
+
+### Truthful status
+- Planning/documentation baseline only. No domain owned, no package installed, nothing deployed. Application
+  implementation, deployment, pilot readiness, pilot runtime, and production readiness remain **NOT STARTED**.
+
 ## [Unreleased] — Step 3: Application Architecture and ADR Foundation
 
 Target release: annotated tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`. Base branch
