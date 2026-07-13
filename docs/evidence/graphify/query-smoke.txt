@@ -12,5 +12,19 @@ PASS | prohibited healthcare data                                 | docs/securit
 PASS | use case when AI or provider fails                         | docs/ai/PILOT_MANUAL_FALLBACK.md
 PASS | pilot hard gates                                           | docs/product/PILOT_SUCCESS_METRICS.md
 PASS | roadmap step after Step 2                                  | docs/product/ROADMAP.md
+PASS | canonical application architecture style                   | docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md
+PASS | module owning survey response                              | docs/architecture/MODULE_BOUNDARIES.md
+PASS | module owning Google OAuth credentials                     | docs/architecture/DATA_OWNERSHIP_MATRIX.md
+PASS | tenant context into queue jobs                             | docs/architecture/TENANCY_ARCHITECTURE.md
+PASS | rule preventing cache leakage                              | docs/security/TENANT_ISOLATION_CONTROL_MATRIX.md
+PASS | VisitCompleted to survey invitation                        | docs/integrations/DAENGTISIAMS_EVENT_INTEGRATION_ARCHITECTURE.md
+PASS | feedback to recovery ticket                                | docs/architecture/EVENT_DRIVEN_ARCHITECTURE.md
+PASS | review to approved public reply                            | docs/integrations/GOOGLE_BUSINESS_PROFILE_ARCHITECTURE.md
+PASS | AI redaction and human approval                            | docs/ai/AI_GUARDRAIL_AND_APPROVAL_ARCHITECTURE.md
+PASS | outbox and idempotency strategy                            | docs/architecture/OUTBOX_IDEMPOTENCY_RETRY.md
+PASS | ADR governing frontend                                     | docs/decisions/adr/0018-frontend-architecture.md
+PASS | ADR governing deployment topology                          | docs/decisions/adr/0032-initial-deployment-topology-and-scale-path.md
+PASS | application implementation status                          | docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md
+PASS | roadmap step after Step 3                                  | docs/product/ROADMAP.md
 ---
-PASS: 14/14 canonical queries resolved to canonical file paths
+PASS: 28/28 canonical queries resolved to canonical file paths
