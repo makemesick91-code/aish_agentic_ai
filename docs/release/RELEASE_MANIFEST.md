@@ -11,8 +11,9 @@ Rule: `.claude/rules/13`. Canonical repository: `https://github.com/makemesick91
 | Base branch | `main` |
 | Feature branch | `chore/aish-agentic-ai-documentation-foundation` |
 | Bootstrap commit | `516d1bd` (README + .gitignore; NOT a GO) |
-| Merge commit | PENDING (recorded after merge) |
-| Tag object / peeled commit | PENDING (recorded after tag) |
+| Merge commit | `ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe` (PR #1) |
+| Tag object / peeled commit | `0937ce2758e86317678752e236eaedc85039d94b` (annotated) / `ba1c80f…` |
+| GO status | **GO TAGGED — 2026-07-13**, exact-match verified local + remote (`TAG_VERIFICATION.md`) |
 
 ## Scope
 Canonical source preservation + checksums · normalized Master Source v2.1.1 + PRD v1.0.1 · root `CLAUDE.md` ·

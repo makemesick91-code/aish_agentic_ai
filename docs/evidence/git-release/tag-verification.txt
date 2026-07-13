@@ -1,0 +1,22 @@
+Aish Agentic AI — documentation-foundation GO tag verification
+Generated: 2026-07-13 (Asia/Makassar)
+
+normalized_origin: makemesick91-code/aish_agentic_ai
+remote_url_redacted: https://github.com/makemesick91-code/aish_agentic_ai.git
+default_branch: main
+bootstrap_commit: 516d1bdaca6c11bba5d20436ca94e42b0947fc35 (README+.gitignore; NOT a GO)
+pr_number: 1
+pr_url: https://github.com/makemesick91-code/aish_agentic_ai/pull/1
+ci_run: 29214927784 (conclusion=success)
+merge_commit: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+local_main_head: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+remote_main_head: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+tag_name: aish-agentic-ai-docs-foundation-v1.0.0-go
+tag_annotated: tag
+tag_object_sha: 0937ce2758e86317678752e236eaedc85039d94b
+tag_peeled_commit: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+remote_tag_object: 0937ce2758e86317678752e236eaedc85039d94b
+remote_tag_peeled: ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+exact_match: tag_peeled == merge_commit == local_main == remote_main == remote_tag_peeled == ba1c80f -> TRUE
+prior_tags_unchanged: only this tag exists (no others created/moved/deleted)
+force_push_used: NO ; tag_moved_or_deleted: NO

@@ -19,11 +19,11 @@ This checklist is finalized at merge/tag time; live evidence is under `../eviden
 | 8 | MCP config minimal, validated, secret-free | GO | `../../.mcp.json`; `secret-scan.sh` |
 | 9 | Limit Saver protocol documented, gates not weakened | GO | `../tooling/LIMIT_SAVER.md` |
 | 10 | Graphify working w/ query-smoke, or approved fallback (no false claim) | GO (fallback) | `../tooling/GRAPHIFY.md`; `../evidence/graphify/` |
-| 11 | Documentation validation + secret scan pass | PENDING (run) | `../evidence/validation/` |
-| 12 | CI passes | PENDING (CI) | `../evidence/ci/` |
-| 13 | PR merged | PENDING (merge) | `../evidence/git-release/` |
-| 14 | Annotated tag pushed, exact-matches merged commit | PENDING (tag) | `TAG_VERIFICATION.md` |
-| 15 | Evidence complete | PENDING (final) | `../evidence/` |
+| 11 | Documentation validation + secret scan pass | ✅ GO | `../evidence/validation/` (all gates PASS) |
+| 12 | CI passes | ✅ GO | `../evidence/ci/ci-run.json` (run 29214927784 = success) |
+| 13 | PR merged | ✅ GO | PR #1 merged → `ba1c80f` (`../evidence/git-release/`) |
+| 14 | Annotated tag pushed, exact-matches merged commit | ✅ GO | `TAG_VERIFICATION.md` (tag `0937ce2` → `ba1c80f`) |
+| 15 | Evidence complete | ✅ GO | `../evidence/` (source, inventory, validation, graphify, ci, git-release) |
 
 ## Mandatory NO-GO conditions (must all be absent)
 Wrong repository · unverifiable remote identity · missing/unverified canonical source · cross-document
@@ -40,5 +40,7 @@ a false claim of branded-Graphify success. If the owner requires the branded pro
 follow-up (see `RELEASE_MANIFEST.md` → Follow-ups).
 
 ## Decision
-Documentation-foundation GO is authorized once criteria 11–15 show real evidence. Application implementation
-is **NOT STARTED** and is not claimed by this tag.
+**GO — GRANTED (2026-07-13, Asia/Makassar).** All GO criteria are met with real evidence and no NO-GO
+condition is present. The documentation & Claude rules foundation is merged to `main` (`ba1c80f`) and
+tagged `aish-agentic-ai-docs-foundation-v1.0.0-go` (annotated `0937ce2`, exact-match verified local +
+remote). Application implementation is **NOT STARTED** and is not claimed by this tag.

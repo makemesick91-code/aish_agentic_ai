@@ -21,3 +21,14 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
   commit → push → PR → subagent review → green CI → merge → annotated GO tag with exact-match verification.
 - **Blockers:** none blocking the documentation foundation. Branded Graphify + Limit Saver skills are
   optional/absent and documented; application implementation NOT STARTED.
+
+## Checkpoint 2026-07-13 — GO TAGGED
+- Independent review: security PASS; release-governance caught a real `validate.sh` whitespace bug
+  (spaced canonical filenames word-split into phantom EMPTY entries) → fixed in `8d8808c` → re-verified green.
+- CI run 29214927784 = success on `8d8808c`.
+- PR #1 merged (human-authorized; harness blocked self-merge until owner approval) → merge commit `ba1c80f`.
+- Annotated tag `aish-agentic-ai-docs-foundation-v1.0.0-go` (`0937ce2`) created on `ba1c80f`, pushed,
+  exact-match verified: local main = remote main = merge = tag peeled = remote tag peeled = `ba1c80f`.
+- No force-push; no tag moved/deleted; prior tags unchanged; tagged tree clean.
+- This follow-up branch finalizes TAG_VERIFICATION + git-release/CI evidence via a separate PR (no direct-main commits).
+- **Truthful final state: GO TAGGED (documentation foundation). Application implementation NOT STARTED.**

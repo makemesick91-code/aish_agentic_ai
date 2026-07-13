@@ -6,9 +6,11 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
-## [Unreleased] — Documentation & Claude Rules Foundation
+## Documentation & Claude Rules Foundation — GO TAGGED (2026-07-13)
 
-Target release: annotated tag `aish-agentic-ai-docs-foundation-v1.0.0-go`.
+Released as annotated tag `aish-agentic-ai-docs-foundation-v1.0.0-go` on merged commit `ba1c80f`
+(PR #1; CI run 29214927784 = success). Exact-match verified on local + remote. This tag attests
+documentation/tooling readiness only — application implementation is NOT STARTED.
 
 ### Added
 - Repository bootstrap: `README.md`, `.gitignore`, `SECURITY.md`, `CONTRIBUTING.md`.

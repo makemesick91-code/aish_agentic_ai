@@ -3,9 +3,12 @@
 Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
-- **Documentation & Claude Rules Foundation:** IN PROGRESS → delivering via PR/CI/merge/GO tag.
+- **Documentation & Claude Rules Foundation:** GO TAGGED — merged to `main` (`ba1c80f`), tag
+  `aish-agentic-ai-docs-foundation-v1.0.0-go` (annotated `0937ce2`), exact-match verified local + remote.
 - **Application implementation:** NOT STARTED.
-- **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified; `main` bootstrapped.
+- **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified; `main` is the tagged foundation.
+- **Follow-up:** this branch (`chore/aish-agentic-ai-docs-foundation-tag-evidence`) finalizes post-tag
+  evidence via PR (the immutable GO tag stays on `ba1c80f` and is not moved).
 
 ## Completed
 - Preflight inventory; canonical sources ingested + SHA-256 checksummed; originals preserved.
