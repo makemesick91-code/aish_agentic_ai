@@ -19,8 +19,8 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.1.1**).
-3. Newest approved **PRD** — `docs/canonical/PRD.md`.
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.2.0**).
+3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.1.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
 6. Generated/derived artifacts.
@@ -28,6 +28,11 @@ Authoritative knowledge, highest precedence first:
 
 Originals are preserved byte-for-byte in `docs/canonical/source/` and checksummed in
 `docs/evidence/source-checksums/`. Never overwrite or delete a historical source.
+
+**Step 2 — Persona & Pilot Use Cases baseline:** `docs/product/PERSONA_AND_PILOT_USE_CASES.md` (v1.0.0)
+is the canonical persona/pilot source; derived pilot docs live under `docs/product/`, `docs/security/`,
+`docs/ai/`, `docs/integrations/`, and `docs/testing/`. First pilot tenant **Klinik Gigi Daengtisia**;
+recommended first branch **Daengtisia Pusat** (recommendation only, subject to readiness verification).
 
 ## 3. Non-negotiable permanent decisions
 
@@ -65,6 +70,10 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `13-git-ci-release-and-go-tag.md` | Branching, CI gates, merge, immutable GO tag |
 | `14-limit-saver-context-and-handoff.md` | Token-saving, checkpoints, current-state/handoff |
 | `15-mcp-skills-and-tool-safety.md` | MCP allowlist, skills, subagents, hooks, tool safety |
+| `16-pilot-persona-and-scope.md` | Pilot tenant/branch, personas, role coverage, generic-core boundary |
+| `17-pilot-invitation-survey-and-fallback.md` | Invitation frequency, survey, consent, manual fallback |
+| `18-pilot-privacy-approval-and-review-safety.md` | Healthcare privacy, human approval, no review gating, truthful states |
+| `19-pilot-metrics-evidence-and-go-no-go.md` | Pilot metrics as hypotheses, evidence, GO/WATCH/NO-GO, Step 3 boundary |
 
 ## 5. Truthful status vocabulary
 
@@ -74,8 +83,10 @@ For this documentation foundation also distinguish: `DOCUMENTATION BASELINE COMP
 `FOUNDATION CONFIGURED`, `GO TAGGED`, and `APPLICATION IMPLEMENTATION NOT STARTED`.
 Never say “done”, “GO”, “merged”, “deployed”, or “verified” without the corresponding evidence.
 
-**Current truthful state:** Documentation & Claude Rules Foundation in progress.
-**Application implementation: NOT STARTED.**
+**Current truthful state:** Documentation & Claude Rules Foundation MERGED and GO TAGGED
+(`aish-agentic-ai-docs-foundation-v1.0.0-go`). Step 2 — Persona & Pilot Use Cases documentation baseline
+in progress on branch `docs/step-2-persona-pilot-use-cases`.
+**Application implementation: NOT STARTED.** Deployment, pilot readiness, and pilot runtime: NOT STARTED.
 
 ## 6. Required pre-work / post-work checks
 
@@ -101,5 +112,8 @@ an exact-match annotated GO tag must all pass with evidence (`.claude/rules/09`,
   production/database commands.
 - **Never** skip, weaken, or bypass tests, security review, evidence, branch protection, or release gates.
 - **Never** fabricate status, completion, CI, deployment, or integration success.
-- This foundation's GO tag (`aish-agentic-ai-docs-foundation-v1.0.0-go`) attests documentation/tooling
-  readiness only — **not** that the application is implemented, deployed, pilot-ready, or production-ready.
+- This foundation's GO tag (`aish-agentic-ai-docs-foundation-v1.0.0-go`) and the Step 2 GO tag
+  (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`) attest documentation/tooling readiness only — **not**
+  that the application is implemented, deployed, pilot-ready, or production-ready.
+- Pilot operational targets are **hypotheses**, not results; never report them as achieved without measured
+  evidence. Step 3 (application architecture) starts only after the Step 2 release is merged and GO-tagged.

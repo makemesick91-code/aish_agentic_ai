@@ -13,9 +13,15 @@ Superseded decisions are marked, never deleted.
 | D-006 | 2026-07-13 | Minimal, secret-free MCP allowlist; `.mcp.json` empty server set + governance | Security/Tooling | Master Source §66.8 | ADR 0004 | Active |
 | D-007 | 2026-07-13 | Four project skills + six least-privilege review subagents | Tooling | Master Source §66.9 | ADR 0005 | Active |
 | D-008 | 2026-07-13 | Limit Saver 1 not installed → documented fallback token-saving protocol | Tooling | Master Source §66.6 | `docs/tooling/LIMIT_SAVER.md` | Active |
-| D-009 | 2026-07-13 | Master Source remains v2.1.1 (already records this foundation in §66); PRD normalized to v1.0.1 (metadata only) | Documentation | Master Source §5, GO Tag Prompt v1.0.1 | `VERSION_MATRIX.md` | Active |
+| D-009 | 2026-07-13 | Master Source remains v2.1.1 (already records this foundation in §66); PRD normalized to v1.0.1 (metadata only) | Documentation | Master Source §5, GO Tag Prompt v1.0.1 | `VERSION_MATRIX.md` | Superseded by D-011 |
 | D-010 | 2026-07-13 | Controlled empty-repository bootstrap of `main` (README+.gitignore), not a GO | Release | Master Source §66.2 | commit `516d1bd` | Active |
+| D-011 | 2026-07-13 | Step 2 baseline: Master Source bumped to v2.2.0, PRD to v1.1.0, Persona & Pilot Use Cases v1.0.0 imported as living canonical docs; historical versions preserved | Documentation | Owner + Master Source §3–§5 | Master Source v2.2.0 §6, ADR 0008 | Active |
+| D-012 | 2026-07-13 | First pilot tenant Klinik Gigi Daengtisia; recommended first branch Daengtisia Pusat (recommendation only, subject to readiness verification; may change via decision log without narrowing scope) | Product | Owner + Persona §2 | ADR 0008, `.claude/rules/16` | Active |
+| D-013 | 2026-07-13 | Pilot operating rules fixed: invitation baseline, survey baseline, healthcare data boundary, mandatory human approval, no review gating, manual fallback, truthful external states | Product/Security | Master Source §16,§33,§43; PRD §13,§17 | `.claude/rules/17`,`18`, Persona §6–§12 | Active |
+| D-014 | 2026-07-13 | Pilot operational targets are hypotheses (not results); hard safety gates mandatory; pilot GO/WATCH/NO-GO defined; Step 3 starts only after Step 2 release | Release | Master Source §54,§59; Persona §14,§16 | `.claude/rules/19`, `STEP_2_COVERAGE_MATRIX.md` | Active |
+| D-015 | 2026-07-13 | Step 2 delivered via branch → PR → CI → merge → annotated GO tag `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`; documentation baseline only | Release | Master Source §66.10–§66.11 | `docs/release/STEP_2_*` | Active |
 
 ## Notes
-- No decision here changes MVP scope, architecture, security controls, or target market.
-- Application implementation remains NOT STARTED.
+- No decision here changes MVP scope, architecture, security controls, or target market beyond what the
+  canonical Master Source v2.2.0 already records; Step 2 clarifies pilot priorities and operating rules.
+- Application implementation, deployment, pilot readiness, and pilot runtime remain NOT STARTED.

@@ -23,6 +23,10 @@ Verified by `scripts/docs/check-foundation-coverage.sh`.
 | F13 | Git, CI, release & GO tag | MS §66.2,§66.10,§66.11; PRD §24 | `.claude/rules/13-git-ci-release-and-go-tag.md` | `docs/release/DOCUMENTATION_FOUNDATION_GO_NO_GO.md`, `RELEASE_MANIFEST.md`, `TAG_VERIFICATION.md` | CI; `docs/evidence/ci/`, `git-release/` | COVERED |
 | F14 | Limit Saver, context & handoff | MS §66.6 | `.claude/rules/14-limit-saver-context-and-handoff.md` | `docs/tooling/LIMIT_SAVER.md`, `docs/status/*` | `docs/evidence/inventory/` | COVERED |
 | F15 | MCP, skills, subagents, hooks, tool safety | MS §66.7–§66.9 | `.claude/rules/15-mcp-skills-and-tool-safety.md` | `docs/tooling/MCP.md`, `MCP_SKILLS_MANIFEST.md`, `GRAPHIFY.md`, `CLAUDE_PROJECT_SETUP.md` | `.mcp.json` validate; `test-guard.sh`; secret scan | COVERED |
+| F16 | Pilot persona, tenant & branch scope | MS §13,§14,§63; PRD §6,§7; Persona §2,§4,§5 | `.claude/rules/16-pilot-persona-and-scope.md` | `docs/product/PERSONA_AND_PILOT_USE_CASES.md`, `PILOT_PERSONA_MATRIX.md`, `PILOT_SCOPE_AND_BOUNDARIES.md` | `check-step2-coverage.sh` | COVERED |
+| F17 | Pilot invitation, survey, consent & manual fallback | MS §16,§34,§35; PRD §10.5,§10.6; Persona §6,§7 | `.claude/rules/17-pilot-invitation-survey-and-fallback.md` | `docs/integrations/WHATSAPP_INVITATION_PILOT_BASELINE.md`, `DAENGTISIAMS_EVENT_CONTRACT_BASELINE.md`, `docs/ai/PILOT_MANUAL_FALLBACK.md` | `check-step2-coverage.sh` | COVERED |
+| F18 | Pilot privacy, human approval & review safety | MS §16,§33,§43,§44,§53; PRD §13,§15.2,§17; Persona §8,§12 | `.claude/rules/18-pilot-privacy-approval-and-review-safety.md` | `docs/security/PILOT_DATA_BOUNDARY.md`, `PILOT_PRIVACY_RULES.md`, `PILOT_PUBLIC_REPLY_SAFETY.md`, `docs/ai/PILOT_AI_HUMAN_APPROVAL_RULES.md` | `check-step2-coverage.sh`; `query-smoke.sh` | COVERED |
+| F19 | Pilot metrics, evidence & GO/WATCH/NO-GO | MS §54,§59,§66.11; PRD §19,§24; Persona §14,§16 | `.claude/rules/19-pilot-metrics-evidence-and-go-no-go.md` | `docs/product/PILOT_SUCCESS_METRICS.md`, `PILOT_GO_WATCH_NO_GO.md`, `docs/quality/STEP_2_COVERAGE_MATRIX.md` | `check-step2-coverage.sh` | COVERED |
 
 ## Permanent product decisions (Master Source §63) → rule mapping
 Name/identity → 01 · multi-tenant/branch → 03 · CSAT+Google Review/NPS/CES → 01,02 · customer recovery → 02,05 ·
@@ -34,4 +38,6 @@ no production claim from mock → 09,13 · verify external policy/API → 06,08 
 speed → 04,09 · Master Source updated on material decisions → 12 · history not deleted / superseded marked → 12 ·
 truthful status → 10,12,13.
 
-**Coverage: 16/16 foundation categories COVERED; all Master Source §63 permanent decisions mapped. No critical gap.**
+**Coverage: 20/20 foundation categories COVERED (F00–F15 foundation + F16–F19 Step 2 pilot); all Master Source
+§63 permanent decisions mapped. No critical gap.** Step 2 decision-level coverage is detailed in
+`STEP_2_COVERAGE_MATRIX.md` and verified by `scripts/docs/check-step2-coverage.sh`.
