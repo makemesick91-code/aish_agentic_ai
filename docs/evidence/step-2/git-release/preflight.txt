@@ -1,0 +1,21 @@
+# Step 2 preflight — git/remote state (Asia/Makassar 2026-07-13)
+## origin (redacted)
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (fetch)
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (push)
+## normalized identity
+makemesick91-code/aish_agentic_ai
+## current branch
+docs/step-2-persona-pilot-use-cases
+## HEAD
+ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+## origin/main
+ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+## foundation tag peeled (immutable)
+ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe
+## remote heads
+bed56379c5f5c816919451fd0f07d7457d187329	refs/heads/chore/aish-agentic-ai-docs-foundation-tag-evidence
+8d8808c3c954ce9ca126aaccdf17b0dad5e9a74b	refs/heads/chore/aish-agentic-ai-documentation-foundation
+ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe	refs/heads/main
+## remote tags
+0937ce2758e86317678752e236eaedc85039d94b	refs/tags/aish-agentic-ai-docs-foundation-v1.0.0-go
+ba1c80facf2b8fb015e2fdcaa5235daa04f60fbe	refs/tags/aish-agentic-ai-docs-foundation-v1.0.0-go^{}

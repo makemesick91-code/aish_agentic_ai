@@ -1,0 +1,59 @@
+{
+  "repository": "makemesick91-code/aish_agentic_ai",
+  "import_date": "2026-07-13",
+  "timezone": "Asia/Makassar",
+  "sources": [
+    {
+      "file": "Aish Agentic AI — Product Requirement Document — v1.0.1.md",
+      "size_bytes": 41343,
+      "modified_utc": "2026-07-12T23:30:16.235805Z",
+      "sha256": "c370071c1c21461c19dfb82cd2b3329f744e11cd3b6a84b7fdf7643504874288",
+      "detected_version": "1.0.0",
+      "step": "step-1"
+    },
+    {
+      "file": "MASTER SOURCE — Aish Agentic AI — v2.0.0.md.txt",
+      "size_bytes": 60857,
+      "modified_utc": "2026-07-12T23:07:09.286371Z",
+      "sha256": "cad792344c8c0bd6f0acf03eccbff437889498c96abbb73a6b7d6ed537efc21b",
+      "detected_version": "2.0.0",
+      "step": "step-1"
+    },
+    {
+      "file": "MASTER SOURCE — Aish Agentic AI — v2.1.1.md",
+      "size_bytes": 69878,
+      "modified_utc": "2026-07-12T23:30:09.990825Z",
+      "sha256": "ea5e4b45d37b8618db22c4d3a7565573cc5248022472e66351301ad5f6de246e",
+      "detected_version": "2.1.1",
+      "step": "step-1"
+    },
+    {
+      "file": "MASTER_SOURCE_AISH_AGENTIC_AI_v2.2.0.md",
+      "size_bytes": 74253,
+      "modified_utc": "2026-07-13T01:01:11.496042Z",
+      "sha256": "7c542e5392b30818b76c298b200590bf36d170aeff784bb8b37f4b0f6755e7ba",
+      "detected_version": "2.2.0",
+      "step": "step-2",
+      "living_copy": "docs/canonical/MASTER_SOURCE.md"
+    },
+    {
+      "file": "PRD_AISH_AGENTIC_AI_v1.1.0.md",
+      "size_bytes": 43395,
+      "modified_utc": "2026-07-13T01:01:16.349024Z",
+      "sha256": "2c9fbec2f5bde532722e0a1faba22d81b7ad33333c0fc81a329e06f1f2f84323",
+      "detected_version": "1.1.0",
+      "step": "step-2",
+      "living_copy": "docs/canonical/PRD.md"
+    },
+    {
+      "file": "PERSONA_AND_PILOT_USE_CASES_v1.0.0.md",
+      "size_bytes": 32171,
+      "modified_utc": "2026-07-13T01:01:21.728004Z",
+      "sha256": "2b02dc4f7b47ef39da716dafde7ffcc3ef6007275592f27243d60a7eb59177af",
+      "detected_version": "1.0.0",
+      "step": "step-2",
+      "living_copy": "docs/product/PERSONA_AND_PILOT_USE_CASES.md"
+    }
+  ],
+  "note": "Originals preserved byte-for-byte in docs/canonical/source/; never overwritten. Step 2 sources (v2.2.0 / v1.1.0 / v1.0.0) added on 2026-07-13; historical Step 1 sources retained for audit."
+}
