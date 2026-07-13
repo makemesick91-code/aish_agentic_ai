@@ -19,8 +19,8 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.3.0**).
-3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.2.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.4.0**).
+3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
 6. Generated/derived artifacts.
@@ -39,6 +39,13 @@ and `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..072) are the c
 backed by ADRs 0009–0032 and Claude rule 20. Architecture style: **Laravel 12 modular monolith**; shared-schema
 row-level multi-tenancy; 17 module boundaries; outbox/idempotency; AI provider abstraction with guardrails and
 human approval. This baseline is **planned architecture** — application implementation is **NOT STARTED**.
+
+**Step 4 — Domain, Branding, Environment & SaaS Foundation planning baseline (v2.4.0/v1.3.0):** domain strategy
+(`docs/domain/`), brand foundation (`docs/brand/` + planning tokens `docs/brand/tokens/brand-tokens.v1.json`),
+environment matrix and data policy (`docs/environments/`), dependency baseline (`docs/dependencies/`), and the
+SaaS Foundation implementation plan/epics/sprints (`docs/planning/`), backed by ADRs 0033–0041, Claude rules
+21–27, and AFR-073..104. This is **implementation planning only** — no domain is owned, nothing is deployed, no
+package is installed, and **application implementation is NOT STARTED**.
 
 ## 3. Non-negotiable permanent decisions
 
@@ -81,6 +88,13 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `18-pilot-privacy-approval-and-review-safety.md` | Healthcare privacy, human approval, no review gating, truthful states |
 | `19-pilot-metrics-evidence-and-go-no-go.md` | Pilot metrics as hypotheses, evidence, GO/WATCH/NO-GO, Step 3 boundary |
 | `20-application-architecture-and-foundation-rules.md` | Modular-monolith architecture, module ownership, isolation, events/outbox, AI boundary, AFR catalog |
+| `21-domain-and-dns-governance.md` | Domain strategy, ownership/renewal, DNS/TLS, email auth, OAuth redirect, no false ownership |
+| `22-brand-governance.md` | Product name/descriptor, brand hierarchy, tagline, voice, accessible visual tokens, no misleading claims |
+| `23-environment-separation.md` | Six environments, isolation, no production data in lower envs, promotion gates |
+| `24-configuration-and-secrets.md` | Configuration classification, no secret in git, encryption, per-environment secrets |
+| `25-dependency-and-supply-chain.md` | Dependency baseline, official-source verification, pinning, typosquat/SBOM, no unapproved install |
+| `26-saas-foundation-implementation-planning.md` | SaaS Foundation sequence, epics/sprints, DoR/DoD, deployment-target class, readiness gates |
+| `27-truthful-planning-states.md` | Planning ≠ implementation; domain candidate ≠ ownership; plan ≠ deployed; GO-tag scope |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -96,11 +110,13 @@ Never say “done”, “GO”, “merged”, “deployed”, or “verified” 
 
 **Current truthful state:** Documentation & Claude Rules Foundation MERGED and GO TAGGED
 (`aish-agentic-ai-docs-foundation-v1.0.0-go`, peeled `ba1c80f`). Step 2 — Persona & Pilot Use Cases MERGED and
-GO TAGGED (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, peeled `abf1d00`). Step 3 — Application
-Architecture & ADR Foundation (Master Source v2.3.0, PRD v1.2.0, ADRs 0009–0032, AFR-001..072) IN PROGRESS on
-branch `docs/step-3-application-architecture-adr-foundation`.
-**Application implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and production
-readiness: NOT STARTED.
+GO TAGGED (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, peeled `abf1d00`). Step 3 — Application Architecture
+& ADR Foundation MERGED and GO TAGGED (`aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`, peeled
+`764a484`). Step 4 — Domain, Branding, Environment & SaaS Foundation Implementation Planning (Master Source
+**v2.4.0**, PRD **v1.3.0**, ADRs 0033–0041, AFR-073..104, rules 21–27) IN PROGRESS on branch
+`docs/step-4-domain-branding-environment-saas-foundation-planning`.
+**Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness, pilot runtime, and
+production readiness: NOT STARTED. No domain is owned; no package is installed; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks
 
@@ -126,8 +142,10 @@ an exact-match annotated GO tag must all pass with evidence (`.claude/rules/09`,
   production/database commands.
 - **Never** skip, weaken, or bypass tests, security review, evidence, branch protection, or release gates.
 - **Never** fabricate status, completion, CI, deployment, or integration success.
-- This foundation's GO tag (`aish-agentic-ai-docs-foundation-v1.0.0-go`) and the Step 2 GO tag
-  (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`) attest documentation/tooling readiness only — **not**
-  that the application is implemented, deployed, pilot-ready, or production-ready.
+- The GO tags for the documentation foundation, Step 2 (persona/pilot), Step 3 (application architecture), and
+  Step 4 (`aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`) attest
+  documentation/planning/tooling readiness only — **not** that the application is implemented, deployed,
+  pilot-ready, or production-ready, and **not** that any domain is owned or infrastructure provisioned.
 - Pilot operational targets are **hypotheses**, not results; never report them as achieved without measured
-  evidence. Step 3 (application architecture) starts only after the Step 2 release is merged and GO-tagged.
+  evidence. Each step starts only after the prior step's release is merged and GO-tagged. SaaS Foundation
+  implementation (SPRINT-SF-00) starts only after the Step 4 release is merged and GO-tagged.

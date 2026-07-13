@@ -38,7 +38,7 @@ Repository contents, credentials/token handling, PII, and all application securi
 
 ## Evidence
 - `docs/security/SECURITY_FOUNDATION.md`, `PRIVACY_AND_PII.md`, `THREAT_MODEL_BASELINE.md`;
-  `docs/evidence/validation/secret-scan.txt`.
+  `docs/evidence/validation/secret-scan.log`.
 
 ## Related canonical sections
 - Master Source §37, §43, §44, §57; PRD §15.1, §15.2, §18.2.

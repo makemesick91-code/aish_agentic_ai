@@ -13,5 +13,7 @@ duplicate, competing ADR trees. Architecture-affecting decisions are cross-refer
 | [0006](../../decisions/adr/0006-documentation-as-code-ci-and-evidence-gates.md) | Documentation-as-code CI & evidence gates | CI/validation architecture |
 | [0007](../../decisions/adr/0007-immutable-documentation-foundation-go-tag-semantics.md) | Immutable documentation-foundation GO tag | Release architecture |
 
-New application-architecture ADRs (e.g. repository topology — see `../../product/OPEN_DECISIONS.md` OD-2)
-will be added under `../../decisions/adr/` and cross-linked here. Rule: `.claude/rules/08`, `12`.
+Application-architecture ADRs **0009–0032** (Step 3) and **0033–0041** (Step 4 — domain/DNS, environment topology,
+environment data policy, local development, configuration/secrets, dependency baseline, SaaS Foundation sequence,
+deployment-target class, brand token governance) live under [`../../decisions/adr/`](../../decisions/adr/) and are
+mapped in the [Step 4 Traceability Matrix](../../quality/STEP_4_REQUIREMENTS_TRACEABILITY_MATRIX.md). Rule: `.claude/rules/08`, `12`, `20`.
