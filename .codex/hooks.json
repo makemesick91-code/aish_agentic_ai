@@ -1,0 +1,10 @@
+{
+  "$comment": "Codex hooks for Aish Agentic AI. Deterministic, secret-safe, network-free. Hooks are enforcement support, NOT the only security layer. Validated by scripts/codex/check-codex.sh and .codex/hooks/test-hooks.sh. Governance: .claude/rules/15; AFR-069, AFR-070.",
+  "hooks": {
+    "SessionStart":  [ { "type": "command", "command": ".codex/hooks/session-start.sh" } ],
+    "PreToolUse":    [ { "type": "command", "command": ".codex/hooks/pre-tool-use.sh" } ],
+    "PostToolUse":   [ { "type": "command", "command": ".codex/hooks/post-tool-use.sh" } ],
+    "PreCompact":    [ { "type": "command", "command": ".codex/hooks/pre-compact.sh" } ],
+    "Stop":          [ { "type": "command", "command": ".codex/hooks/stop.sh" } ]
+  }
+}

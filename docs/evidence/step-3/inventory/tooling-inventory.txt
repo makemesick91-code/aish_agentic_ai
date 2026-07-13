@@ -1,0 +1,20 @@
+# Step 3 Tooling Inventory (governance-relevant; no secrets)
+
+Codex CLI:            NOT INSTALLED (host). `.codex/` config, command rules, and hooks are AUTHORED
+                      as governance artifacts. `codex execpolicy check ...` commands are DOCUMENTED but
+                      NOT run in this session (cannot fabricate runtime output). Status: WATCH.
+Limit Saver 1:        No trusted installed skill in this repo/user scope. Project-owned FALLBACK skill
+                      authored and clearly labeled "PROJECT FALLBACK — NOT THE EXTERNAL OR BRANDED
+                      LIMIT SAVER 1". Status: WATCH (external skill not installed).
+Graphify (branded):   Host binary `graphify 0.8.35` detected, BUT product/package provenance, license,
+                      and network behavior are NOT governance-verified within this session. Per rule 15
+                      (derived-only, least privilege, no secret/PII exposure) the mandatory graph gate
+                      remains the DETERMINISTIC documentation index (scripts/graphify). Branded Graphify
+                      is recorded as BLOCKED-OPTIONAL and NOT claimed as used. Status: WATCH.
+MCP servers:          `.mcp.json` = empty server set `{ "mcpServers": {} }` (valid least-privilege).
+                      Retained; governance documented in docs/tooling/MCP_GOVERNANCE.md.
+gh CLI:               2.46.0 (authenticated as makemesick91-code).
+git:                  2.53.0
+Existing skills:      .claude/skills/{documentation-gate,graphify-refresh,master-source-update,release-evidence}
+Existing reviewers:   .claude/agents/{product-requirements,architecture,security-privacy,ai-governance,
+                      qa-traceability,release-governance}-reviewer.md

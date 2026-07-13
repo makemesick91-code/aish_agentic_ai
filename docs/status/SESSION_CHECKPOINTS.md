@@ -40,3 +40,20 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
   required) → annotated GO tag `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go` (exact-match) → finalize evidence.
 - **Blockers:** none blocking documentation. Application implementation NOT STARTED; Limit Saver NOT INSTALLED
   (fallback active); branded Graphify BLOCKED-OPTIONAL (deterministic index used).
+
+## Checkpoint — Step 3: Application Architecture & ADR Foundation (2026-07-13, Asia/Makassar)
+- **Branch:** `docs/step-3-application-architecture-adr-foundation` (from `origin/main`).
+- **Preflight:** origin normalized `makemesick91-code/aish_agentic_ai`; baseline tags verified unchanged
+  (docs-foundation peeled `ba1c80f`, step-2 peeled `abf1d00`); Step 3 target tag absent (OK).
+- **Authored:** Master Source v2.3.0 / PRD v1.2.0; 20 architecture docs incl. AFR-001..072; ADRs 0009–0032;
+  security/AI/integration/operations/quality Step 3 docs; Claude rule 20; AGENTS chain (12); `app/`/`tests/`
+  scaffold markers; `.codex/` config/rules/hooks + tests; `.agents/skills/` (12, incl. project-fallback
+  limit-saver-1); MCP manifest + governance; Step 3 gates + query-smoke (28 total).
+- **Local gates:** check-adr PASS, check-step3-coverage PASS, check-agents/check-codex PASS (individually);
+  full `validate.sh` run pending (this session).
+- **Tooling (truthful):** Codex CLI NOT INSTALLED → `.codex/` static-validated, execpolicy not run (OD-07);
+  branded Graphify host binary present but not governance-verified → deterministic index (OD-05); external
+  Limit Saver not installed → project fallback (OD-06).
+- **Next:** full validate → subagent reviews → fix → re-run → commit → push → PR → CI → merge (human auth if
+  required) → annotated GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` (exact-match).
+- **Blockers:** none blocking documentation. Application implementation / deployment / pilot / production: NOT STARTED.

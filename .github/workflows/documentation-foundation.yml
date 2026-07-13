@@ -33,7 +33,7 @@ jobs:
           python-version: '3.x'
 
       - name: Make scripts executable
-        run: chmod +x scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh
+        run: chmod +x scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh .codex/hooks/*.sh
 
       - name: Source checksums present
         run: |
@@ -55,6 +55,18 @@ jobs:
       - name: Step 2 coverage (persona, use-cases, privacy, approval, fallback)
         run: scripts/docs/check-step2-coverage.sh
 
+      - name: Step 3 architecture coverage (modules, isolation, AFR, traceability)
+        run: scripts/docs/check-step3-coverage.sh
+
+      - name: ADR structure + sequence
+        run: scripts/docs/check-adr.sh
+
+      - name: AGENTS.md chain + Codex/Claude drift
+        run: scripts/codex/check-agents.sh
+
+      - name: Codex config/rules/hooks (static + hook tests)
+        run: scripts/codex/check-codex.sh
+
       - name: Secret scan
         run: scripts/docs/secret-scan.sh
 
@@ -74,7 +86,7 @@ jobs:
           sudo apt-get update -y >/dev/null 2>&1 || true
           sudo apt-get install -y shellcheck >/dev/null 2>&1 || true
           if command -v shellcheck >/dev/null 2>&1; then
-            shellcheck -S warning scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh || true
+            shellcheck -S warning scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh .codex/hooks/*.sh || true
           else
             echo "shellcheck unavailable; skipping (non-blocking lint)"
           fi

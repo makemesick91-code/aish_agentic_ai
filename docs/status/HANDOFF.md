@@ -3,37 +3,39 @@
 Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
-Step 2 — Persona & Pilot Use Cases documentation baseline for `makemesick91-code/aish_agentic_ai`. Step 1
-(documentation foundation) is MERGED and GO TAGGED (`aish-agentic-ai-docs-foundation-v1.0.0-go`). Step 2
-content is on branch `docs/step-2-persona-pilot-use-cases` (branched from `origin/main` = `ba1c80f`).
+Step 3 — Application Architecture & ADR Foundation for `makemesick91-code/aish_agentic_ai`. Steps 1 and 2 are
+MERGED and GO TAGGED. Step 3 content is on branch `docs/step-3-application-architecture-adr-foundation`
+(branched from `origin/main`). All local Step 3 gates pass; release/PR/merge/tag remain.
 
 ## Authority & sources
-Follow `CLAUDE.md` §2. Canonical: `docs/canonical/MASTER_SOURCE.md` (v2.2.0), `docs/canonical/PRD.md`
-(v1.1.0), `docs/product/PERSONA_AND_PILOT_USE_CASES.md` (v1.0.0). Originals + checksums in
-`docs/canonical/source/` and `docs/evidence/source-checksums/`. Historical versions preserved, never deleted.
+Follow `CLAUDE.md` §2 and `AGENTS.md`. Canonical: `docs/canonical/MASTER_SOURCE.md` (v2.3.0),
+`docs/canonical/PRD.md` (v1.2.0), ADRs `docs/decisions/adr/0009`–`0032`,
+`docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..072). Historical versions preserved, never deleted.
 
-## Next commands (Step 2 release)
+## Next commands (Step 3 release)
 ```bash
-scripts/docs/validate.sh                 # all gates incl. step2-coverage — currently ALL GATES PASSED
-git add -A && git commit                 # logical commits (see CONTRIBUTING.md)
-git push -u origin docs/step-2-persona-pilot-use-cases
-gh pr create --base main --title "docs: establish Step 2 persona and pilot use case baseline" --fill
+scripts/docs/validate.sh                 # all gates incl. step3-coverage/adr/agents/codex
+git add -A && git commit                 # logical commits (see §26 of the Step 3 prompt / CONTRIBUTING.md)
+git push -u origin docs/step-3-application-architecture-adr-foundation
+gh pr create --base main --title "docs: establish Step 3 application architecture and ADR foundation" --fill
 gh pr checks <PR>                        # wait for real CI conclusion
 # after green CI + independent review + (human) merge authorization:
 gh pr merge <PR> --merge
 git checkout main && git pull --ff-only origin main
-# then annotated GO tag on the merged commit (see docs/release/STEP_2_TAG_VERIFICATION.md):
-git tag -a aish-agentic-ai-step-2-persona-pilot-v1.0.0-go -m "…" <merge_commit>
-git push origin aish-agentic-ai-step-2-persona-pilot-v1.0.0-go
+# then annotated GO tag on the merged commit:
+git tag -a aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go -m "…" <merge_commit>
+git push origin aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go
 ```
 
 ## Guardrails
-Never force-push, move/delete tags, weaken gates, commit secrets, or claim false completion. The Step 2 GO
-tag attests documentation/tooling readiness only — not application implementation, deployment, pilot
-readiness, or production readiness. Pilot operational targets are hypotheses, not results.
+Never force-push, move/delete tags, weaken gates, commit secrets, or claim false completion. The Step 3 GO tag
+attests documentation/architecture/tooling readiness only — **not** application implementation, deployment,
+live integration, pilot readiness, or production readiness (all NOT STARTED). Baseline tags `ba1c80f` /
+`abf1d00` must remain unchanged.
 
-## Open decisions
-`docs/product/OPEN_DECISIONS.md`: OD-1 resolved by Step 2; OD-11..OD-22 track Step 3 and pilot readiness.
+## Open decisions (WATCH)
+`docs/architecture/ARCHITECTURE_OPEN_DECISIONS.md`: OD-01 RLS, OD-02 provider, OD-03 AI extraction, OD-04
+frontend, OD-05 branded Graphify, OD-06 Limit Saver, OD-07 Codex CLI, OD-08 Google readiness, OD-09 RPO/RTO.
 
-## Next step after Step 2 GO
-Step 3 — Repository Application Architecture and ADR Foundation (roadmap pointer only; no app code in Step 2).
+## Next step after Step 3 GO
+Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning (no feature code in Step 3).

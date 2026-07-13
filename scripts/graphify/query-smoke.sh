@@ -52,9 +52,39 @@ check "pilot hard gates" \
 check "roadmap step after Step 2" \
       "docs/product/ROADMAP.md" "Step 3"
 
+# --- Step 3 canonical query smoke (application architecture & ADRs) ---
+check "canonical application architecture style" \
+      "docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md" "modular monolith"
+check "module owning survey response" \
+      "docs/architecture/MODULE_BOUNDARIES.md" "Feedback"
+check "module owning Google OAuth credentials" \
+      "docs/architecture/DATA_OWNERSHIP_MATRIX.md" "google_connections"
+check "tenant context into queue jobs" \
+      "docs/architecture/TENANCY_ARCHITECTURE.md" "rehydrate|context in payload|carry"
+check "rule preventing cache leakage" \
+      "docs/security/TENANT_ISOLATION_CONTROL_MATRIX.md" "Cache|prefixed"
+check "VisitCompleted to survey invitation" \
+      "docs/integrations/DAENGTISIAMS_EVENT_INTEGRATION_ARCHITECTURE.md" "VisitCompleted"
+check "feedback to recovery ticket" \
+      "docs/architecture/EVENT_DRIVEN_ARCHITECTURE.md" "HighRiskFeedbackDetected|Recovery"
+check "review to approved public reply" \
+      "docs/integrations/GOOGLE_BUSINESS_PROFILE_ARCHITECTURE.md" "Human approval"
+check "AI redaction and human approval" \
+      "docs/ai/AI_GUARDRAIL_AND_APPROVAL_ARCHITECTURE.md" "redact|human approval"
+check "outbox and idempotency strategy" \
+      "docs/architecture/OUTBOX_IDEMPOTENCY_RETRY.md" "outbox|idempoten"
+check "ADR governing frontend" \
+      "docs/decisions/adr/0018-frontend-architecture.md" "Blade"
+check "ADR governing deployment topology" \
+      "docs/decisions/adr/0032-initial-deployment-topology-and-scale-path.md" "topology"
+check "application implementation status" \
+      "docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md" "NOT STARTED"
+check "roadmap step after Step 3" \
+      "docs/product/ROADMAP.md" "Step 4"
+
 echo "---" | tee -a "$OUT"
 if [ "$fail" -eq 0 ]; then
-  echo "PASS: 14/14 canonical queries resolved to canonical file paths" | tee -a "$OUT"
+  echo "PASS: 28/28 canonical queries resolved to canonical file paths" | tee -a "$OUT"
 else
   echo "query-smoke: FAILED" | tee -a "$OUT"; exit 1
 fi
