@@ -1,13 +1,15 @@
-# Draft fast-CI acceptance evidence
-run_id=29258287948
+# Draft fast-CI acceptance evidence (final, post-review-fix behavior)
+final_draft_run_id=29259547965
 event=pull_request (synchronize)
 pr=9 (draft)
-head_sha=5df50c85f89af4b5004aaf568eea04a3b30a0342
-result=draft runs FAST CI only (full-documentation-ci + workflow-security-ci SKIPPED)
+head_sha=d912953488415f0af182b64266c297f4a90325e3
+result=draft runs FAST CI only; Required Gate is intentionally RED on drafts (run-and-fail,
+        not if-skip) so a draft's fast pass can never satisfy branch protection on the same SHA.
 ---jobs---
 Classify changes | success
 Draft fast CI | success
 Full documentation CI | skipped
 Workflow security CI | skipped
-Required Gate | success
+Required Gate | failure   (INTENTIONAL on draft — satisfied only on a ready PR)
+NOTE: earlier run 29258287948 predates the CICD-1 fix (gate then passed on draft); superseded.
 NOTE: first pr-ci run needed a synchronize push (GitHub did not dispatch the new workflow on 'opened').
