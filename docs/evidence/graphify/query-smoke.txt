@@ -4,5 +4,13 @@ PASS | actions requiring human approval                           | docs/ai/HUMA
 PASS | prohibited in Google Review workflows                      | docs/integrations/google/GOOGLE_REVIEW_POLICY.md
 PASS | gates required before a GO tag                             | docs/quality/RELEASE_GATES.md
 PASS | canonical doc when PRD conflicts with Master Source        | docs/canonical/DOCUMENT_AUTHORITY.md
+PASS | primary pilot personas                                     | docs/product/PILOT_PERSONA_MATRIX.md
+PASS | recommended pilot branch                                   | docs/product/PERSONA_AND_PILOT_USE_CASES.md
+PASS | invitation frequency cap                                   | docs/integrations/WHATSAPP_INVITATION_PILOT_BASELINE.md
+PASS | when human approval is mandatory                           | docs/ai/PILOT_AI_HUMAN_APPROVAL_RULES.md
+PASS | prohibited healthcare data                                 | docs/security/PILOT_DATA_BOUNDARY.md
+PASS | use case when AI or provider fails                         | docs/ai/PILOT_MANUAL_FALLBACK.md
+PASS | pilot hard gates                                           | docs/product/PILOT_SUCCESS_METRICS.md
+PASS | roadmap step after Step 2                                  | docs/product/ROADMAP.md
 ---
-PASS: 6/6 canonical queries resolved to canonical file paths
+PASS: 14/14 canonical queries resolved to canonical file paths

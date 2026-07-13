@@ -34,9 +34,27 @@ check "gates required before a GO tag" \
 check "canonical doc when PRD conflicts with Master Source" \
       "docs/canonical/DOCUMENT_AUTHORITY.md" "Master Source wins"
 
+# --- Step 2 canonical query smoke (persona & pilot use cases) ---
+check "primary pilot personas" \
+      "docs/product/PILOT_PERSONA_MATRIX.md" "Business Owner|Reputation Approver"
+check "recommended pilot branch" \
+      "docs/product/PERSONA_AND_PILOT_USE_CASES.md" "Daengtisia Pusat"
+check "invitation frequency cap" \
+      "docs/integrations/WHATSAPP_INVITATION_PILOT_BASELINE.md" "14 (calendar )?day|frequency cap"
+check "when human approval is mandatory" \
+      "docs/ai/PILOT_AI_HUMAN_APPROVAL_RULES.md" "human approval"
+check "prohibited healthcare data" \
+      "docs/security/PILOT_DATA_BOUNDARY.md" "odontogram|diagnosis"
+check "use case when AI or provider fails" \
+      "docs/ai/PILOT_MANUAL_FALLBACK.md" "manual|fallback"
+check "pilot hard gates" \
+      "docs/product/PILOT_SUCCESS_METRICS.md" "cross-tenant|hard (safety|gate)"
+check "roadmap step after Step 2" \
+      "docs/product/ROADMAP.md" "Step 3"
+
 echo "---" | tee -a "$OUT"
 if [ "$fail" -eq 0 ]; then
-  echo "PASS: 6/6 canonical queries resolved to canonical file paths" | tee -a "$OUT"
+  echo "PASS: 14/14 canonical queries resolved to canonical file paths" | tee -a "$OUT"
 else
   echo "query-smoke: FAILED" | tee -a "$OUT"; exit 1
 fi

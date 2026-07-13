@@ -52,6 +52,9 @@ jobs:
       - name: Foundation coverage
         run: scripts/docs/check-foundation-coverage.sh
 
+      - name: Step 2 coverage (persona, use-cases, privacy, approval, fallback)
+        run: scripts/docs/check-step2-coverage.sh
+
       - name: Secret scan
         run: scripts/docs/secret-scan.sh
 
