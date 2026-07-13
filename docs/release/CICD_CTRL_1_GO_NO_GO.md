@@ -19,8 +19,10 @@ Detailed criteria: [CICD-CTRL-1 GO/WATCH/NO-GO](../quality/CICD_CTRL_1_GO_WATCH_
 | Traceability | no critical orphan | PASS — `docs/quality/CICD_CTRL_1_TRACEABILITY_MATRIX.md` |
 | Secret scan | clean | PASS — `docs/evidence/validation/secret-scan.log` |
 | Independent review | no unresolved BLOCKER/HIGH | PASS — 4 reviewers; 3 HIGH + MEDIUM/LOW all fixed (`docs/evidence/cicd-ctrl-1/reviews/`) |
-| Merge | PR merged, no admin bypass | to be recorded (merge commit) |
-| Tag | annotated, exact-match, prior tags unchanged | to be recorded — `CICD_CTRL_1_TAG_VERIFICATION.md` |
+| Merge | PR merged, no admin bypass | PASS — PR #9 MERGED, merge commit `8cbf564`, ruleset-gated (no bypass) |
+| Post-merge | main runs lightweight verification only | PASS — `main-post-merge` success on `8cbf564`; no full CI re-ran |
+| Tag | annotated, exact-match, prior tags unchanged | PASS — `abf0dbe`→`8cbf564`; exact-match true; prior 4 tags unchanged (`CICD_CTRL_1_TAG_VERIFICATION.md`) |
+| Post-tag evidence | GitHub Release artifact (no evidence-only full-CI PR) | PASS — GitHub Release with 7 artifacts; no full CI on tag |
 
 ## Decision
 All CI/review/enforcement gates PASS with evidence. The remaining "to be recorded" fields (merge commit, tag) are

@@ -3,12 +3,14 @@
 Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
-CICD-CTRL-1 — Safe CI Runtime Control for `makemesick91-code/aish_agentic_ai`. Steps 1–4 are MERGED and GO TAGGED.
-CICD-CTRL-1 content is on branch `chore/cicd-ctrl-1-safe-ci-runtime-control` (branched from `origin/main` @
-`98722ac`). All local gates pass (`scripts/ci/full-local.sh`; documentation aggregate + query-smoke 64/64). Next:
-draft PR (verify fast CI only) → independent reviews → mark ready (one full CI on final head) → `main` ruleset
-enforcing `pr-ci / Required Gate` → merge → immutable annotated GO tag → GitHub Release evidence. A CI PASS is
-valid only for the exact tested SHA; report reruns truthfully.
+CICD-CTRL-1 — Safe CI Runtime Control is **MERGED and GO TAGGED** for `makemesick91-code/aish_agentic_ai` (PR #9,
+merge commit `8cbf564`, tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`). Steps 1–4 also MERGED
+and GO TAGGED. `main` is protected by ruleset `18890571` (requires `pr-ci / Required Gate`; force-push/deletion
+blocked; no admin bypass). This branch (`docs/cicd-ctrl-1-post-tag-evidence`) is the post-tag documentation sync
+(historical release metadata) — the only remaining step after the GO tag. **Next initiative:** SaaS Foundation
+implementation SPRINT-SF-00 (after its own planning gate). Follow the draft-first CI flow: `pr-ci.yml` runs fast CI
+on drafts (gate RED on drafts) and one full CI on the ready final head; a CI PASS is valid only for the exact tested
+SHA; report reruns truthfully.
 
 ## Authority & sources
 Follow `CLAUDE.md` §2 and `AGENTS.md`. Canonical: `docs/canonical/MASTER_SOURCE.md` (**v2.5.0**),
