@@ -13,7 +13,7 @@ values during draft→ready→merge→tag→release; fields marked _recorded at 
 ## Repository
 - Origin: `makemesick91-code/aish_agentic_ai` · Base: `main`
 - Feature branch: `chore/cicd-ctrl-1-safe-ci-runtime-control`
-- PR: _recorded at release_ · Merge commit: _recorded at release_ · GO tag: _recorded at release_
+- PR: **#9** (opened as draft) · Merge commit: _recorded at release_ · GO tag: _recorded at release_
 
 ## Baseline (from `docs/evidence/cicd-ctrl-1/baseline/`)
 - Workflows before: 1 (`documentation-foundation.yml`). Historical runs analysed: 17.
