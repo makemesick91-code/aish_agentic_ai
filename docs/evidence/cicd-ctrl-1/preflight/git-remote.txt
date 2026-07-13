@@ -1,0 +1,2 @@
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (fetch)
+origin	https://github.com/makemesick91-code/aish_agentic_ai.git (push)
