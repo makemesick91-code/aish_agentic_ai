@@ -1,0 +1,139 @@
+name: pr-ci
+
+# CICD-CTRL-1 unified PR-lifecycle CI (rule 28).
+#   * Draft PR  -> fast CI only (CI-PRINCIPLE-03).
+#   * Ready PR  -> one full release CI on the final head (CI-PRINCIPLE-04/05).
+#   * Stale runs for the same PR are cancelled when a new head arrives (CI-PRINCIPLE-07).
+#   * A single stable required gate ("pr-ci / Required Gate") always reports (CI-PRINCIPLE-08).
+#   * Change classification is INTERNAL — no top-level path filter on this mandatory
+#     workflow (CI-PRINCIPLE-09); unknown/mixed changes fail closed (CI-PRINCIPLE-10).
+# Security gates (secret scan, workflow security, tenant-isolation when it exists)
+# are never optimized away (CI-PRINCIPLE-15). Least privilege by default (CI-PRINCIPLE-17).
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  classify-changes:
+    name: Classify changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      categories: ${{ steps.classify.outputs.categories }}
+      full_safe_suite: ${{ steps.classify.outputs.full_safe_suite }}
+      run_workflow_security: ${{ steps.classify.outputs.run_workflow_security }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh scripts/release/*.sh .codex/hooks/*.sh
+      - name: Classify changed files (fail closed)
+        id: classify
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: scripts/ci/classify-changes.sh
+
+  draft-fast-ci:
+    name: Draft fast CI
+    needs: classify-changes
+    if: github.event.pull_request.draft == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh scripts/release/*.sh .codex/hooks/*.sh
+      - name: Fast gate (drafts run fast CI only)
+        run: scripts/ci/fast-local.sh
+
+  full-documentation-ci:
+    name: Full documentation CI
+    needs: classify-changes
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh scripts/release/*.sh .codex/hooks/*.sh
+      - name: CI validator unit tests
+        run: |
+          scripts/ci/test-change-classifier.sh
+          scripts/ci/test-required-gate.sh
+      - name: Full documentation-as-code suite (with evidence)
+        run: scripts/docs/validate.sh
+      - name: Aggregate ADR / AGENTS / codex gates
+        run: |
+          scripts/docs/check-adr.sh
+          scripts/codex/check-agents.sh
+          scripts/codex/check-codex.sh
+      - name: ShellCheck (non-blocking lint)
+        run: |
+          sudo apt-get update -y >/dev/null 2>&1 || true
+          sudo apt-get install -y shellcheck >/dev/null 2>&1 || true
+          if command -v shellcheck >/dev/null 2>&1; then
+            shellcheck -S warning scripts/ci/*.sh scripts/release/*.sh scripts/docs/*.sh scripts/graphify/*.sh scripts/hooks/*.sh scripts/codex/*.sh .codex/hooks/*.sh || true
+          else
+            echo "shellcheck unavailable; skipping (non-blocking lint)"
+          fi
+
+  workflow-security-ci:
+    name: Workflow security CI
+    needs: classify-changes
+    if: github.event.pull_request.draft == false && needs.classify-changes.outputs.run_workflow_security == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/release/*.sh
+      - name: Workflow security + topology
+        run: |
+          scripts/ci/validate-workflow-security.sh
+          scripts/ci/validate-ci-topology.sh
+
+  required-gate:
+    name: Required Gate
+    needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Decide the single required conclusion
+        env:
+          CLASSIFY_RESULT: ${{ needs.classify-changes.result }}
+          FAST_RESULT: ${{ needs.draft-fast-ci.result }}
+          FULL_DOC_RESULT: ${{ needs.full-documentation-ci.result }}
+          WF_SEC_RESULT: ${{ needs.workflow-security-ci.result }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+          CATEGORIES: ${{ needs.classify-changes.outputs.categories }}
+        run: |
+          echo "PR #${{ github.event.pull_request.number }} — tested head: ${{ github.event.pull_request.head.sha }}"
+          echo "Change categories: ${CATEGORIES:-<none>}"
+          echo "Draft: ${IS_DRAFT}"
+          echo "Suites: classify=${CLASSIFY_RESULT} fast=${FAST_RESULT} full-doc=${FULL_DOC_RESULT} wf-sec=${WF_SEC_RESULT}"
+          chmod +x scripts/ci/required-gate-decision.sh
+          scripts/ci/required-gate-decision.sh

@@ -1,0 +1,51 @@
+name: main-post-merge
+
+# CICD-CTRL-1 lightweight post-merge verification (rule 28; CI-PRINCIPLE-11).
+# Push to main runs INTEGRITY verification only — it does NOT re-run the full
+# release suite that already passed on the merged PR head. Full CI is bound to the
+# tested PR SHA, not re-earned on every push.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: main-post-merge
+  cancel-in-progress: false
+
+jobs:
+  post-merge-verify:
+    name: Post-merge integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Make scripts executable
+        run: chmod +x scripts/ci/*.sh scripts/docs/*.sh scripts/release/*.sh
+      - name: Repository identity + canonical pointer
+        run: |
+          grep -q "makemesick91-code/aish_agentic_ai" CLAUDE.md \
+            || { echo "FAIL: canonical identity missing"; exit 1; }
+          echo "OK: canonical repository identity present"
+          echo "Merge commit: ${{ github.sha }}"
+      - name: Source authority + version consistency
+        run: scripts/docs/check-version-consistency.sh
+      - name: Critical secret scan
+        run: scripts/docs/secret-scan.sh
+      - name: Workflow syntax + security (fast)
+        run: scripts/ci/validate-workflow-security.sh
+      - name: Post-merge evidence
+        run: |
+          mkdir -p docs/evidence/cicd-ctrl-1/ci
+          {
+            echo "post_merge_commit=${{ github.sha }}"
+            echo "ref=${{ github.ref }}"
+            echo "note=lightweight post-merge verification only; full release CI was bound to the PR head"
+          } > docs/evidence/cicd-ctrl-1/ci/post-merge-last.txt
+          cat docs/evidence/cicd-ctrl-1/ci/post-merge-last.txt
