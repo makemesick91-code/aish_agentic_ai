@@ -1,0 +1,12 @@
+# Codex project configuration — Aish Agentic AI
+# Project-safe defaults. Active ONLY after the project is trusted in Codex.
+# Contains NO secrets, API keys, model-provider credentials, personal absolute paths, or private endpoints.
+# Governance: .claude/rules/15; docs/tooling/MCP_GOVERNANCE.md; AFR-069, AFR-070.
+
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"
+web_search      = "cached"
+
+# Semantic project instructions live in AGENTS.md (root) + nested docs/*/AGENTS.md.
+# Command-execution safety rules live in .codex/rules/*.rules.
+# Session/tool hooks live in .codex/hooks.json + .codex/hooks/.
