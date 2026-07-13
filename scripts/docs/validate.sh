@@ -42,6 +42,8 @@ run rule-frontmatter      scripts/docs/check-rule-frontmatter.sh
 run foundation-coverage   scripts/docs/check-foundation-coverage.sh
 run step2-coverage        scripts/docs/check-step2-coverage.sh
 run step3-coverage        scripts/docs/check-step3-coverage.sh
+run step4-coverage        scripts/docs/check-step4-coverage.sh
+run brand-tokens          scripts/docs/check-brand-tokens.sh
 run adr-structure         scripts/docs/check-adr.sh
 run agents-chain          scripts/codex/check-agents.sh
 run codex-config          scripts/codex/check-codex.sh

@@ -17,6 +17,9 @@ credentials/
 *credentials*.json
 *service-account*.json
 *token*.json
+# Brand planning tokens are a committed, non-secret planning artifact (Step 4); the *token*.json
+# secret-hygiene pattern above matches its filename, so it is explicitly re-included here.
+!docs/brand/tokens/brand-tokens.v1.json
 .mcp.local.json
 
 # OS / editor

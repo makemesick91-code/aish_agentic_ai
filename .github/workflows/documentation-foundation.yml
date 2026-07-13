@@ -58,6 +58,12 @@ jobs:
       - name: Step 3 architecture coverage (modules, isolation, AFR, traceability)
         run: scripts/docs/check-step3-coverage.sh
 
+      - name: Step 4 coverage (domain, brand, environment, dependency, SaaS foundation)
+        run: scripts/docs/check-step4-coverage.sh
+
+      - name: Step 4 brand planning tokens
+        run: scripts/docs/check-brand-tokens.sh
+
       - name: ADR structure + sequence
         run: scripts/docs/check-adr.sh
 

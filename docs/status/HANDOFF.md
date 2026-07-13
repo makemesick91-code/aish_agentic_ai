@@ -39,3 +39,11 @@ frontend, OD-05 branded Graphify, OD-06 Limit Saver, OD-07 Codex CLI, OD-08 Goog
 
 ## Next step after Step 3 GO
 Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning (no feature code in Step 3).
+
+## Handoff — after Step 4 planning (2026-07-13)
+Step 4 (domain/branding/environment/dependency/SaaS-Foundation planning) authored, validated, and independently
+reviewed on branch `docs/step-4-domain-branding-environment-saas-foundation-planning`. Master Source v2.4.0 / PRD
+v1.3.0. `scripts/docs/validate.sh` passes all gates. No domain owned, no package installed, nothing deployed;
+application implementation NOT STARTED. Remaining: commit → PR → CI → merge → annotated GO tag
+`aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`, then begin SPRINT-SF-00.
+Do not move prior GO tags (ba1c80f / abf1d00 / 764a484).

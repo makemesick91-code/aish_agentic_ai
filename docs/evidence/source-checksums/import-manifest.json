@@ -53,7 +53,33 @@
       "detected_version": "1.0.0",
       "step": "step-2",
       "living_copy": "docs/product/PERSONA_AND_PILOT_USE_CASES.md"
+    },
+    {
+      "file": "MASTER_SOURCE_AISH_AGENTIC_AI_v2.3.0.md",
+      "sha256": "a899b3dd679ee4d3f869c0b233259dacce2269209c26f5e8245554f0c7752319",
+      "detected_version": "2.3.0",
+      "step": "step-3"
+    },
+    {
+      "file": "PRD_AISH_AGENTIC_AI_v1.2.0.md",
+      "sha256": "2552d8b8007dae5563b78db14ef9ec691a88eefa327f6c7293bced418233141b",
+      "detected_version": "1.2.0",
+      "step": "step-3"
+    },
+    {
+      "file": "MASTER_SOURCE_AISH_AGENTIC_AI_v2.4.0.md",
+      "sha256": "e94c33687c1b012f68c562659e1f2c7ac9b49e2802ba9ab0b78905621aa157fb",
+      "detected_version": "2.4.0",
+      "step": "step-4",
+      "living_copy": "docs/canonical/MASTER_SOURCE.md"
+    },
+    {
+      "file": "PRD_AISH_AGENTIC_AI_v1.3.0.md",
+      "sha256": "f169f7d29dcd43713a4fc9325772e458236ef82d6f8c148ebeedc449bc9db931",
+      "detected_version": "1.3.0",
+      "step": "step-4",
+      "living_copy": "docs/canonical/PRD.md"
     }
   ],
-  "note": "Originals preserved byte-for-byte in docs/canonical/source/; never overwritten. Step 2 sources (v2.2.0 / v1.1.0 / v1.0.0) added on 2026-07-13; historical Step 1 sources retained for audit."
+  "note": "Originals preserved byte-for-byte in docs/canonical/source/; never overwritten. Step 3 sources (v2.3.0 / v1.2.0) and Step 4 sources (v2.4.0 / v1.3.0) added on 2026-07-13; the active living copies are v2.4.0 (MASTER_SOURCE.md) and v1.3.0 (PRD.md). Historical Step 1/2 sources retained for audit."
 }

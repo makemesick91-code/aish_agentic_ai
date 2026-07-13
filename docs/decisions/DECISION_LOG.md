@@ -27,9 +27,18 @@ Superseded decisions are marked, never deleted.
 | D-020 | 2026-07-13 | AI via provider abstraction with guardrails/redaction/human approval/kill switch/manual fallback; extraction criteria recorded (not triggered) | AI Governance | Master Source §23–§34,§44 | ADR 0019, 0020, 0023, 0028 | Active |
 | D-021 | 2026-07-13 | Codex CLI not installed → `.codex/` config/rules/hooks authored + statically validated; `execpolicy`/hook runtime execution deferred (OD-07); branded Graphify host binary present but not governance-verified → deterministic index retained (OD-05); external Limit Saver not installed → project fallback (OD-06) | Tooling | Master Source §66.6–§66.9 | ADR 0031, `docs/evidence/step-3/inventory/tooling-inventory.txt` | Active |
 | D-022 | 2026-07-13 | Step 3 delivered via branch → PR → CI → merge → annotated GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`; documentation/architecture baseline only | Release | Master Source §66.10–§66.11 | `docs/release/STEP_3_*` | Active |
+| D-023 | 2026-07-13 | Step 4 baseline: Master Source bumped to v2.4.0, PRD to v1.3.0; domain/branding/environment/dependency/SaaS-Foundation planning fixed via ADRs 0033–0041 and AFR-073..104; historical versions preserved | Documentation/Planning | Owner + Master Source §3–§5, §68 | Master Source v2.4.0 §6/§68, ADRs 0033–0041 | Active |
+| DL-S4-01 | 2026-07-13 | Domain strategy: preferred primary `aishagentic.ai`; fallbacks `aishagenticai.com`, `aishagentic.com`; all candidates AVAILABLE point-in-time (RDAP 2026-07-13); **not owned/claimed**; org-owned + MFA + DNSSEC + transfer lock | Product/Domain | Owner + Master Source §68 | ADR 0033, `.claude/rules/21`, `docs/evidence/domain/DOMAIN_AVAILABILITY_VERIFICATION.md` | Active |
+| DL-S4-02 | 2026-07-13 | Brand architecture: branded house Aish Tech Solution → Aish Agentic AI; accessible planning tokens (WCAG 2.2 AA), not implemented in UI; no final logo/brand claimed | Brand | Owner + Master Source §68 | ADR 0041, `.claude/rules/22` | Active |
+| DL-S4-03 | 2026-07-13 | Working tagline "Agentic customer experience, humans in control." = APPROVED WORKING BASELINE (not a trademark) | Brand | Owner + Master Source §68 | ADR 0041, `docs/brand/WORKING_TAGLINE_DECISION.md` | Active |
+| DL-S4-04 | 2026-07-13 | First SaaS Foundation implementation sprint = SPRINT-SF-00 (runtime bootstrap + local/CI), to begin only after the Step 4 release is merged and GO-tagged | Release/Planning | Owner + Master Source §62/§68 | ADR 0039, `docs/planning/NEXT_IMPLEMENTATION_SPRINT.md` | Active |
+| D-024 | 2026-07-13 | Deployment-target class = dedicated Ubuntu LTS VM / isolated compute; pilot MUST NOT share DB/redis/pool/secrets with DaengtisiaMS or Aish POS by default; provider not selected (WATCH) | Operations | Master Source §68/§34/§51 | ADR 0040, `.claude/rules/26` | Active |
+| D-025 | 2026-07-13 | Dependency baseline (Laravel 12/PHP 8.4/PostgreSQL 17/Redis 7.x) researched against official sources; nothing installed; newer majors EVALUATE-with-ADR | Dependencies | Master Source §68/§34 | ADR 0038, `.claude/rules/25` | Active |
+| D-026 | 2026-07-13 | Step 4 delivered via branch → PR → CI → merge → annotated GO tag `aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`; planning/documentation baseline only | Release | Master Source §66.10–§66.11 | `docs/release/STEP_4_*` | Active |
 
 ## Notes
 - No decision here changes MVP scope, security controls, or target market beyond what the canonical Master
-  Source v2.3.0 records; Step 3 fixes the application-architecture contract without starting implementation.
-- Application implementation, deployment, live integration, pilot readiness, pilot runtime, and production
-  readiness remain NOT STARTED.
+  Source v2.4.0 records; Steps 3–4 fix the application-architecture and planning contracts without starting
+  implementation.
+- Application implementation, domain ownership, deployment, live integration, pilot readiness, pilot runtime,
+  and production readiness remain NOT STARTED. No domain is owned; no package is installed; nothing is deployed.

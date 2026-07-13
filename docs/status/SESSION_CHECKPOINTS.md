@@ -57,3 +57,13 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
 - **Next:** full validate → subagent reviews → fix → re-run → commit → push → PR → CI → merge (human auth if
   required) → annotated GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go` (exact-match).
 - **Blockers:** none blocking documentation. Application implementation / deployment / pilot / production: NOT STARTED.
+
+## Checkpoint — Step 4 Domain/Branding/Environment/SaaS Foundation Planning (2026-07-13)
+- Branch `docs/step-4-domain-branding-environment-saas-foundation-planning` from `main`.
+- Canonical: Master Source v2.4.0, PRD v1.3.0 (§68 / §31); ADRs 0033-0041; AFR-073..104; rules 21-27.
+- Docs: domain(6)/brand(7+json)/environments(11)/dependencies(4)/planning(10)/operations-step4(4)/quality-step4(4).
+- Research evidence: RDAP domain availability (all 7 candidates AVAILABLE, not owned) + dependency version research.
+- Tooling: Step 4 gates in validate.sh + CI; query-smoke 46; guard hook extended + tests; skill step-4-planning-gate.
+- Review: 5 report-only reviewers, no BLOCKER/HIGH surviving; fixes applied; validate.sh ALL GATES PASSED.
+- Prior GO tags immutable: ba1c80f / abf1d00 / 764a484. Step 4 tag not yet created.
+- Next: commit → PR → CI → merge → GO tag; then SPRINT-SF-00. Application implementation NOT STARTED.

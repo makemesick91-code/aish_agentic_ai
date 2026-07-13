@@ -32,3 +32,15 @@ None may merge, publish, tag, force-push, or run destructive operations.
 ## Knowledge graph
 Graphify branded skill/CLI/plugin/MCP — **not installed**; realized via a deterministic documentation index
 (`GRAPHIFY.md`, `scripts/graphify/`). Marked `BLOCKED-OPTIONAL` for the branded product.
+
+## Step 4 tooling status (Domain, Branding, Environment & SaaS Foundation Planning)
+- **New skill** `step-4-planning-gate` (`.agents/skills/`) — validation-only; runs the Step 4 gates; never buys
+  domains, mutates DNS, provisions, installs packages, merges, or tags.
+- **Guard hook extended** (`scripts/hooks/guard-dangerous-commands.sh`) — additionally blocks dependency install
+  and package publish (composer/npm/yarn/pnpm), cloud provisioning and deployment (IaC apply/destroy, cluster
+  apply/delete, image push), and DNS mutation. Validated by `scripts/hooks/test-guard.sh` (positive + negative).
+- **MCP** — `.mcp.json` empty server set unchanged. Step 4 domain-availability (RDAP) and dependency-version
+  research used read-only network tools; **no MCP server, secret, or credential was committed**.
+- **Limit Saver** — external NOT INSTALLED; project fallback `limit-saver-1` active (see `LIMIT_SAVER.md`).
+- **Graphify** — deterministic documentation index refreshed for Step 4; branded Graphify remains
+  BLOCKED-OPTIONAL (not governance-verified). Query-smoke expanded to 46 canonical queries.

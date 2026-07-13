@@ -20,7 +20,7 @@ echo "OK: checked ${#AGENTS[@]} AGENTS.md files"
 
 # Root AGENTS must point to canonical authority and active versions (no second source of truth).
 grep -q "makemesick91-code/aish_agentic_ai" AGENTS.md || { echo "FAIL: root AGENTS.md missing canonical repo identity"; fail=1; }
-grep -q "v2.3.0" AGENTS.md || { echo "FAIL: root AGENTS.md missing Master Source v2.3.0"; fail=1; }
+grep -q "v2.4.0" AGENTS.md || { echo "FAIL: root AGENTS.md missing Master Source v2.4.0"; fail=1; }
 grep -q "APPLICATION_FOUNDATION_RULES.md" AGENTS.md || { echo "FAIL: root AGENTS.md missing AFR pointer"; fail=1; }
 grep -Eq 'CLAUDE.md|\.claude/rules' AGENTS.md || { echo "FAIL: root AGENTS.md missing Claude-rules sync pointer"; fail=1; }
 

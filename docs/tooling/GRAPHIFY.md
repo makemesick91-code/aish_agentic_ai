@@ -35,3 +35,9 @@ Source Markdown stays authoritative; the index is derived and never overrides it
 large generated graphs are not committed (config, scripts, manifest, and compact evidence are).
 To install real Graphify later: record source repo, pinned version/commit, license, install command,
 checksum/lockfile, and files/permissions touched (`.claude/rules/15`), then flip this status.
+
+## Step 4 refresh (2026-07-13)
+Deterministic documentation index rebuilt over the Step 4 additions (domain/brand/environment/dependency/planning
+docs, ADRs 0033-0041, rules 21-27, AFR-073..104). `scripts/graphify/query-smoke.sh` expanded to **46** canonical
+queries (all resolve to canonical file paths); build is deterministic (drift gate passes). Branded Graphify:
+**BLOCKED-OPTIONAL** (host binary present but not governance-verified) - deterministic index retained.

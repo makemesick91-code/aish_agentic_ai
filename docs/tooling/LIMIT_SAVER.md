@@ -22,3 +22,9 @@ Token saving MUST NOT reduce test coverage, skip security review, drop evidence,
 release gate, or cause false completion claims. Efficiency never overrides security or truthfulness.
 
 **Status:** Limit Saver 1 = NOT INSTALLED (optional). Fallback protocol = ACTIVE and documented.
+
+## Step 4 status (2026-07-13)
+External `Limit Saver 1` / `usage-limit-reducer` remains **NOT INSTALLED**; the project fallback protocol stays
+active (authority-map-first reads, graph/index queries before opening many files, per-phase checkpoints in
+`docs/status/`, parallel report-only review). Token saving did not weaken any gate, test, or evidence requirement.
+Status: **EXTERNAL NOT INSTALLED — PROJECT FALLBACK ACTIVE**.

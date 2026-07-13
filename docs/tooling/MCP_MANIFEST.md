@@ -23,3 +23,8 @@ Some MCP servers may be available in a developer's session (e.g. read-only docum
 ## Decision
 Add MCP only when required, trusted, least-privilege, secret-safe, and relevant. The empty set is correct for
 Step 3. See [MCP_GOVERNANCE.md](MCP_GOVERNANCE.md).
+
+## Step 4 note (2026-07-13)
+No MCP server was added for Step 4. Domain-availability (RDAP) and dependency-version research used read-only
+network tools only; no MCP server, registrar/cloud credential, or secret was committed. The committed `.mcp.json`
+empty server set and least-privilege governance are unchanged (rule 15; AFR-070).

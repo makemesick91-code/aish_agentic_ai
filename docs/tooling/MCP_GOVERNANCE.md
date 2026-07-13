@@ -32,3 +32,8 @@ approval. This is not a secret exposure and is governed by `.claude/rules/15` (A
 Adding an MCP requires: provenance/license verification, a manifest row in [MCP_MANIFEST.md](MCP_MANIFEST.md),
 a risk/owner note, secret-free config, and — for any mutating capability — explicit approval and a Master Source
 impact check.
+
+## Step 4 note (2026-07-13)
+No MCP server was added for Step 4. Domain-availability (RDAP) and dependency-version research used read-only
+network tools only; no MCP server, registrar/cloud credential, or secret was committed. The committed `.mcp.json`
+empty server set and least-privilege governance are unchanged (rule 15; AFR-070).

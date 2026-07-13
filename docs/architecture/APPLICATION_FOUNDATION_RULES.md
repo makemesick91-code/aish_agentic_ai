@@ -85,6 +85,52 @@ Legend: **Rule** = `.claude/rules/NN`; **FF** = fitness function id ([catalog](A
 | AFR-071 | Deployment topology MUST follow the planned baseline + evidence-gated scale path | 0032 | 11 | FF-DOC-03 |
 | AFR-072 | CI workflow permissions MUST be least-privilege; existing gates MUST NOT be removed | 0026 | 13 | FF-DOC-01 |
 
-**72 AFRs.** AGENTS-instruction coverage is asserted in [Rule Coverage](../quality/STEP_3_ARCHITECTURE_RULE_COVERAGE.md);
+**72 AFRs (Step 3).** AGENTS-instruction coverage is asserted in [Rule Coverage](../quality/STEP_3_ARCHITECTURE_RULE_COVERAGE.md);
 evidence pointers in the [Traceability Matrix](../quality/STEP_3_ARCHITECTURE_TRACEABILITY_MATRIX.md). No orphan
 permanent decision.
+
+## Step 4 — Domain, Branding, Environment, and SaaS Foundation Planning (AFR-073..104)
+
+**Status:** PLANNING BASELINE (Step 4) — **NOT IMPLEMENTED**. **Application implementation: NOT STARTED.**
+**Canonical:** Master Source v2.4.0 §68; PRD v1.3.0 · **ADRs:** 0033–0041 · **Claude rules:** 21–27.
+`V4-*` are Step 4 documentation gates defined in the [Step 4 Validation Catalog](../quality/STEP_4_VALIDATION_CATALOG.md)
+and enforced by `scripts/docs/check-step4-coverage.sh` / `check-brand-tokens.sh`. FF-* reuse the Step 3 catalog.
+
+| AFR | Statement (MUST / MUST NOT) | ADR | Rule | FF/Gate |
+|-----|-----------------------------|-----|------|---------|
+| AFR-073 | Official product name MUST remain "Aish Agentic AI"; it MUST NOT change without an explicit product-owner decision | 0033 | 21,01 | FF-DOC-02 |
+| AFR-074 | Domains MUST be owned by the organization account (Aish Tech Solution); MUST NOT be a personal developer account | 0033 | 21 | FF-SEC-01 |
+| AFR-075 | Registrar account MUST enforce MFA; domains MUST have transfer lock, a DNSSEC target, and renewal monitoring | 0033 | 21 | V4-DOM-01 |
+| AFR-076 | Domain availability MUST be point-in-time verified with evidence; ownership MUST NOT be claimed without registration evidence | 0033 | 21,19 | V4-DOM-02 |
+| AFR-077 | Subdomain naming MUST be canonical; non-production domains MUST NOT be confused with production | 0033 | 21,23 | V4-DOM-03 |
+| AFR-078 | A preferred primary domain plus at least two fallbacks MUST be recorded before registration | 0033 | 21 | V4-DOM-01 |
+| AFR-079 | OAuth redirect URIs MUST be exact-match and per-environment; wildcard redirect URIs MUST NOT be used | 0033 | 21,04 | FF-SEC-02 |
+| AFR-080 | The email domain MUST enforce SPF, DKIM, and DMARC; no-reply limitations MUST be documented | 0033 | 21,04 | V4-DOM-04 |
+| AFR-081 | The official product descriptor MUST be used; positioning MUST NOT be reduced to a survey/review/chatbot tool | 0041 | 22,01 | FF-DOC-02 |
+| AFR-082 | Brand hierarchy MUST be the branded house Aish Tech Solution → Aish Agentic AI | 0041 | 22 | V4-BRAND-01 |
+| AFR-083 | A working tagline MUST carry status "APPROVED WORKING BASELINE"; it MUST NOT be presented as a final trademark | 0041 | 22 | V4-BRAND-01 |
+| AFR-084 | Brand tokens MUST be versioned and labelled planning; they MUST NOT be claimed implemented in any UI | 0041 | 22,10 | V4-BRAND-02 |
+| AFR-085 | Visual token contrast MUST target WCAG 2.2 AA and MUST be verified at design review before UI implementation | 0041 | 22,10 | V4-BRAND-02 |
+| AFR-086 | No final logo/brand MUST be claimed without owner approval; no misleading AI-autonomy or guaranteed-rating claim | 0041 | 22,06 | FF-DOC-03 |
+| AFR-087 | Six environments MUST be defined (local, test, CI, staging, pilot, production) each with documented isolation | 0034 | 23 | V4-ENV-01 |
+| AFR-088 | Raw production data MUST NOT be copied to local/test/CI/staging; synthetic data is the default | 0035 | 23,07 | V4-ENV-02 |
+| AFR-089 | Each environment MUST isolate database, redis, queue, and storage; resource names MUST NOT collide across environments | 0034 | 23,03 | FF-TEN-02 |
+| AFR-090 | Each environment MUST use its own secrets; no environment inherits another environment's secrets | 0037 | 24,04 | FF-SEC-01 |
+| AFR-091 | Configuration MUST be classified (public/internal/secret/credential/...); secrets/credentials MUST NOT be committed | 0037 | 24,04 | FF-SEC-01 |
+| AFR-092 | Promotion MUST follow local→test/CI→staging→pilot→production; there MUST NOT be a direct unreviewed pilot/production deploy | 0034 | 23,13 | V4-ENV-03 |
+| AFR-093 | Step 4 CI MUST NOT add fake Laravel runtime gates; only documentation/planning CI runs until the app exists | 0026,0034 | 23,09 | FF-DOC-01 |
+| AFR-094 | Local development MUST define a recommended baseline plus a fallback; no runtime bootstrap occurs in Step 4 | 0036 | 23 | V4-ENV-01 |
+| AFR-095 | Dependencies MUST be researched against official sources; version-sensitive facts MUST NOT rely on memory alone | 0038 | 25 | V4-DEP-01 |
+| AFR-096 | No package MUST be installed and no lock file generated in Step 4; a framework-major change requires an ADR | 0038 | 25,08 | V4-DEP-01 |
+| AFR-097 | Supply chain MUST enforce official registry, typosquat prevention, lock-file review, vulnerability scan, and SBOM | 0038 | 25,04 | V4-DEP-02 |
+| AFR-098 | Dependency approval MUST use the controlled vocabulary; upgrades follow the pinning + emergency-patch policy | 0038 | 25 | V4-DEP-02 |
+| AFR-099 | The SaaS Foundation MUST follow the fixed implementation sequence; tenant context precedes business features | 0039 | 26,08 | V4-SF-01 |
+| AFR-100 | RBAC MUST precede a privileged console; audit precedes sensitive mutation; isolation precedes external async/upload | 0039 | 26,03 | V4-SF-01 |
+| AFR-101 | Observability and tested restore MUST precede pilot; runtime evidence MUST precede any deployment claim | 0039,0040 | 26,11,19 | V4-SF-02 |
+| AFR-102 | The pilot/production deployment-target MUST be a dedicated isolated class; it MUST NOT share DB/redis/pool/secrets with DaengtisiaMS or Aish POS by default | 0040 | 26,11 | V4-SF-02 |
+| AFR-103 | Planning MUST NOT be reported as implementation: domain candidate ≠ ownership, plan ≠ deployment, dependency approval ≠ installation | — | 27,19 | FF-DOC-03 |
+| AFR-104 | The Step 4 GO tag MUST attest planning/documentation readiness only — not application implementation, deployment, pilot, or production readiness | — | 27,13,19 | FF-DOC-03 |
+
+**104 AFRs total (72 Step 3 + 32 Step 4).** Step 4 AGENTS-instruction and rule coverage is asserted in
+[Step 4 Rule Coverage](../quality/STEP_4_RULE_COVERAGE.md); evidence pointers in the
+[Step 4 Traceability Matrix](../quality/STEP_4_REQUIREMENTS_TRACEABILITY_MATRIX.md). No orphan permanent decision.

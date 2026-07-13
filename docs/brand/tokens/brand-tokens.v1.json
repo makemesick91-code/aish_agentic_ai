@@ -1,0 +1,49 @@
+{
+  "$schema": "https://aish-agentic-ai/planning/brand-tokens.schema.json",
+  "name": "Aish Agentic AI Brand Planning Tokens",
+  "version": "1.0.0",
+  "status": "PLANNING TOKENS — NOT IMPLEMENTED IN UI",
+  "label": "PLANNING BASELINE — NOT IMPLEMENTED",
+  "owner": "Aish Tech Solution",
+  "canonical": "Master Source v2.4.0 §68 (Branding); PRD v1.3.0; rule .claude/rules/22; AFR-081..086",
+  "accessibility": {
+    "target": "WCAG 2.2 AA",
+    "note": "All text/background and UI-control pairs MUST meet WCAG 2.2 AA contrast (>=4.5:1 body text, >=3:1 large text and non-text UI). Values below are planning candidates and MUST be re-verified with a contrast checker during design review before any UI implementation.",
+    "contrastVerification": "NOT VERIFIED IN UI — design-review gate required"
+  },
+  "color": {
+    "primary":     { "value": "#1F63D6", "on": "#FFFFFF", "role": "Primary brand / primary actions", "contrastNote": "primary on white ~4.7:1 (verify)" },
+    "secondary":   { "value": "#0E7C86", "on": "#FFFFFF", "role": "Secondary brand / supporting actions" },
+    "accent":      { "value": "#6D3BEB", "on": "#FFFFFF", "role": "Accent / highlights (sparing use)" },
+    "success":     { "value": "#1A7F37", "on": "#FFFFFF", "role": "Success / positive state" },
+    "warning":     { "value": "#8A6100", "on": "#FFFFFF", "role": "Warning / attention state" },
+    "danger":      { "value": "#B42318", "on": "#FFFFFF", "role": "Danger / destructive / failure state" },
+    "information": { "value": "#1570EF", "on": "#FFFFFF", "role": "Information / neutral notice" },
+    "neutral": {
+      "50":  "#F8FAFC", "100": "#F1F5F9", "200": "#E2E8F0", "300": "#CBD5E1",
+      "400": "#94A3B8", "500": "#64748B", "600": "#475569", "700": "#334155",
+      "800": "#1E293B", "900": "#0F172A",
+      "role": "Neutral scale for text, borders, surfaces"
+    },
+    "background": { "light": "#FFFFFF", "dark": "#0B0E14", "role": "Page background" },
+    "surface":    { "light": "#F8FAFC", "dark": "#111827", "role": "Card / surface background" },
+    "border":     { "light": "#E2E8F0", "dark": "#1F2937", "role": "Dividers / borders" },
+    "text":       { "light": "#0F172A", "dark": "#E5E7EB", "muted": "#475569", "role": "Text" },
+    "focusRing":  { "value": "#2563EB", "role": "Keyboard focus indicator (>=3:1 vs adjacent)" }
+  },
+  "typography": {
+    "primaryUiFont": "Inter",
+    "fallbackStack": "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif",
+    "displayFont": "Inter (Display optical size) — use only if a genuine display need is confirmed",
+    "numericFont": "Inter with tabular-nums for data/tables/metrics",
+    "internationalization": "Latin + Indonesian coverage required; verify Noto Sans fallback for extended ranges",
+    "licensing": "Prefer OFL / open-source fonts; self-host for privacy (no third-party font CDN calls)",
+    "recommendation": "APPROVED WORKING BASELINE — subject to design review; not final"
+  },
+  "spacingNote": "Spacing/radius/elevation scales are intentionally deferred to the design-system implementation phase.",
+  "nonClaims": [
+    "These tokens are a PLANNING BASELINE and are NOT implemented in any UI.",
+    "Contrast ratios above are candidates and NOT VERIFIED in a running UI.",
+    "This file does not constitute a final visual design or brand approval."
+  ]
+}

@@ -12,8 +12,13 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
   `3c484f4b`, peeled `764a4849`; exact-match local/remote/main). Master Source **v2.3.0**, PRD **v1.2.0**; ADRs
   0009–0032; AFR-001..072; Claude rule 20; AGENTS chain; Codex foundation; Step 3 gates. Post-tag evidence
   finalized via a separate evidence-only branch (tag not moved).
-- **Application implementation:** NOT STARTED. Deployment / live integration / pilot readiness / pilot runtime /
-  production readiness: NOT STARTED.
+- **Step 4 — Domain, Branding, Environment & SaaS Foundation Implementation Planning:** IN PROGRESS on branch
+  `docs/step-4-domain-branding-environment-saas-foundation-planning`; canonical **Master Source v2.4.0**, **PRD
+  v1.3.0**; ADRs 0033–0041; AFR-073..104; Claude rules 21–27; Step 4 gates + CI; independent review complete
+  (5 reviewers, no BLOCKER/HIGH surviving; all fixes applied); `validate.sh` ALL GATES PASSED. **Awaiting commit
+  → PR → CI → merge → GO tag.**
+- **Application implementation:** NOT STARTED. Domain ownership, deployment / live integration / pilot readiness /
+  pilot runtime / production readiness: NOT STARTED. No domain owned; no package installed; nothing deployed.
 - **Canonical repository:** `makemesick91-code/aish_agentic_ai` — verified.
 
 ## Completed (Step 3, this branch)
@@ -31,10 +36,25 @@ Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`.
 - Step 3 gates (`check-step3-coverage.sh`, `check-adr.sh`, `check-agents.sh`, `check-codex.sh`), 14 new
   query-smoke queries, wired into `validate.sh` + CI.
 
+## Completed (Step 4, this branch)
+- Canonical bumps: Master Source v2.4.0, PRD v1.3.0 (+ pinned scripts, version matrix, changelog, decision log
+  D-023..D-026/DL-S4-01..04, roadmap Step 4 current / Step 5 next); Master Source §68 + PRD §31.
+- Domain (`docs/domain/`, 6 docs) with point-in-time RDAP availability evidence (all 7 candidates AVAILABLE,
+  not owned); brand (`docs/brand/`, 7 docs + planning-token JSON); environment (`docs/environments/`, 11 docs);
+  dependency (`docs/dependencies/`, 4 docs); SaaS Foundation plan (`docs/planning/`, 10 docs); operations Step 4
+  (4 docs); quality Step 4 (4 docs: RTM, rule coverage, validation catalog, GO/WATCH/NO-GO).
+- ADRs 0033–0041 (9); AFR-073..104 (32); Claude rules 21–27; CLAUDE.md + AGENTS.md sync; new skill
+  `step-4-planning-gate`; extended guard hook + tests; MCP/Limit-Saver/Graphify status notes.
+- Step 4 gates (`check-step4-coverage.sh`, `check-brand-tokens.sh`, source git-tracking assertion), 18 new
+  query-smoke queries (46 total), wired into `validate.sh` + CI. Source snapshots v2.4.0/v1.3.0 + checksums.
+- Independent review complete (5 report-only reviewers; no BLOCKER/HIGH surviving; all fixes applied);
+  `validate.sh` ALL GATES PASSED.
+
 ## Remaining
-- Step 3 is MERGED and GO TAGGED. Only the post-tag evidence-only PR remains to land on `main` (tag not moved).
-- Next: **Step 4 — Domain, Branding, Environment, and SaaS Foundation Implementation Planning** (no feature code
-  in Step 3).
+- Commit → push → PR → CI green → merge (if GitHub permission allows) → annotated GO tag
+  `aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go` + tag verification.
+- Next after Step 4 GO: **SaaS Foundation implementation SPRINT-SF-00** (runtime bootstrap + local/CI). No
+  feature code in Step 4. Step 3 post-tag evidence-only PR (if any) unaffected; prior tags not moved.
 
 ## Tooling status (Step 3)
 - Codex CLI: NOT INSTALLED — `.codex/` authored + statically validated; `execpolicy`/hook runtime not run (OD-07).
