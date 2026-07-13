@@ -20,8 +20,16 @@ Superseded decisions are marked, never deleted.
 | D-013 | 2026-07-13 | Pilot operating rules fixed: invitation baseline, survey baseline, healthcare data boundary, mandatory human approval, no review gating, manual fallback, truthful external states | Product/Security | Master Source §16,§33,§43; PRD §13,§17 | `.claude/rules/17`,`18`, Persona §6–§12 | Active |
 | D-014 | 2026-07-13 | Pilot operational targets are hypotheses (not results); hard safety gates mandatory; pilot GO/WATCH/NO-GO defined; Step 3 starts only after Step 2 release | Release | Master Source §54,§59; Persona §14,§16 | `.claude/rules/19`, `STEP_2_COVERAGE_MATRIX.md` | Active |
 | D-015 | 2026-07-13 | Step 2 delivered via branch → PR → CI → merge → annotated GO tag `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`; documentation baseline only | Release | Master Source §66.10–§66.11 | `docs/release/STEP_2_*` | Active |
+| D-016 | 2026-07-13 | Step 3 baseline: Master Source bumped to v2.3.0, PRD to v1.2.0; canonical application architecture fixed via ADRs 0009–0032 and AFR-001..072; historical versions preserved | Architecture/Documentation | Owner + Master Source §3–§5, §34 | Master Source v2.3.0 §6, ADRs 0009–0032 | Active |
+| D-017 | 2026-07-13 | Architecture style = Laravel 12 modular monolith (microservices not default; extraction requires ADR 0020 evidence) | Architecture | Owner + Master Source §34 | ADR 0009, 0020 | Active |
+| D-018 | 2026-07-13 | Tenancy = shared DB / shared schema / row-level ownership with tenant+branch context on every surface; RLS is future defense-in-depth (OD-01) | Architecture/Security | Master Source §17,§37 | ADR 0011, 0012, 0015 | Active |
+| D-019 | 2026-07-13 | External effects use transactional outbox + idempotency + retry + dead-letter; no success before provider verification; truthful states | Architecture/Reliability | Master Source §35,§39 | ADR 0016, 0017 | Active |
+| D-020 | 2026-07-13 | AI via provider abstraction with guardrails/redaction/human approval/kill switch/manual fallback; extraction criteria recorded (not triggered) | AI Governance | Master Source §23–§34,§44 | ADR 0019, 0020, 0023, 0028 | Active |
+| D-021 | 2026-07-13 | Codex CLI not installed → `.codex/` config/rules/hooks authored + statically validated; `execpolicy`/hook runtime execution deferred (OD-07); branded Graphify host binary present but not governance-verified → deterministic index retained (OD-05); external Limit Saver not installed → project fallback (OD-06) | Tooling | Master Source §66.6–§66.9 | ADR 0031, `docs/evidence/step-3/inventory/tooling-inventory.txt` | Active |
+| D-022 | 2026-07-13 | Step 3 delivered via branch → PR → CI → merge → annotated GO tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`; documentation/architecture baseline only | Release | Master Source §66.10–§66.11 | `docs/release/STEP_3_*` | Active |
 
 ## Notes
-- No decision here changes MVP scope, architecture, security controls, or target market beyond what the
-  canonical Master Source v2.2.0 already records; Step 2 clarifies pilot priorities and operating rules.
-- Application implementation, deployment, pilot readiness, and pilot runtime remain NOT STARTED.
+- No decision here changes MVP scope, security controls, or target market beyond what the canonical Master
+  Source v2.3.0 records; Step 3 fixes the application-architecture contract without starting implementation.
+- Application implementation, deployment, live integration, pilot readiness, pilot runtime, and production
+  readiness remain NOT STARTED.

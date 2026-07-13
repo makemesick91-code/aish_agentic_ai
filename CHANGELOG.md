@@ -6,6 +6,33 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — Step 3: Application Architecture and ADR Foundation
+
+Target release: annotated tag `aish-agentic-ai-step-3-application-architecture-adr-v1.0.0-go`. Base branch
+`main`; feature branch `docs/step-3-application-architecture-adr-foundation`.
+
+### Added
+- Canonical version bumps: Master Source **v2.3.0** and PRD **v1.2.0** (Step 3 architecture baseline).
+- 20 architecture documents under `docs/architecture/` (application baseline, repository layout, module
+  boundaries, dependency + data-ownership matrices, tenancy, identity/access, database, event-driven, outbox/
+  idempotency/retry, API/webhook, AI service boundary, frontend, environment, deployment topology,
+  observability, backup/restore/rollback, fitness functions, open decisions, Application Foundation Rules).
+- **ADRs 0009–0032** (24 architecture decisions) with required sections, impacts, fitness functions, and
+  explicit non-claims.
+- **Application Foundation Rules** `AFR-001..072` + machine-checkable traceability (ADR ↔ AFR ↔ AGENTS ↔ rule ↔
+  fitness function ↔ evidence), rule coverage, and 41-item fitness-function catalog (no orphan).
+- Security/AI/integration/operations Step 3 docs (threat model, tenant-isolation control matrix, data
+  classification, secrets architecture, AI control plane/guardrail/observability, integration boundary +
+  Google + DaengtisiaMS, environment/observability/backup baselines).
+- New Claude rule `.claude/rules/20`; `AGENTS.md` chain (root + nested); minimal `app/`/`tests/` scaffold with
+  explicit `FUTURE IMPLEMENTATION SCAFFOLD` markers.
+- Codex foundation: `.codex/config.toml`, `.codex/rules/*.rules` (prefix_rule with positive/negative tests),
+  `.codex/hooks.json` + hooks + tests, `.codex/README.md`; `.agents/skills/` (12 skills incl. project-fallback
+  `limit-saver-1`); MCP manifest + governance.
+- Step 3 validation gates (`check-step3-coverage.sh`, `check-adr.sh`, `scripts/codex/check-agents.sh`,
+  `check-codex.sh`), 14 new query-smoke queries, `validate.sh` + CI wiring; version-matrix, decision-log, and
+  status updates. Documentation/architecture baseline only — application implementation NOT STARTED.
+
 ## [Unreleased] — Step 2: Persona and Pilot Use Cases
 
 Target release: annotated tag `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`. Base branch `main`;

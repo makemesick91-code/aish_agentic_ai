@@ -19,8 +19,8 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.2.0**).
-3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.1.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.3.0**).
+3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.2.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
 6. Generated/derived artifacts.
@@ -33,6 +33,12 @@ Originals are preserved byte-for-byte in `docs/canonical/source/` and checksumme
 is the canonical persona/pilot source; derived pilot docs live under `docs/product/`, `docs/security/`,
 `docs/ai/`, `docs/integrations/`, and `docs/testing/`. First pilot tenant **Klinik Gigi Daengtisia**;
 recommended first branch **Daengtisia Pusat** (recommendation only, subject to readiness verification).
+
+**Step 3 — Application Architecture & ADR baseline:** `docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md`
+and `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..072) are the canonical architecture contract,
+backed by ADRs 0009–0032 and Claude rule 20. Architecture style: **Laravel 12 modular monolith**; shared-schema
+row-level multi-tenancy; 17 module boundaries; outbox/idempotency; AI provider abstraction with guardrails and
+human approval. This baseline is **planned architecture** — application implementation is **NOT STARTED**.
 
 ## 3. Non-negotiable permanent decisions
 
@@ -74,6 +80,11 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `17-pilot-invitation-survey-and-fallback.md` | Invitation frequency, survey, consent, manual fallback |
 | `18-pilot-privacy-approval-and-review-safety.md` | Healthcare privacy, human approval, no review gating, truthful states |
 | `19-pilot-metrics-evidence-and-go-no-go.md` | Pilot metrics as hypotheses, evidence, GO/WATCH/NO-GO, Step 3 boundary |
+| `20-application-architecture-and-foundation-rules.md` | Modular-monolith architecture, module ownership, isolation, events/outbox, AI boundary, AFR catalog |
+
+Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
+`app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
+(one source of truth, AFR-069).
 
 ## 5. Truthful status vocabulary
 
@@ -84,9 +95,12 @@ For this documentation foundation also distinguish: `DOCUMENTATION BASELINE COMP
 Never say “done”, “GO”, “merged”, “deployed”, or “verified” without the corresponding evidence.
 
 **Current truthful state:** Documentation & Claude Rules Foundation MERGED and GO TAGGED
-(`aish-agentic-ai-docs-foundation-v1.0.0-go`). Step 2 — Persona & Pilot Use Cases documentation baseline
-in progress on branch `docs/step-2-persona-pilot-use-cases`.
-**Application implementation: NOT STARTED.** Deployment, pilot readiness, and pilot runtime: NOT STARTED.
+(`aish-agentic-ai-docs-foundation-v1.0.0-go`, peeled `ba1c80f`). Step 2 — Persona & Pilot Use Cases MERGED and
+GO TAGGED (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`, peeled `abf1d00`). Step 3 — Application
+Architecture & ADR Foundation (Master Source v2.3.0, PRD v1.2.0, ADRs 0009–0032, AFR-001..072) IN PROGRESS on
+branch `docs/step-3-application-architecture-adr-foundation`.
+**Application implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and production
+readiness: NOT STARTED.
 
 ## 6. Required pre-work / post-work checks
 

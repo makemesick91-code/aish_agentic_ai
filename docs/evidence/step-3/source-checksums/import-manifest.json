@@ -1,0 +1,7 @@
+{
+  "step": "3",
+  "note": "Step 3 canonical snapshots + living-copy checksums. Originals preserved byte-for-byte; historical versions never deleted.",
+  "master_source": { "active": "2.3.0", "living": "docs/canonical/MASTER_SOURCE.md", "snapshot": "docs/canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.3.0.md" },
+  "prd": { "active": "1.2.0", "living": "docs/canonical/PRD.md", "snapshot": "docs/canonical/source/PRD_AISH_AGENTIC_AI_v1.2.0.md" },
+  "persona": { "active": "1.0.0", "unchanged": true }
+}
