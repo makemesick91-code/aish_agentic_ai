@@ -26,7 +26,7 @@ fi
 block() { echo "BLOCKED by guard-dangerous-commands.sh: $1" >&2; exit 2; }
 
 # Destructive git / history / tag operations.
-printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+push[[:space:]]+.*(--force|-f)([[:space:]]|$)' && block "force-push is prohibited"
+printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+push[[:space:]]+.*(--force([-a-z]*)?|-f)([[:space:]]|$)' && block "force-push (incl. --force-with-lease) is prohibited"
 printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+push[[:space:]]+.*--delete'                    && block "remote ref deletion is prohibited"
 printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+tag([[:space:]]|.*[[:space:]])(-f|--force)([[:space:]]|$)' && block "moving/overwriting a tag is prohibited"
 printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+tag([[:space:]]|.*[[:space:]])(-d|--delete)([[:space:]]|$)' && block "tag deletion is prohibited"

@@ -16,6 +16,7 @@ run() { # $1=expected(block|allow) $2=command
 
 # Negative (must block)
 run block "git push --force origin main"
+run block "git push --force-with-lease origin main"
 run block "git push -f origin main"
 run block "git push origin --delete refs/tags/x"
 run block "git tag -f aish-agentic-ai-docs-foundation-v1.0.0-go"

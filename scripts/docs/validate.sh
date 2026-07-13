@@ -24,14 +24,16 @@ run() { # $1 = name, $2.. = command
 }
 
 # Markdown structure sanity: no committed .md may be empty (no empty placeholders allowed).
+# NUL-delimited to stay safe on filenames containing spaces / em-dashes (canonical source files).
 run markdown-structure bash -c '
-  set -e
-  bad=0
-  if git rev-parse --git-dir >/dev/null 2>&1; then files=$(git ls-files "*.md"); else files=$(find . -name "*.md" -not -path "./.git/*"); fi
-  for f in $files; do
-    if [ ! -s "$f" ]; then echo "EMPTY: $f"; bad=1; fi
-  done
-  [ "$bad" -eq 0 ] && echo "PASS: no empty markdown files" || { echo "markdown-structure: FAILED"; exit 1; }
+  set -euo pipefail
+  bad=0; n=0
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    while IFS= read -r -d "" f; do n=$((n+1)); [ -s "$f" ] || { echo "EMPTY: $f"; bad=1; }; done < <(git ls-files -z "*.md")
+  else
+    while IFS= read -r -d "" f; do n=$((n+1)); [ -s "$f" ] || { echo "EMPTY: $f"; bad=1; }; done < <(find . -name "*.md" -not -path "./.git/*" -print0)
+  fi
+  [ "$bad" -eq 0 ] && echo "PASS: no empty markdown files ($n checked)" || { echo "markdown-structure: FAILED"; exit 1; }
 '
 
 run version-consistency   scripts/docs/check-version-consistency.sh
