@@ -39,4 +39,11 @@ printf '%s' "$cmd" | grep -Eq '\.(pem|key|p12|pfx)([[:space:]]|$)' && block "rea
 # Reckless recursive delete of the whole tree / root.
 printf '%s' "$cmd" | grep -Eq 'rm[[:space:]]+-[a-z]*r[a-z]*f?[[:space:]]+(/|~|\*|\.)([[:space:]]|$)' && block "recursive delete of / ~ . or * is prohibited"
 
+# Step 4 planning safeguards: no dependency install, provisioning, deployment, or DNS/registrar mutation
+# (planning steps install nothing and provision nothing — AFR-096, AFR-102; rules 25, 21).
+printf '%s' "$cmd" | grep -Eq '(composer|npm|yarn|pnpm)[[:space:]]+(create-project|install|ci|require|add)([[:space:]]|$)' && block "package installation is out of scope in planning (no dependency install without approval)"
+printf '%s' "$cmd" | grep -Eq '(npm|composer)[[:space:]]+publish([[:space:]]|$)' && block "package publishing is prohibited"
+printf '%s' "$cmd" | grep -Eq 'terraform[[:space:]]+(apply|destroy)|pulumi[[:space:]]+up|kubectl[[:space:]]+(apply|delete)|docker[[:space:]]+push' && block "cloud provisioning / deployment is out of scope in planning"
+printf '%s' "$cmd" | grep -Eq 'nsupdate|route53[[:space:]]+[^|]*(change|create|delete)|gcloud[[:space:]]+dns' && block "DNS mutation is out of scope in planning"
+
 exit 0

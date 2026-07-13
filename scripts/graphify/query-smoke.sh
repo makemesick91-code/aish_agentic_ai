@@ -82,9 +82,47 @@ check "application implementation status" \
 check "roadmap step after Step 3" \
       "docs/product/ROADMAP.md" "Step 4"
 
+# --- Step 4 canonical query smoke (domain/branding/environment/SaaS foundation planning) ---
+check "preferred domain candidate" \
+      "docs/domain/DOMAIN_STRATEGY.md" "aishagentic\.ai"
+check "is the domain owned" \
+      "docs/domain/DOMAIN_OWNERSHIP_AND_RENEWAL_GOVERNANCE.md" "NOT OWNED|not owned"
+check "fallback domain" \
+      "docs/domain/DOMAIN_STRATEGY.md" "fallback"
+check "canonical app subdomain" \
+      "docs/domain/SUBDOMAIN_AND_URL_MATRIX.md" "app\."
+check "working tagline" \
+      "docs/brand/WORKING_TAGLINE_DECISION.md" "APPROVED WORKING BASELINE"
+check "brand voice" \
+      "docs/brand/BRAND_VOICE.md" "non-defensive"
+check "environment list" \
+      "docs/environments/ENVIRONMENT_MATRIX.md" "staging"
+check "data allowed in staging" \
+      "docs/environments/DATA_POLICY_BY_ENVIRONMENT.md" "synthetic|anonymized"
+check "production data allowed in CI" \
+      "docs/environments/DATA_POLICY_BY_ENVIRONMENT.md" "MUST NOT|no production data"
+check "recommended local development strategy" \
+      "docs/environments/LOCAL_DEVELOPMENT_STRATEGY.md" "Docker Compose"
+check "pilot deployment class" \
+      "docs/operations/STEP_4_DEPLOYMENT_TARGET_EVALUATION.md" "dedicated"
+check "is the application deployed" \
+      "docs/environments/PRODUCTION_ENVIRONMENT_PLAN.md" "NOT STARTED|NOT DEPLOYED"
+check "dependency approval status" \
+      "docs/dependencies/DEPENDENCY_APPROVAL_MATRIX.md" "APPROVED FOR IMPLEMENTATION"
+check "first SaaS Foundation implementation sprint" \
+      "docs/planning/NEXT_IMPLEMENTATION_SPRINT.md" "SPRINT-SF-0"
+check "rule forbidding secret in repository" \
+      ".claude/rules/24-configuration-and-secrets.md" "secret is ever committed|committed secret"
+check "rule forbidding false domain ownership claim" \
+      ".claude/rules/21-domain-and-dns-governance.md" "ownership \*{0,2}MUST NOT\*{0,2} be claimed"
+check "brand token accessibility target" \
+      "docs/brand/tokens/brand-tokens.v1.json" "WCAG"
+check "roadmap step after Step 4" \
+      "docs/product/ROADMAP.md" "Step 5"
+
 echo "---" | tee -a "$OUT"
 if [ "$fail" -eq 0 ]; then
-  echo "PASS: 28/28 canonical queries resolved to canonical file paths" | tee -a "$OUT"
+  echo "PASS: 46/46 canonical queries resolved to canonical file paths" | tee -a "$OUT"
 else
   echo "query-smoke: FAILED" | tee -a "$OUT"; exit 1
 fi

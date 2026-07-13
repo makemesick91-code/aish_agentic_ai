@@ -16,10 +16,10 @@ if [ -z "$ver" ]; then echo "FAIL: cannot read Master Source version"; fail=1; e
   else echo "OK: Master Source version $ver (>= 2.1.1)"; fi
 fi
 
-# PRD active version == 1.2.0 (Step 3 baseline)
+# PRD active version == 1.3.0 (Step 4 baseline)
 PRD="docs/canonical/PRD.md"
 pver="$(grep -m1 -E '^\*\*Versi:\*\*' "$PRD" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)"
-if [ "$pver" = "1.2.0" ]; then echo "OK: PRD version $pver"; else echo "FAIL: PRD version '$pver' != 1.2.0"; fail=1; fi
+if [ "$pver" = "1.3.0" ]; then echo "OK: PRD version $pver"; else echo "FAIL: PRD version '$pver' != 1.3.0"; fail=1; fi
 
 # Persona & Pilot Use Cases canonical version == 1.0.0
 PERSONA="docs/product/PERSONA_AND_PILOT_USE_CASES.md"
@@ -33,8 +33,8 @@ for f in CLAUDE.md README.md docs/canonical/MASTER_SOURCE.md docs/canonical/DOCU
   if grep -q "$IDENT" "$f"; then echo "OK: identity in $f"; else echo "FAIL: '$IDENT' missing in $f"; fail=1; fi
 done
 
-# CLAUDE.md references active Master Source v2.3.0
-if grep -q "v2.3.0" CLAUDE.md; then echo "OK: CLAUDE.md references v2.3.0"; else echo "FAIL: CLAUDE.md missing v2.3.0"; fail=1; fi
+# CLAUDE.md references active Master Source v2.4.0
+if grep -q "v2.4.0" CLAUDE.md; then echo "OK: CLAUDE.md references v2.4.0"; else echo "FAIL: CLAUDE.md missing v2.4.0"; fail=1; fi
 
 # Foundation GO tag name consistent where referenced
 TAG="aish-agentic-ai-docs-foundation-v1.0.0-go"
@@ -55,6 +55,13 @@ for f in docs/release/STEP_3_ARCHITECTURE_GO_NO_GO.md docs/release/STEP_3_ARCHIT
 done
 
 # CLAUDE.md and root AGENTS.md reference the active Master Source consistently
-grep -q "v2.3.0" AGENTS.md || { echo "FAIL: AGENTS.md missing Master Source v2.3.0"; fail=1; }
+grep -q "v2.4.0" AGENTS.md || { echo "FAIL: AGENTS.md missing Master Source v2.4.0"; fail=1; }
+
+# Active canonical source snapshots MUST exist AND be git-tracked (referenced by VERSION_MATRIX + SHA256SUMS).
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  for src in docs/canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.4.0.md docs/canonical/source/PRD_AISH_AGENTIC_AI_v1.3.0.md; do
+    if git ls-files --error-unmatch "$src" >/dev/null 2>&1; then echo "OK: source snapshot tracked ($src)"; else echo "FAIL: canonical source snapshot missing/untracked: $src"; fail=1; fi
+  done
+fi
 
 if [ "$fail" -eq 0 ]; then echo "PASS: version + identity consistency"; else echo "check-version-consistency: FAILED"; exit 1; fi
