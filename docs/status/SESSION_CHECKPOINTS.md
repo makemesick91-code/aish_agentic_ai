@@ -67,3 +67,14 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
 - Review: 5 report-only reviewers, no BLOCKER/HIGH surviving; fixes applied; validate.sh ALL GATES PASSED.
 - Prior GO tags immutable: ba1c80f / abf1d00 / 764a484. Step 4 tag not yet created.
 - Next: commit → PR → CI → merge → GO tag; then SPRINT-SF-00. Application implementation NOT STARTED.
+
+## Checkpoint — CICD-CTRL-1 Safe CI Runtime Control (2026-07-13)
+- Branch `chore/cicd-ctrl-1-safe-ci-runtime-control` from `origin/main` @ `98722ac`. Stale PR #2 closed as superseded.
+- Baseline CI audit (17 runs; 0 duplicate-SHA; 0 push+PR dupes) recorded under `docs/evidence/cicd-ctrl-1/baseline/`.
+- Added: `pr-ci.yml`/`main-post-merge.yml`/`full-ci-manual.yml`; `scripts/ci/*` (classifier, gates, validators, tests);
+  `scripts/release/verify-immutable-tag.sh`; retired `documentation-foundation.yml` (preserved as evidence).
+- Governance: Master Source v2.5.0 (§69, NFR-CI-001..006), source snapshot + checksum, ADRs 0042–0046, AFR-105..126,
+  rule 28, decision log D-027..D-032, version matrix, changelog, document authority; checker updates (version/agents/adr).
+- Docs: `docs/ci/*` (12), `docs/quality/CICD_CTRL_1_*` (3), `docs/release/CICD_CTRL_1_*` (4); query-smoke 64/64;
+  hooks `[skip ci]` guard + tests; codex CI rules; MCP note; CONTRIBUTING; skills.
+- All local gates green (`scripts/ci/full-local.sh`). Next: draft PR → review → ready full CI → ruleset → merge → tag → release.

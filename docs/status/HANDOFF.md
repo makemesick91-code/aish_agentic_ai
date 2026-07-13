@@ -3,14 +3,18 @@
 Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
-Step 3 — Application Architecture & ADR Foundation for `makemesick91-code/aish_agentic_ai`. Steps 1 and 2 are
-MERGED and GO TAGGED. Step 3 content is on branch `docs/step-3-application-architecture-adr-foundation`
-(branched from `origin/main`). All local Step 3 gates pass; release/PR/merge/tag remain.
+CICD-CTRL-1 — Safe CI Runtime Control for `makemesick91-code/aish_agentic_ai`. Steps 1–4 are MERGED and GO TAGGED.
+CICD-CTRL-1 content is on branch `chore/cicd-ctrl-1-safe-ci-runtime-control` (branched from `origin/main` @
+`98722ac`). All local gates pass (`scripts/ci/full-local.sh`; documentation aggregate + query-smoke 64/64). Next:
+draft PR (verify fast CI only) → independent reviews → mark ready (one full CI on final head) → `main` ruleset
+enforcing `pr-ci / Required Gate` → merge → immutable annotated GO tag → GitHub Release evidence. A CI PASS is
+valid only for the exact tested SHA; report reruns truthfully.
 
 ## Authority & sources
-Follow `CLAUDE.md` §2 and `AGENTS.md`. Canonical: `docs/canonical/MASTER_SOURCE.md` (v2.3.0),
-`docs/canonical/PRD.md` (v1.2.0), ADRs `docs/decisions/adr/0009`–`0032`,
-`docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..072). Historical versions preserved, never deleted.
+Follow `CLAUDE.md` §2 and `AGENTS.md`. Canonical: `docs/canonical/MASTER_SOURCE.md` (**v2.5.0**),
+`docs/canonical/PRD.md` (**v1.3.0**), ADRs `docs/decisions/adr/0009`–`0046`,
+`docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..126), Claude rule 28. Historical versions preserved,
+never deleted. Target GO tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`.
 
 ## Next commands (Step 3 release)
 ```bash

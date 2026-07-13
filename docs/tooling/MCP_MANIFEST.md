@@ -28,3 +28,8 @@ Step 3. See [MCP_GOVERNANCE.md](MCP_GOVERNANCE.md).
 No MCP server was added for Step 4. Domain-availability (RDAP) and dependency-version research used read-only
 network tools only; no MCP server, registrar/cloud credential, or secret was committed. The committed `.mcp.json`
 empty server set and least-privilege governance are unchanged (rule 15; AFR-070).
+
+## CICD-CTRL-1 note (2026-07-13)
+No MCP server was added for CICD-CTRL-1. GitHub CI/workflow/ruleset operations use the `gh` CLI (clearer audit
+trail than an MCP mutation surface). The committed `.mcp.json` empty server set and least-privilege governance are
+unchanged (rule 15, 28; AFR-070). No MCP is granted branch/tag deletion, deployment, or secret access.

@@ -44,5 +44,23 @@ PASS | rule forbidding secret in repository                       | .claude/rule
 PASS | rule forbidding false domain ownership claim               | .claude/rules/21-domain-and-dns-governance.md
 PASS | brand token accessibility target                           | docs/brand/tokens/brand-tokens.v1.json
 PASS | roadmap step after Step 4                                  | docs/product/ROADMAP.md
+PASS | draft PR CI policy                                         | docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md
+PASS | when the full CI runs                                      | docs/ci/CI_EVENT_AND_TRIGGER_MATRIX.md
+PASS | may a full CI result be reused from an old SHA             | .claude/rules/28-safe-ci-runtime-control.md
+PASS | what happens when a commit changes after full CI           | docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md
+PASS | how stale runs are cancelled                               | docs/ci/CI_ARCHITECTURE.md
+PASS | does a feature push run full CI                            | docs/ci/CI_EVENT_AND_TRIGGER_MATRIX.md
+PASS | how changed files are routed                               | docs/ci/CI_CHANGE_CLASSIFICATION.md
+PASS | what happens for unknown changes                           | docs/ci/CI_CHANGE_CLASSIFICATION.md
+PASS | the stable required check                                  | docs/ci/REQUIRED_CHECK_GOVERNANCE.md
+PASS | may a path-filtered workflow be a required check           | docs/ci/CI_CHANGE_CLASSIFICATION.md
+PASS | what runs after merge to main                              | docs/ci/POST_MERGE_VERIFICATION.md
+PASS | what runs after a tag                                      | docs/ci/POST_TAG_EVIDENCE_POLICY.md
+PASS | where post-tag evidence is stored                          | docs/ci/POST_TAG_EVIDENCE_POLICY.md
+PASS | when a full CI may rerun                                   | docs/ci/CI_RUN_BUDGET.md
+PASS | rule forbidding skip-ci on mandatory checks                | .claude/rules/28-safe-ci-runtime-control.md
+PASS | rule forbidding security gate removal for speed            | .claude/rules/28-safe-ci-runtime-control.md
+PASS | exact target GO tag for CICD-CTRL-1                        | docs/release/CICD_CTRL_1_RELEASE_MANIFEST.md
+PASS | current application implementation status                  | docs/ci/CI_ARCHITECTURE.md
 ---
-PASS: 46/46 canonical queries resolved to canonical file paths
+PASS: 64/64 canonical queries resolved to canonical file paths

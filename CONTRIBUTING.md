@@ -35,8 +35,18 @@ scripts/docs/secret-scan.sh
 scripts/graphify/build.sh && scripts/graphify/query-smoke.sh
 ```
 
-CI (`.github/workflows/documentation-foundation.yml`) runs the same gates on every pull request and on
-`main`. Do not weaken, skip, or duplicate CI gates.
+Also run the CICD-CTRL-1 local gates: `scripts/ci/fast-local.sh` during development and
+`scripts/ci/full-local.sh` before marking a PR ready-for-review.
+
+## CI runtime control (CICD-CTRL-1, rule 28)
+
+- Open feature PRs as **drafts** — `pr-ci.yml` runs **fast CI only** on drafts. Mark **ready** only after review;
+  one full release CI then runs on the final head. A CI PASS is valid only for the exact tested SHA; a new commit
+  requires a new full CI. Do not reuse an old CI result.
+- `main-post-merge.yml` runs lightweight integrity verification only; tags run no full CI; post-tag evidence is a
+  GitHub Release artifact. Never add a feature-branch `push` trigger, a top-level `paths:` filter on a mandatory
+  workflow, `[skip ci]` on mandatory checks, or an unpinned action. Never weaken, skip, or duplicate CI gates.
+  See [docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md](docs/ci/DRAFT_TO_RELEASE_WORKFLOW.md).
 
 ## Pull requests
 
