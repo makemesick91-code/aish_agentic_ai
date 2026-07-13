@@ -26,5 +26,23 @@ PASS | ADR governing frontend                                     | docs/decisio
 PASS | ADR governing deployment topology                          | docs/decisions/adr/0032-initial-deployment-topology-and-scale-path.md
 PASS | application implementation status                          | docs/architecture/APPLICATION_ARCHITECTURE_BASELINE.md
 PASS | roadmap step after Step 3                                  | docs/product/ROADMAP.md
+PASS | preferred domain candidate                                 | docs/domain/DOMAIN_STRATEGY.md
+PASS | is the domain owned                                        | docs/domain/DOMAIN_OWNERSHIP_AND_RENEWAL_GOVERNANCE.md
+PASS | fallback domain                                            | docs/domain/DOMAIN_STRATEGY.md
+PASS | canonical app subdomain                                    | docs/domain/SUBDOMAIN_AND_URL_MATRIX.md
+PASS | working tagline                                            | docs/brand/WORKING_TAGLINE_DECISION.md
+PASS | brand voice                                                | docs/brand/BRAND_VOICE.md
+PASS | environment list                                           | docs/environments/ENVIRONMENT_MATRIX.md
+PASS | data allowed in staging                                    | docs/environments/DATA_POLICY_BY_ENVIRONMENT.md
+PASS | production data allowed in CI                              | docs/environments/DATA_POLICY_BY_ENVIRONMENT.md
+PASS | recommended local development strategy                     | docs/environments/LOCAL_DEVELOPMENT_STRATEGY.md
+PASS | pilot deployment class                                     | docs/operations/STEP_4_DEPLOYMENT_TARGET_EVALUATION.md
+PASS | is the application deployed                                | docs/environments/PRODUCTION_ENVIRONMENT_PLAN.md
+PASS | dependency approval status                                 | docs/dependencies/DEPENDENCY_APPROVAL_MATRIX.md
+PASS | first SaaS Foundation implementation sprint                | docs/planning/NEXT_IMPLEMENTATION_SPRINT.md
+PASS | rule forbidding secret in repository                       | .claude/rules/24-configuration-and-secrets.md
+PASS | rule forbidding false domain ownership claim               | .claude/rules/21-domain-and-dns-governance.md
+PASS | brand token accessibility target                           | docs/brand/tokens/brand-tokens.v1.json
+PASS | roadmap step after Step 4                                  | docs/product/ROADMAP.md
 ---
-PASS: 28/28 canonical queries resolved to canonical file paths
+PASS: 46/46 canonical queries resolved to canonical file paths
