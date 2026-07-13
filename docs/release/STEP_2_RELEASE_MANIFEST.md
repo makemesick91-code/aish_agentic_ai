@@ -32,12 +32,12 @@ Full checksum set: `docs/evidence/source-checksums/SHA256SUMS.txt` (and Step 2 s
 ## Release pipeline (recorded as executed)
 | Stage | Reference | Status |
 |-------|-----------|--------|
-| Commits | see `git log` on feature branch | recorded at push |
-| Push | `origin/docs/step-2-persona-pilot-use-cases` | PENDING → filled at push |
-| Pull Request | `#<PR>` to `main` | PENDING → filled at PR |
-| CI run | `documentation-foundation` (workflow run id) | PENDING → `docs/evidence/step-2/ci/` |
-| Merge commit | `<sha>` | PENDING → filled at merge |
-| GO tag | `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go` | PENDING → `STEP_2_TAG_VERIFICATION.md` |
+| Commits | 5 logical commits `005b343`→`1d88d9a` | DONE |
+| Push | `origin/docs/step-2-persona-pilot-use-cases` | DONE |
+| Pull Request | `#3` to `main` | MERGED |
+| CI run | `documentation-foundation` run `29218803260` | SUCCESS (headSha `1d88d9a`) |
+| Merge commit | `abf1d00a15a5d93c01f3beb64eadae364b0c24df` | DONE |
+| GO tag | `aish-agentic-ai-step-2-persona-pilot-v1.0.0-go` (obj `54ddeeb`, peeled `abf1d00`) | VERIFIED exact-match |
 
 ## Rollback
 Revert the merge commit on `main` via a new PR; never rewrite history or move/delete tags. The immutable

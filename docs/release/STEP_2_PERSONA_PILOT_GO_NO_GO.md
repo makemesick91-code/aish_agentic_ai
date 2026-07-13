@@ -22,11 +22,17 @@ GO/WATCH/NO-GO (that is `docs/product/PILOT_GO_WATCH_NO_GO.md`).
 | 9 | Local validation (all gates) | PASS (evidence: `docs/evidence/step-2/validation/`) |
 | 10 | Secret scan clean | PASS |
 | 11 | Graph build + drift + 14/14 query smoke | PASS |
-| 12 | Independent reviews (product + security/release) with findings resolved | RECORDED — `docs/evidence/step-2/reviews/` |
-| 13 | Branch pushed + PR opened to `main` | PENDING (recorded in `STEP_2_RELEASE_MANIFEST.md`) |
-| 14 | Required CI green on PR | PENDING (recorded in `docs/evidence/step-2/ci/`) |
-| 15 | PR merged with human authorization if branch protection requires | PENDING |
-| 16 | Annotated GO tag exact-match local = remote = merged commit | PENDING (recorded in `STEP_2_TAG_VERIFICATION.md`) |
+| 12 | Independent reviews (product + security + QA) with findings resolved | PASS — `docs/evidence/step-2/reviews/review-summary.md` |
+| 13 | Branch pushed + PR opened to `main` | PASS — PR `#3` |
+| 14 | Required CI green on PR | PASS — run `29218803260` conclusion `success` |
+| 15 | PR merged (main not branch-protected; end-to-end flow owner-authorized) | PASS — merge commit `abf1d00` |
+| 16 | Annotated GO tag exact-match local = remote = merged commit | PASS — tag peeled `abf1d00`, obj `54ddeeb` (`STEP_2_TAG_VERIFICATION.md`) |
+
+## Decision: GO TAGGED — STEP 2 DOCUMENTATION
+All criteria 1–16 satisfied with evidence. Annotated immutable tag
+`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go` created on merged commit `abf1d00` and verified exact-match
+local = remote = merged commit. **Application implementation, deployment, pilot readiness, pilot runtime, and
+production remain NOT STARTED.**
 
 ## Hard prohibitions honored
 - No review gating introduced; no human approval removed; no medical/PII leakage path; no falsified success

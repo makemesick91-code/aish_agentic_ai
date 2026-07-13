@@ -7,9 +7,9 @@ This report is finalized once merge and tag evidence exist. Until then, PR/CI/me
 
 ## Overall status
 - **Step 2 documentation:** COMPLETE (local gates ALL PASSED).
-- **Repository merge:** PENDING (PR to `main`).
-- **CI:** PENDING (await real workflow conclusion).
-- **Step 2 GO tag:** PENDING (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`).
+- **Repository merge:** COMPLETE (PR #3 merged to `main`; merge commit `abf1d00`).
+- **CI:** GREEN (run `29218803260`, conclusion `success`).
+- **Step 2 GO tag:** VERIFIED (`aish-agentic-ai-step-2-persona-pilot-v1.0.0-go`; obj `54ddeeb`, peeled `abf1d00`).
 - **Application implementation / deployment / pilot readiness / pilot runtime / production:** NOT STARTED.
 
 ## Canonical sources
@@ -48,5 +48,13 @@ readiness. See `docs/product/PILOT_*` and `docs/security/PILOT_*`.
 Step 3 — Repository Application Architecture and ADR Foundation (after Step 2 is merged and GO-tagged).
 
 ## Finalized merge/tag evidence
-Merge commit: PENDING · CI run: PENDING · Tag object: PENDING · Tag peeled: PENDING · Exact-match: PENDING.
-See `STEP_2_TAG_VERIFICATION.md` and `docs/evidence/step-2/git-release/`.
+Merge commit: `abf1d00a15a5d93c01f3beb64eadae364b0c24df` · CI run: `29218803260` (success) · Tag object:
+`54ddeeb34e8052657020279cdd01cf362b7541a9` · Tag peeled: `abf1d00a15a5d93c01f3beb64eadae364b0c24df` ·
+Exact-match: **VERIFIED** (local main = origin/main = merged commit = local tag peeled = remote tag peeled).
+Foundation tag `aish-agentic-ai-docs-foundation-v1.0.0-go` (peeled `ba1c80f`) unchanged.
+See `STEP_2_TAG_VERIFICATION.md` and `docs/evidence/step-2/git-release/tag-verification.txt`.
+
+## Truthful final state
+Step 2 documentation: COMPLETE · Repository merge: COMPLETE · CI: GREEN · Step 2 GO tag: VERIFIED ·
+Application implementation: NOT STARTED · Deployment: NOT STARTED · Pilot readiness: NOT STARTED ·
+Pilot runtime: NOT STARTED · Production readiness: NOT STARTED.
