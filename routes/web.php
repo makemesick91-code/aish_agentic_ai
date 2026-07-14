@@ -3,12 +3,23 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\InvitationAcceptController;
+use App\Http\Controllers\Platform\NotificationHealthController;
+use App\Http\Controllers\Platform\PlanCatalogController;
+use App\Http\Controllers\Platform\PlatformAuditController;
+use App\Http\Controllers\Platform\PlatformDashboardController;
+use App\Http\Controllers\Platform\PlatformUserController;
+use App\Http\Controllers\Platform\SubscriptionDirectoryController;
+use App\Http\Controllers\Platform\SupportNoteController;
+use App\Http\Controllers\Platform\TenantDirectoryController;
 use App\Http\Controllers\Tenancy\AuditLogController;
 use App\Http\Controllers\Tenancy\BranchController;
 use App\Http\Controllers\Tenancy\BranchSelectionController;
 use App\Http\Controllers\Tenancy\FoundationDashboardController;
 use App\Http\Controllers\Tenancy\InvitationController;
 use App\Http\Controllers\Tenancy\MembershipController;
+use App\Http\Controllers\Tenancy\NotificationInboxController;
+use App\Http\Controllers\Tenancy\NotificationPreferenceController;
+use App\Http\Controllers\Tenancy\SubscriptionOverviewController;
 use App\Http\Controllers\Tenancy\TenantProfileController;
 use App\Http\Controllers\Tenancy\TenantSelectionController;
 use Illuminate\Support\Facades\Route;
@@ -62,4 +73,50 @@ Route::middleware('tenant')->group(function (): void {
     Route::delete('/invitations/{invitation}', [InvitationController::class, 'destroy'])->name('invitations.destroy');
 
     Route::get('/audit', [AuditLogController::class, 'index'])->name('audit.index');
+
+    // SPRINT-SF-05 — tenant notification inbox + preferences.
+    Route::get('/notifications', [NotificationInboxController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/read-all', [NotificationInboxController::class, 'markAllRead'])->name('notifications.read-all');
+    Route::patch('/notifications/{delivery}/read', [NotificationInboxController::class, 'markRead'])->name('notifications.read');
+    Route::get('/notification-preferences', [NotificationPreferenceController::class, 'edit'])->name('notifications.preferences.edit');
+    Route::put('/notification-preferences', [NotificationPreferenceController::class, 'update'])->name('notifications.preferences.update');
+
+    // SPRINT-SF-05 — tenant subscription overview (read-only for the tenant).
+    Route::get('/subscription', [SubscriptionOverviewController::class, 'show'])->name('subscription.show');
+});
+
+/*
+ * SPRINT-SF-05 — Platform operator plane. Authenticated + verified + active + platform-role
+ * gated. Establishes NO tenant context; each route additionally requires a specific platform
+ * permission (rule 31 §10). Tenant-owned models here are resolved without the tenant scope and
+ * always filtered explicitly by the acted-on tenant/subscription.
+ */
+Route::middleware('platform')->prefix('platform-admin')->name('platform.')->group(function (): void {
+    Route::get('/', PlatformDashboardController::class)->name('dashboard');
+
+    Route::get('/tenants', [TenantDirectoryController::class, 'index'])->name('tenants.index');
+    Route::get('/tenants/{tenant}', [TenantDirectoryController::class, 'show'])->name('tenants.show');
+    Route::patch('/tenants/{tenant}/suspend', [TenantDirectoryController::class, 'suspend'])->name('tenants.suspend');
+    Route::patch('/tenants/{tenant}/reactivate', [TenantDirectoryController::class, 'reactivate'])->name('tenants.reactivate');
+    Route::patch('/tenants/{tenant}/deletion-pending', [TenantDirectoryController::class, 'markDeletionPending'])->name('tenants.deletion-pending');
+    Route::post('/tenants/{tenant}/support-notes', [SupportNoteController::class, 'store'])->name('tenants.support-notes.store');
+
+    Route::get('/plans', [PlanCatalogController::class, 'index'])->name('plans.index');
+    Route::post('/plans', [PlanCatalogController::class, 'store'])->name('plans.store');
+    Route::get('/plans/{plan}', [PlanCatalogController::class, 'show'])->name('plans.show');
+    Route::patch('/plans/{plan}/activate', [PlanCatalogController::class, 'activate'])->name('plans.activate');
+    Route::patch('/plans/{plan}/retire', [PlanCatalogController::class, 'retire'])->name('plans.retire');
+    Route::post('/plans/{plan}/features', [PlanCatalogController::class, 'storeFeature'])->name('plans.features.store');
+
+    Route::get('/subscriptions', [SubscriptionDirectoryController::class, 'index'])->name('subscriptions.index');
+    Route::post('/subscriptions', [SubscriptionDirectoryController::class, 'assign'])->name('subscriptions.assign');
+    Route::patch('/subscriptions/{subscription}/transition', [SubscriptionDirectoryController::class, 'transition'])->name('subscriptions.transition');
+
+    Route::get('/notifications', [NotificationHealthController::class, 'index'])->name('notifications.index');
+
+    Route::get('/users', [PlatformUserController::class, 'index'])->name('users.index');
+    Route::post('/users', [PlatformUserController::class, 'invite'])->name('users.invite');
+    Route::delete('/users/{assignment}', [PlatformUserController::class, 'removeRole'])->name('users.remove-role');
+
+    Route::get('/audit', [PlatformAuditController::class, 'index'])->name('audit.index');
 });

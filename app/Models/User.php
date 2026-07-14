@@ -72,6 +72,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * The user's platform (operator) role assignments. This is the SEPARATE platform plane —
+     * it grants no tenant-data access and is unrelated to tenant Spatie roles (rule 31 §10.1).
+     *
+     * @return HasMany<PlatformRoleAssignment, $this>
+     */
+    public function platformRoleAssignments(): HasMany
+    {
+        return $this->hasMany(PlatformRoleAssignment::class);
+    }
+
+    /**
      * The user's active membership for a given tenant id, or null. Queried without the
      * tenant scope on purpose: this runs during context resolution, before a context
      * exists (allowlisted infrastructure; rule 30).

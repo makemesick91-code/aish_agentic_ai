@@ -6,11 +6,13 @@ namespace App\Providers;
 
 use App\Models\AuditLog;
 use App\Models\Branch;
+use App\Models\NotificationDelivery;
 use App\Models\Tenant;
 use App\Models\TenantInvitation;
 use App\Models\TenantMembership;
 use App\Policies\AuditLogPolicy;
 use App\Policies\BranchPolicy;
+use App\Policies\NotificationDeliveryPolicy;
 use App\Policies\TenantInvitationPolicy;
 use App\Policies\TenantMembershipPolicy;
 use App\Policies\TenantPolicy;
@@ -31,6 +33,7 @@ class AuthorizationServiceProvider extends ServiceProvider
         TenantMembership::class => TenantMembershipPolicy::class,
         TenantInvitation::class => TenantInvitationPolicy::class,
         AuditLog::class => AuditLogPolicy::class,
+        NotificationDelivery::class => NotificationDeliveryPolicy::class,
     ];
 
     public function boot(): void
