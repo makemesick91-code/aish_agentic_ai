@@ -18,6 +18,8 @@
             ['route' => 'dashboard', 'label' => 'Dashboard'],
             ['route' => 'branches.index', 'label' => 'Branches'],
             ['route' => 'users.index', 'label' => 'Users'],
+            ['route' => 'notifications.index', 'label' => 'Notifications'],
+            ['route' => 'subscription.show', 'label' => 'Subscription'],
             ['route' => 'audit.index', 'label' => 'Audit'],
             ['route' => 'tenant.edit', 'label' => 'Settings'],
         ];

@@ -18,3 +18,10 @@ Schedule::command('aish:heartbeat')
     ->everyFiveMinutes()
     ->withoutOverlapping()
     ->onOneServer();
+
+// SPRINT-SF-05: idempotent subscription reconciliation (trial/period/grace expiry).
+// Foundation-only; makes no payment assumption and is safe to rerun (rule 31 §9.8; ADR 0055).
+Schedule::command('aish:subscription-reconcile')
+    ->hourly()
+    ->withoutOverlapping()
+    ->onOneServer();

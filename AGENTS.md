@@ -5,13 +5,13 @@ knowledge. It stays in sync with `CLAUDE.md` and `.claude/rules/` — there is *
 
 ## Authority (read before acting)
 1. Latest explicit product-owner decision.
-2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.7.0**).
+2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.8.0**).
 3. PRD — `docs/canonical/PRD.md` (active **v1.3.0**).
-4. Approved ADRs — `docs/decisions/adr/` (0001–0046) and `docs/decisions/DECISION_LOG.md`.
-5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..133).
+4. Approved ADRs — `docs/decisions/adr/` (0001–0056) and `docs/decisions/DECISION_LOG.md`.
+5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..170).
 6. Other repo docs → derived artifacts → graph/index (**never** authoritative).
 
-Full rules live in `.claude/rules/00`–`28`. Nested `AGENTS.md` files add area-specific rules
+Full rules live in `.claude/rules/00`–`31`. Nested `AGENTS.md` files add area-specific rules
 (`docs/*/AGENTS.md`, `scripts/AGENTS.md`, `app/AGENTS.md`, `tests/AGENTS.md`).
 
 ## Canonical repository
@@ -66,5 +66,15 @@ tenant/branch lifecycle + memberships, immutable fail-closed tenant context, ten
 append-only audit, and tenant isolation across DB/cache/queue/storage/logging. Step 6 is **CODE COMPLETE** and
 **TESTED locally**, **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT
 clean-checkout-verified; target GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`; evidence
-forthcoming under `docs/evidence/step-6/`. No domain is owned; nothing is deployed. **Business/module
+forthcoming under `docs/evidence/step-6/`. **SPRINT-SF-05 — Notification, Subscription, and Platform Admin
+Skeletons** (Master Source v2.8.0, ADRs 0054–0056, AFR-155..170, rule 31) adds a tenant-safe notification foundation
+(single dispatcher, truthful states, idempotent bounded retry, in-app + email only), a subscription/entitlement
+skeleton (typed allowlisted entitlements, single fail-closed resolver, idempotent usage metering; commercial ≠
+payment; security-suspension precedence), and a separate least-privilege platform-admin plane (platform ≠ tenant
+roles, no `Gate::before` bypass, self-escalation blocked, last-super-admin protected, impersonation prohibited).
+SF-05 is **CODE COMPLETE** and **TESTED locally** (182 tests; Pint/PHPStan clean; verified against real PostgreSQL 17
++ Redis 7 via `aish:verify-sf-05`), **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT
+clean-checkout-verified on the merged SHA; target GO tag
+`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`; evidence forthcoming
+under `docs/evidence/sprint-sf-05/`. No domain is owned; nothing is deployed. **Business/module
 implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and production readiness: **NOT STARTED.**

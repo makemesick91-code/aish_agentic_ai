@@ -99,3 +99,9 @@ Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
 - Graphify (branded): host binary `0.8.35` present but NOT governance-verified → deterministic index used (OD-05).
 - MCP: `.mcp.json` empty server set + governance. gh authenticated `makemesick91-code`.
 - Baseline immutable tags unchanged: docs-foundation `ba1c80f`, step-2 `abf1d00`.
+
+## SPRINT-SF-05 — Notification, Subscription, and Platform Admin Skeletons
+- CODE COMPLETE + TESTED locally: 182 tests green (812 assertions); Pint + PHPStan (level 6) clean; composer/npm audits clean.
+- Verified against real PostgreSQL 17 + Redis 7 via `aish:verify-sf-05` (found + fixed a Postgres `FOR UPDATE`+aggregate bug that sqlite masked).
+- Master Source v2.8.0 (§72); ADRs 0054–0056; AFR-155..170; rule 31; coverage matrix + CLAUDE/AGENTS/VERSION_MATRIX/CHANGELOG updated; `scripts/docs/validate.sh` ALL GATES PASSED.
+- IN PROGRESS toward GO: NOT yet merged on CI, NOT tagged, NOT clean-checkout-verified on the merged SHA. Business/module implementation, deployment, pilot, production: NOT STARTED.

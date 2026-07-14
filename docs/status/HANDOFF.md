@@ -75,3 +75,12 @@ v1.3.0. `scripts/docs/validate.sh` passes all gates. No domain owned, no package
 application implementation NOT STARTED. Remaining: commit → PR → CI → merge → annotated GO tag
 `aish-agentic-ai-step-4-domain-branding-environment-saas-foundation-planning-v1.0.0-go`, then begin SPRINT-SF-00.
 Do not move prior GO tags (ba1c80f / abf1d00 / 764a484).
+
+## SPRINT-SF-05 handoff
+SF-05 (notification foundation, subscription/entitlement skeleton, platform-admin plane) implemented on branch
+`feature/sprint-sf-05-notification-subscription-platform-admin-skeletons`. Master Source v2.8.0 / PRD v1.3.0 unchanged.
+182 tests green; Pint/PHPStan clean; real-infra verified; `scripts/docs/validate.sh` all gates pass. Remaining:
+commit → draft PR → mark ready → one authoritative Full CI on the final head → merge → clean-checkout verify
+(`scripts/runtime/verify-sf-05.sh`) on the merged SHA → annotated GO tag
+`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go` → GitHub Release →
+post-tag evidence sync under `docs/evidence/sprint-sf-05/`. Do not move any prior GO tag.

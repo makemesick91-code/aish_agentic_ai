@@ -20,10 +20,14 @@ mapped in the [Step 4 Traceability Matrix](../../quality/STEP_4_REQUIREMENTS_TRA
 
 CI/runtime and SaaS-core ADRs also live under [`../../decisions/adr/`](../../decisions/adr/): **0042–0046**
 (CICD-CTRL-1 — safe CI runtime control; rule 28), **0047–0050** (Step 5 — runtime & repository bootstrap; rule 29),
-and **0051–0053** (Step 6 — SaaS Core Foundation; rule 30):
+**0051–0053** (Step 6 — SaaS Core Foundation; rule 30), and **0054–0056** (SPRINT-SF-05 — notification,
+subscription, and platform admin; rule 31):
 
 | ADR | Title | Architecture relevance |
 |-----|-------|------------------------|
 | [0051](../../decisions/adr/0051-step-6-consolidated-saas-core-foundation.md) | Step 6 consolidated SaaS Core Foundation | Release packaging of coupled SF-01..SF-04 sprints |
 | [0052](../../decisions/adr/0052-saas-core-platform-placement.md) | SaaS core platform placement (top-level `app/`, not `app/Modules/`) | Cross-cutting substrate placement |
 | [0053](../../decisions/adr/0053-tenant-membership-and-context-model.md) | Tenant membership & context model | Tenancy, identity, RBAC, isolation |
+| [0054](../../decisions/adr/0054-notification-delivery-and-state.md) | Notification delivery & state | Tenant-safe delivery substrate, truthful states, idempotency |
+| [0055](../../decisions/adr/0055-subscription-and-entitlement-model.md) | Subscription & entitlement model | Plan catalog, single fail-closed entitlement resolver, security precedence |
+| [0056](../../decisions/adr/0056-platform-admin-trust-boundary.md) | Platform Admin trust boundary | Operator-plane separation, least privilege, no impersonation |

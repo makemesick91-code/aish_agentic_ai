@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Health\LivenessController;
 use App\Http\Controllers\Health\ReadinessController;
+use App\Http\Middleware\EnsurePlatformAccess;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\RequireBranchContext;
 use App\Http\Middleware\ResolveBranchContext;
@@ -37,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'tenant.context' => ResolveTenantContext::class,
             'branch.context' => ResolveBranchContext::class,
             'branch.required' => RequireBranchContext::class,
+            'platform.access' => EnsurePlatformAccess::class,
         ]);
 
         // The `tenant` group is the standard stack for any tenant-scoped surface:
@@ -49,6 +51,16 @@ return Application::configure(basePath: dirname(__DIR__))
             'active',
             'tenant.context',
             'branch.context',
+        ]);
+
+        // The `platform` group is the operator plane (SPRINT-SF-05). It is authenticated +
+        // verified + active + platform-role-gated, and deliberately establishes NO tenant
+        // context — platform access never grants tenant-data access (rule 31 §10.1, §10.4).
+        $middleware->group('platform', [
+            'auth',
+            'verified',
+            'active',
+            'platform.access',
         ]);
 
         // The tenant context MUST be established before route-model binding runs, so the

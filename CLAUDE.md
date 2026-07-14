@@ -98,6 +98,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `28-safe-ci-runtime-control.md` | Local-first + draft-first CI, one final-head full gate, SHA-bound evidence, internal fail-closed routing, stable required gate, lightweight post-merge/post-tag, workflow security, no false one-run claim |
 | `29-runtime-bootstrap-and-operations.md` | Reproducible Laravel 12 runtime bootstrap, pinned versions, env contract, truthful health/readiness, queue/scheduler foundation, security baseline, backend runtime CI, runtime-evidence-before-claims |
 | `30-saas-core-foundation.md` | Secure auth/identity, tenant/branch lifecycle + memberships, immutable fail-closed tenant context, tenant-scoped RBAC + policies, append-only audit, tenant isolation (DB/cache/queue/storage/log) |
+| `31-notification-subscription-platform-admin-foundation.md` | Tenant-safe notification delivery + truthful states, subscription/entitlement (fail-closed resolver; commercial ≠ payment), separate least-privilege platform-admin plane (no impersonation) |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -138,6 +139,21 @@ tenant-scoped RBAC (Spatie teams on `tenant_id`) with policies, append-only audi
 DB/cache/queue/storage/logging. Step 6 is **CODE COMPLETE** and **TESTED locally**, and **IN PROGRESS toward GO** —
 NOT yet merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified; merge/CI/tag evidence is
 forthcoming under `docs/evidence/step-6/`.
+**SPRINT-SF-05 — Notification, Subscription, and Platform Admin Skeletons** (Master Source **v2.8.0**, PRD **v1.3.0**
+unchanged, ADRs 0054–0056, AFR-155..170, rule 31) adds three platform-core foundations: a tenant-safe **notification**
+foundation (single dispatcher, membership-verified recipients, per-(recipient,channel) globally-unique dedup, truthful
+delivery states, bounded idempotent retry, in-app + email only, timezone-aware preferences/quiet-hours, critical bypass,
+ownership-checked inbox); a **subscription & entitlement** skeleton (plan `(code,version)` catalog, typed allowlisted
+entitlements, guarded subscription state machine, one authoritative fail-closed resolver, idempotent tenant-scoped usage
+metering, idempotent `aish:subscription-reconcile`; commercial ≠ payment; security-suspension precedence); and a separate
+least-privilege **platform-admin** plane (platform roles distinct from tenant roles, no `Gate::before` bypass,
+per-permission authorization, secure `aish:platform-admin-provision`, reason-required audited tenant status changes,
+append-only support notes, truthful metrics, impersonation prohibited). **CODE COMPLETE** and **TESTED locally** (182
+tests; Pint/PHPStan clean; SF-05 foundations verified against real PostgreSQL 17 + Redis 7 via `aish:verify-sf-05`),
+and **IN PROGRESS toward GO** — NOT yet merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified on the
+merged SHA; target GO tag
+`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`; merge/CI/tag evidence
+forthcoming under `docs/evidence/sprint-sf-05/`.
 **Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 
