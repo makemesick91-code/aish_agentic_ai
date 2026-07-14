@@ -74,7 +74,7 @@ final class ProvisionTenantCommand extends Command
             ['Invitation ref', $result->ownerInvitation->ulid],
             ['Invitation expires', $result->ownerInvitation->expires_at->toDayDateTimeString()],
         ]);
-        $this->line('An invitation email was dispatched to the owner. No password or token is printed by design.');
+        $this->line('An invitation email was dispatched to the owner, who sets their own credentials via that link. No secret is printed by design.');
 
         return self::SUCCESS;
     }
