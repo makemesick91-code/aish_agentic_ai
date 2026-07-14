@@ -252,10 +252,10 @@ Digunakan untuk:
   topic/severity/summary, customer recovery, SLA, Google OAuth/review, agent orchestration, RAG, and WhatsApp/SMS/push
   delivery remain out of scope); Google Review anti-gating preserved (a feedback state/score never gates review
   access); truthful-status and evidence-before-claims preserved.
-- Status: IN PROGRESS toward GO — CODE COMPLETE and TESTED locally; NOT merged, NOT tagged, NOT CI-green-on-CI, and
-  NOT clean-checkout-verified against real PostgreSQL 17 + Redis 7 at authoring time. The target Step 8 GO tag
-  `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` will attest feedback-operations foundation
-  readiness only.
+- Status: MERGED (PR #21, merge `6792db5`), CLEAN-CHECKOUT VERIFIED on `6792db5` against real PostgreSQL 17 + Redis 7,
+  GO TAGGED, and RELEASE PUBLISHED. Authoritative Full CI green on `99d79ee` (run `29372058345`). The Step 8 GO tag
+  `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` (object `43168d43`, peeled `6792db5`) attests
+  feedback-operations foundation readiness only.
 - Evidence: ADRs 0060–0062, Claude rule 33, AFR-188..210, `docs/evidence/step-8-independent-security-review.md`;
   runtime/CI/merge/tag evidence forthcoming under `docs/evidence/step-8/`.
 - Changelog: see root `CHANGELOG.md` v2.10.0.
@@ -4276,8 +4276,10 @@ Pint/PHPStan clean, secret scan clean, documentation gates green, the independen
 unresolved critical/high/medium), a clean-checkout Step 8 verification (`scripts/runtime/verify-step-8.sh` / `php
 artisan aish:verify-step-8`) on the exact merged SHA against real PostgreSQL 17 + Redis 7, authoritative Full CI green
 on the final head, merge evidence, and an exact-match annotated GO tag. Step 8 is **CODE COMPLETE and TESTED locally**
-and **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified against
-real infrastructure at authoring time. The target Step 8 GO tag
+and **MERGED** (PR #21, merge `6792db5`), **clean-checkout verified** on `6792db5` against real PostgreSQL 17 +
+Redis 7, and **GO TAGGED** (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`,
+peeled `6792db5`; local == remote == main; authoritative Full CI green on `99d79ee`, run `29372058345`; GitHub
+Release published). The Step 8 GO tag
 `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` attests feedback-operations foundation readiness
 only — not AI/recovery/SLA/Google, not deployment, pilot, or production readiness.
 

@@ -181,13 +181,14 @@ search (PostgreSQL FTS + LIKE fallback; content search gated by `feedback.view-c
 a queued entitlement-gated metered secure CSV export (private+expiring; requester-scoped re-authorized download; CSV
 formula-injection guard), with base access entitlement-gated (`EnsureFeedbackEnabled`), SF-05-dispatched
 notifications, and sanitized append-only audit; Google Review anti-gating preserved. **CODE COMPLETE** and **TESTED
-locally** (full hermetic suite 352 passing; Pint + PHPStan clean; `aish:verify-step-8` 18 checks on SQLite; the
-independent Step 8 security review is **PASS after fixes** — F-1 HIGH export-download re-authorization and F-2/F-3 LOW
-hardening FIXED, 14/14 other vectors PASS), and **IN PROGRESS toward GO** — **NOT** yet merged, **NOT** tagged, **NOT**
-CI-green-on-CI, and **NOT** clean-checkout-verified against real PostgreSQL 17 + Redis 7 on branch
-`feature/step-8-feedback-operations-foundation`; merge/CI/tag/real-infra evidence is forthcoming under
-`docs/evidence/step-8/` and `docs/release/STEP_8_TAG_VERIFICATION.md`. The target GO tag is
-`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`.
+locally** (full hermetic suite 354 passing; Pint + PHPStan clean; `aish:verify-step-8` 18 checks on SQLite and on real
+PostgreSQL 17 + Redis 7; the independent Step 8 security review is **PASS after fixes** — F-1 HIGH export-download
+re-authorization and F-2/F-3 LOW hardening FIXED, 14/14 other vectors PASS). **MERGED** (PR #21, merge `6792db5`) and
+**GO TAGGED** (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled
+`6792db5`; local == remote == main). Authoritative Full CI green on `99d79ee` (run `29372058345`);
+**clean-checkout verified** on `6792db5` against real PostgreSQL 17 + Redis 7
+(`aish:verify-step-8` PASS; hermetic suite 354); GitHub Release published; evidence under `docs/evidence/step-8/` and
+`docs/release/STEP_8_TAG_VERIFICATION.md`.
 **Business/module implementation (AI/recovery/SLA/Google/agent/RAG/billing), deployment, pilot readiness, pilot
 runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
