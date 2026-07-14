@@ -145,20 +145,9 @@ jobs:
         options: >-
           --health-cmd="redis-cli ping"
           --health-interval=5s --health-timeout=5s --health-retries=20
-    env:
-      DB_CONNECTION: pgsql
-      DB_HOST: 127.0.0.1
-      DB_PORT: "5432"
-      DB_DATABASE: aish_agentic_ai
-      DB_USERNAME: aish
-      DB_PASSWORD: aish_ci_ephemeral
-      REDIS_CLIENT: predis
-      REDIS_HOST: 127.0.0.1
-      REDIS_PORT: "6379"
-      CACHE_STORE: redis
-      QUEUE_CONNECTION: redis
-      SESSION_DRIVER: redis
-      VERIFY_COMPOSE: "0"
+    # NOTE: DB/Redis connection env is scoped to the runtime-verification step ONLY, so the
+    # hermetic PHPUnit suite (sqlite/array/sync via phpunit.xml) is never affected by the
+    # service-container settings. Real PostgreSQL + Redis are exercised by verify-runtime.sh.
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -200,6 +189,20 @@ jobs:
       - name: Dependency audit (JS)
         run: npm audit --audit-level=high
       - name: End-to-end runtime verification (Postgres + Redis)
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: "5432"
+          DB_DATABASE: aish_agentic_ai
+          DB_USERNAME: aish
+          DB_PASSWORD: aish_ci_ephemeral
+          REDIS_CLIENT: predis
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: "6379"
+          CACHE_STORE: redis
+          QUEUE_CONNECTION: redis
+          SESSION_DRIVER: redis
+          VERIFY_COMPOSE: "0"
         run: scripts/runtime/verify-runtime.sh
 
   required-gate:
