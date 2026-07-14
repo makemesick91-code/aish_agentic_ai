@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\InvitationAcceptController;
-use App\Http\Controllers\PublicSurvey\PublicSurveyController;
-use App\Http\Controllers\PublicSurvey\SurveyQrController;
 use App\Http\Controllers\Platform\NotificationHealthController;
 use App\Http\Controllers\Platform\PlanCatalogController;
 use App\Http\Controllers\Platform\PlatformAuditController;
@@ -13,6 +11,8 @@ use App\Http\Controllers\Platform\PlatformUserController;
 use App\Http\Controllers\Platform\SubscriptionDirectoryController;
 use App\Http\Controllers\Platform\SupportNoteController;
 use App\Http\Controllers\Platform\TenantDirectoryController;
+use App\Http\Controllers\PublicSurvey\PublicSurveyController;
+use App\Http\Controllers\PublicSurvey\SurveyQrController;
 use App\Http\Controllers\Tenancy\AuditLogController;
 use App\Http\Controllers\Tenancy\BranchController;
 use App\Http\Controllers\Tenancy\BranchSelectionController;
