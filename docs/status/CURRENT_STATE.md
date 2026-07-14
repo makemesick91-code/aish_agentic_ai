@@ -104,4 +104,5 @@ Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
 - CODE COMPLETE + TESTED locally: 182 tests green (812 assertions); Pint + PHPStan (level 6) clean; composer/npm audits clean.
 - Verified against real PostgreSQL 17 + Redis 7 via `aish:verify-sf-05` (found + fixed a Postgres `FOR UPDATE`+aggregate bug that sqlite masked).
 - Master Source v2.8.0 (§72); ADRs 0054–0056; AFR-155..170; rule 31; coverage matrix + CLAUDE/AGENTS/VERSION_MATRIX/CHANGELOG updated; `scripts/docs/validate.sh` ALL GATES PASSED.
-- IN PROGRESS toward GO: NOT yet merged on CI, NOT tagged, NOT clean-checkout-verified on the merged SHA. Business/module implementation, deployment, pilot, production: NOT STARTED.
+- **MERGED** (PR #17, merge `ca0bea6`) and **GO TAGGED** (`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`, object `08451100`, peeled `ca0bea6`; local == remote == main). Authoritative Full CI green on `899e888` (run `29326645691`); main-post-merge lightweight success on `ca0bea6`; **clean-checkout verified** on the merged SHA against real PostgreSQL 17 + Redis 7; GitHub Release published.
+- Foundation readiness only. Business/module implementation, deployment, pilot, production: NOT STARTED.
