@@ -3,9 +3,10 @@
 Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
-- **Step 8 — Feedback Operations Foundation:** **CODE COMPLETE** and **TESTED locally** on branch
-  `feature/step-8-feedback-operations-foundation` (base `main`), and **IN PROGRESS toward GO** — **NOT** yet merged,
-  **NOT** tagged, **NOT** CI-green-on-CI, and **NOT** clean-checkout-verified against real PostgreSQL 17 + Redis 7.
+- **Step 8 — Feedback Operations Foundation:** **MERGED** (PR #21, merge `6792db5`) and **GO TAGGED**
+  (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled `6792db5`;
+  local == remote == main). Authoritative Full CI green on `99d79ee` (run `29372058345`); **clean-checkout verified**
+  on `6792db5` against real PostgreSQL 17 + Redis 7 (`aish:verify-step-8` PASS; hermetic suite 354); GitHub Release published.
   Turns completed survey responses into an operable Feedback Inbox: an after-commit `SurveyResponseCompleted` event +
   queued idempotent projection (one item per source via a DB unique `(tenant_id, source_type, source_id)` constraint;
   `aish:feedback-reconcile` back-fill), an explicit guarded lifecycle (`new..archived`; resolved/closed ≠ recovery),

@@ -6,7 +6,7 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
-## [Unreleased] — Step 8 (Master Source v2.10.0): Feedback Operations Foundation
+## [2026-07-15] — Step 8 (Master Source v2.10.0): Feedback Operations Foundation — MERGED & GO TAGGED
 
 Target release: annotated tag `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`.
 Base branch `main`, feature branch `feature/step-8-feedback-operations-foundation`. Second customer-experience

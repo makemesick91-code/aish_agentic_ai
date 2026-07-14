@@ -3,22 +3,24 @@
 Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
-**Step 8 — Feedback Operations Foundation** is **CODE COMPLETE and TESTED locally** on branch
-`feature/step-8-feedback-operations-foundation` (base `main`), **IN PROGRESS toward GO** (NOT merged/tagged/CI-green/
-clean-checkout-verified against real PostgreSQL 17 + Redis 7). Full hermetic suite **352 passing**; Pint/PHPStan
-clean; `php artisan aish:verify-step-8` 18 checks pass on SQLite. Master Source **v2.10.0** (§74); ADRs 0060–0062;
+**Step 8 — Feedback Operations Foundation** is **MERGED** (PR #21, merge `6792db5`), **CLEAN-CHECKOUT VERIFIED** on
+`6792db5` against real PostgreSQL 17 + Redis 7, **GO TAGGED**
+(`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled `6792db5`), and
+**RELEASE PUBLISHED**. Authoritative Full CI green on `99d79ee` (run `29372058345`). Full hermetic suite **354
+passing**; Pint/PHPStan clean; `php artisan aish:verify-step-8` 18 checks pass on SQLite and real infra. Master Source **v2.10.0** (§74); ADRs 0060–0062;
 AFR-188..210; rule 33. Delivers an operable Feedback Inbox: idempotent projection from an after-commit
 `SurveyResponseCompleted` event (one item per source; `aish:feedback-reconcile` back-fill), an explicit guarded
 lifecycle, scope-validated assignment with membership-revocation fail-close, tenant-isolated tags, append-only
 notes/timeline, private content-MIME-validated attachments, permission-aware search (PostgreSQL FTS + LIKE fallback),
 bounded bulk operations, and a queued entitlement-gated metered secure CSV export with requester-scoped download and
 CSV formula-injection protection. The **independent Step 8 security review** is **PASS after fixes** (F-1 HIGH
-export-download re-authorization; F-2/F-3 LOW fixed; 14/14 other vectors PASS). **Next:** draft PR `[STEP-8] Feedback
-Operations Foundation` → ready → authoritative Full CI on the final head → merge → clean-checkout verify on the
-merged SHA (`scripts/runtime/verify-step-8.sh`) → annotated GO tag
-`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` → GitHub Release → post-tag evidence sync. Google
-Review anti-gating preserved; AI/recovery/Google/agent/RAG/billing modules, deployment, pilot, and production remain
-**NOT STARTED**.
+export-download re-authorization; F-2/F-3 LOW fixed; 14/14 other vectors PASS). **Done:** draft PR #21 → ready →
+authoritative Full CI green (`99d79ee`, run `29372058345`) → merged (`6792db5`) → clean-checkout verified on
+`6792db5` against real PostgreSQL 17 + Redis 7 → annotated GO tag
+`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` (object `43168d43`, peeled `6792db5`) → GitHub
+Release published → this post-tag evidence sync. **Next:** the next capability per the Master Source implementation
+order begins only after this release is confirmed. Google Review anti-gating preserved; AI/recovery/Google/agent/RAG/
+billing modules, deployment, pilot, and production remain **NOT STARTED**.
 
 **Step 7 — Survey & CSAT Foundation** is **CODE COMPLETE and TESTED locally** on branch
 `feature/step-7-survey-csat-foundation` (base `main`), **IN PROGRESS toward GO** (NOT merged/tagged/CI-green/
