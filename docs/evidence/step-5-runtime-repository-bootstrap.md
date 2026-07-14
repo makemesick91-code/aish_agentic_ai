@@ -38,16 +38,20 @@ superseded for the implementation phase: package **install** is now permitted; *
 provisioning/deploy, and DNS mutation remain blocked. The guard test (`scripts/hooks/test-guard.sh`) was updated
 accordingly. Recorded in the Master Source v2.6.0 update (§70) and rule 25 supersession.
 
-## Release evidence (completed post-merge)
-The following are recorded in the post-tag evidence sync once the code PR is merged and the annotated GO tag is
-created (this section is intentionally pending until those SHAs exist — evidence-based completion, rule 19):
+## Release evidence
 
-- Code PR number and final head SHA
-- Authoritative `pr-ci` full run ID on the final head + `pr-ci / Required Gate` conclusion
-- Merge commit SHA + lightweight `main-post-merge` result
-- Fresh clean-checkout runtime verification on the merged SHA
-- Annotated tag `aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`: tag object SHA + peeled commit SHA
-- Local/remote tag exact-match verification
+- **Code PR #11** (Step 5 body): final head `6d6d264`, authoritative full CI run `29302066914` success
+  (`Required Gate` green), merge commit `a0f0ca906a6755149799e09184e4a35b67c5efcd`.
+- **Fix PR #12** (`.env.example` docker-port alignment, found by clean-checkout verification): final head
+  `ea11923`, authoritative full CI run `29303547776` success, merge commit
+  `77f9005d9565ecd2090f97a3ad16ddcb6984eba8` (GO-tag target).
+- **Post-merge integrity** (`main-post-merge.yml`): run `29303602217` success.
+- **Clean-checkout runtime verification** on the exact merged SHA `77f9005…`: all PASS (see the table above).
+- **Annotated GO tag** `aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`: tag object
+  `c3a5a9fa04907b530bcb9ae394b1b9f64f977839`, peeled commit `77f9005d9565ecd2090f97a3ad16ddcb6984eba8`;
+  local == remote == `main` HEAD. Not moved by this post-tag sync.
+- **Truthful CI history** (rule 28 AFR-126): PR #11's first ready run failed (test-env leak) and was fixed by a
+  corrective commit; each new head triggered a fresh full CI — no reused result.
 
-See `docs/status/CURRENT_STATE.md` for the live status and
-`docs/evidence/step-5/` for CI/release artifacts.
+Full record: [STEP_5_RELEASE_REPORT.md](../release/STEP_5_RELEASE_REPORT.md),
+[STEP_5_TAG_VERIFICATION.md](../release/STEP_5_TAG_VERIFICATION.md).

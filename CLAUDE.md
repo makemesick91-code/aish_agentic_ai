@@ -123,9 +123,10 @@ stable enforced required gate (`main` ruleset `18890571`), and a GitHub Release 
 AFR-127..133, rule 29) turns the repository into a bootable **Laravel 12** application: modular skeleton, `.env`
 contract, idempotent bootstrap/preflight/verify scripts, Docker-Compose Postgres 17 + Redis 7, truthful
 `/live` + `/ready` probes, queue + scheduler foundation, security-headers baseline, PHPUnit/Pint/PHPStan, and a
-real `backend-runtime-ci` gate wired into `pr-ci / Required Gate`. The runtime is **CODE COMPLETE** and
-**RUNTIME VERIFIED** locally against real PostgreSQL 17 + Redis 7 (live/ready positive+negative, migrate, queue
-dispatch+processing, scheduler, asset build). GO-tag status is recorded post-merge in the release evidence.
+real `backend-runtime-ci` gate wired into `pr-ci / Required Gate`. MERGED (code PR #11 merge `a0f0ca9`; fix PR #12
+merge `77f9005`) and **GO TAGGED** (`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`, tag object
+`c3a5a9f`, peeled `77f9005`; local == remote == main). **RUNTIME VERIFIED** from a clean checkout against real
+PostgreSQL 17 + Redis 7 (live/ready positive+negative, migrate, queue dispatch+processing, scheduler, asset build).
 **Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 

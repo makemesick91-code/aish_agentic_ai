@@ -57,7 +57,8 @@ Documentation, Step 2 persona/pilot, Step 3 architecture, and Step 4 domain/bran
 planning are GO-tagged documentation/governance/planning baselines. CICD-CTRL-1 (Master Source v2.5.0) adds CI
 runtime-control governance; CI/release process is configured and evidenced. **Step 5 — Runtime & Repository
 Bootstrap** (Master Source v2.6.0, ADRs 0047–0050, AFR-127..133, rule 29) makes the repository a bootable Laravel 12
-application: runtime foundation is **CODE COMPLETE** and **RUNTIME VERIFIED** locally against real PostgreSQL 17 +
-Redis 7 (health/queue/scheduler/migrate/asset), with a real `backend-runtime-ci` gate. No domain is owned; nothing
-is deployed. **Business/module implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and
-production readiness: **NOT STARTED.**
+application: runtime foundation is **CODE COMPLETE**, MERGED, and **GO TAGGED**
+(`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`, peeled `77f9005`), **RUNTIME VERIFIED** from a
+clean checkout against real PostgreSQL 17 + Redis 7 (health/queue/scheduler/migrate/asset), with a real
+`backend-runtime-ci` gate. No domain is owned; nothing is deployed. **Business/module implementation: NOT
+STARTED.** Deployment, pilot readiness, pilot runtime, and production readiness: **NOT STARTED.**
