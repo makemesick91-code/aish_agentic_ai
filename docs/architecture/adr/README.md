@@ -17,3 +17,13 @@ Application-architecture ADRs **0009–0032** (Step 3) and **0033–0041** (Step
 environment data policy, local development, configuration/secrets, dependency baseline, SaaS Foundation sequence,
 deployment-target class, brand token governance) live under [`../../decisions/adr/`](../../decisions/adr/) and are
 mapped in the [Step 4 Traceability Matrix](../../quality/STEP_4_REQUIREMENTS_TRACEABILITY_MATRIX.md). Rule: `.claude/rules/08`, `12`, `20`.
+
+CI/runtime and SaaS-core ADRs also live under [`../../decisions/adr/`](../../decisions/adr/): **0042–0046**
+(CICD-CTRL-1 — safe CI runtime control; rule 28), **0047–0050** (Step 5 — runtime & repository bootstrap; rule 29),
+and **0051–0053** (Step 6 — SaaS Core Foundation; rule 30):
+
+| ADR | Title | Architecture relevance |
+|-----|-------|------------------------|
+| [0051](../../decisions/adr/0051-step-6-consolidated-saas-core-foundation.md) | Step 6 consolidated SaaS Core Foundation | Release packaging of coupled SF-01..SF-04 sprints |
+| [0052](../../decisions/adr/0052-saas-core-platform-placement.md) | SaaS core platform placement (top-level `app/`, not `app/Modules/`) | Cross-cutting substrate placement |
+| [0053](../../decisions/adr/0053-tenant-membership-and-context-model.md) | Tenant membership & context model | Tenancy, identity, RBAC, isolation |

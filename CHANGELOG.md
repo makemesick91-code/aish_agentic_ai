@@ -6,6 +6,36 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — Step 6: SaaS Core Foundation
+
+Target release: annotated tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`.
+Base branch `main`. Consolidates canonical **SPRINT-SF-01..SF-04** (**EPIC-SF-04..09**) into one release.
+
+### Added
+- Master Source **v2.7.0** (§71 Step 6); PRD unchanged at **v1.3.0**. ADRs **0051–0053**, **Claude rule 30**.
+- Secure authentication (Fortify; self-service registration disabled; Sanctum installed; email verification;
+  login throttling; suspended-user rejection without account enumeration) and a global user identity separated
+  from per-tenant membership.
+- Tenant and branch lifecycle; explicit tenant memberships (invited / active / suspended / revoked) with
+  last-active-owner protection and one-time hashed invitation tokens.
+- Immutable, fail-closed request/job tenant context (absence of a valid context denies access; context
+  propagates to queued jobs).
+- Tenant-scoped RBAC (Spatie Permission teams keyed on `tenant_id`) with policies; append-only, non-deletable
+  audit trail.
+- Tenant isolation across DB (row-level `tenant_id`), cache (namespaced keys), queue (context envelope),
+  storage (path prefix + traversal-safe), and logging.
+- `docs/canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.7.0.md` snapshot + SHA256SUMS entry.
+
+### Changed
+- CLAUDE.md / AGENTS.md / Master Source active version bumped to **v2.7.0**; VERSION_MATRIX updated; Claude rules
+  index gains rule 30; version-consistency check aligned to v2.7.0.
+
+### Status
+SaaS core foundation **CODE COMPLETE** and **TESTED locally**; **IN PROGRESS toward GO** — NOT merged, NOT
+tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified. Business modules, deployment, pilot, and production
+**NOT STARTED**; no domain owned, nothing deployed. Merge / CI / tag evidence forthcoming under
+`docs/evidence/step-6/`.
+
 ## [Unreleased] — Step 5: Runtime & Repository Bootstrap
 
 Target release: annotated tag `aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`.

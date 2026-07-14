@@ -5,7 +5,7 @@ knowledge. It stays in sync with `CLAUDE.md` and `.claude/rules/` — there is *
 
 ## Authority (read before acting)
 1. Latest explicit product-owner decision.
-2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.6.0**).
+2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.7.0**).
 3. PRD — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved ADRs — `docs/decisions/adr/` (0001–0046) and `docs/decisions/DECISION_LOG.md`.
 5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..133).
@@ -60,5 +60,11 @@ Bootstrap** (Master Source v2.6.0, ADRs 0047–0050, AFR-127..133, rule 29) make
 application: runtime foundation is **CODE COMPLETE**, MERGED, and **GO TAGGED**
 (`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`, peeled `77f9005`), **RUNTIME VERIFIED** from a
 clean checkout against real PostgreSQL 17 + Redis 7 (health/queue/scheduler/migrate/asset), with a real
-`backend-runtime-ci` gate. No domain is owned; nothing is deployed. **Business/module implementation: NOT
-STARTED.** Deployment, pilot readiness, pilot runtime, and production readiness: **NOT STARTED.**
+`backend-runtime-ci` gate. **Step 6 — SaaS Core Foundation** (Master Source v2.7.0, ADRs 0051–0053, rule 30)
+delivers the consolidated SaaS core (canonical SPRINT-SF-01..SF-04 / EPIC-SF-04..09): secure auth/identity,
+tenant/branch lifecycle + memberships, immutable fail-closed tenant context, tenant-scoped RBAC + policies,
+append-only audit, and tenant isolation across DB/cache/queue/storage/logging. Step 6 is **CODE COMPLETE** and
+**TESTED locally**, **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT
+clean-checkout-verified; target GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`; evidence
+forthcoming under `docs/evidence/step-6/`. No domain is owned; nothing is deployed. **Business/module
+implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and production readiness: **NOT STARTED.**

@@ -187,6 +187,46 @@ mapped in the [Foundation Coverage Matrix](../governance/foundation-coverage-mat
 | AFR-132 | The queue/scheduler foundation MUST stay foundation-only (no business/agent jobs, no fabricated scheduled tasks); retry MUST NOT create duplicate side effects and a failed-job path MUST exist | 0048 | 29,05,02 | RT-06 |
 | AFR-133 | Runtime evidence MUST precede any runtime/deployment claim; a clean-checkout verification on the exact merged SHA MUST pass before a Step 5 GO tag | 0050 | 29,13,27 | RT-07 |
 
-**133 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5).** Step 5 AGENTS-instruction and rule coverage
-is asserted in the [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every AFR maps to an
-ADR, Claude rule 29, a runtime fitness check, and actual runtime/CI evidence. No orphan permanent decision.
+**133 AFRs through Step 5 (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5).** Step 5 AGENTS-instruction and rule
+coverage is asserted in the [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every AFR
+maps to an ADR, Claude rule 29, a runtime fitness check, and actual runtime/CI evidence. No orphan permanent decision.
+
+## Step 6 — SaaS Core Foundation (AFR-134..154)
+
+SaaS core foundation rules (consolidated SPRINT-SF-01..SF-04 / EPIC-SF-04..09, ADR 0051). Each maps to an ADR
+(0011, 0012, 0013, 0015, 0029, 0051, 0052, 0053), Claude rule 30, and a SaaS-core fitness check (SC-*) verified by
+`tests/Feature/{Auth,Tenancy}/*`, the cross-tenant security test matrix, the `backend-runtime-ci` job, and the
+consolidated Step 6 GO gate. Coverage is mapped in the
+[Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md). The SaaS core is platform-core
+infrastructure in top-level `app/` namespaces, not `app/Modules/` (ADR 0052); business modules remain NOT STARTED.
+
+| AFR | Statement (MUST / MUST NOT) | ADR | Rule | FF/Gate |
+|-----|-----------------------------|-----|------|---------|
+| AFR-134 | Secure authentication foundation MUST use Fortify (web session); Sanctum is installed and foundation-ready but MUST NOT be relied on as wired this step; authentication MUST NOT enumerate users and MUST NOT log credentials/tokens | 0013,0053 | 30,04 | SC-01 |
+| AFR-135 | Public/self-service registration MUST be disabled; users MUST arrive only via secure provisioning + invitation | 0053 | 30 | SC-02 |
+| AFR-136 | User identity MUST be global; users MUST NOT carry a `tenant_id` or tenant role; tenant access MUST be only via an active membership | 0053,0052 | 30,03 | SC-03 |
+| AFR-137 | Tenant lifecycle MUST use explicit states (active/suspended/deletion_pending); a tenant MUST NOT be hard-deleted | 0053,0029 | 30,07 | SC-04 |
+| AFR-138 | Tenant settings MUST be typed and tenant-scoped (`tenant_settings`); a setting MUST NOT leak across tenants | 0011,0053 | 30 | SC-05 |
+| AFR-139 | A branch MUST belong to exactly one tenant with an active/inactive lifecycle; an inactive branch MUST NOT be selectable | 0011,0012 | 30,03 | SC-06 |
+| AFR-140 | Membership MUST be an explicit `tenant_memberships` pivot with states invited/active/suspended/revoked, an `all_branches` flag, and `branch_access_grants`; the last active owner MUST NOT be removed, revoked, suspended, or demoted | 0053 | 30 | SC-07 |
+| AFR-141 | Invitations MUST use a one-time hashed token (never plaintext-stored/logged), an expiry, tenant/branch+role scope, and race-safe single-use acceptance; public route keys MUST use ULIDs (anti-IDOR) | 0053,0013 | 30,04 | SC-08 |
+| AFR-142 | Tenant context MUST be immutable, request/job-scoped, and fail-closed — no silent fallback to first/any tenant, cleared between requests and jobs; a switch MUST require an active membership | 0012,0053 | 30,03 | SC-09 |
+| AFR-143 | A selectable branch MUST belong to the current tenant; a branch-restricted user MUST NOT access another branch's data | 0012,0015 | 30,03 | SC-10 |
+| AFR-144 | RBAC MUST be tenant-scoped via Spatie `laravel-permission` (`teams = true` on `tenant_id`); platform roles MUST be separate from tenant roles | 0013 | 30 | SC-11 |
+| AFR-145 | Authorization MUST be defense-in-depth (policies + service/action layer); UI hiding MUST NOT be treated as sufficient; a user MUST NOT self-escalate privileges | 0013 | 30 | SC-12 |
+| AFR-146 | Every tenant-owned record MUST carry `tenant_id` (+ `branch_id` where relevant) with tenant-leading keys; relationships MUST NOT cross tenant; a cross-tenant read/write (IDOR) is a release blocker | 0011,0012 | 30,03 | SC-13 |
+| AFR-147 | Cache keys MUST be tenant-namespaced and MUST NOT collide; a broad Redis flush MUST NOT be used as application behavior | 0015 | 30 | SC-14 |
+| AFR-148 | Queued jobs handling tenant data MUST carry a validated tenant context envelope, cleared after each job; a retry MUST NOT switch/drop the tenant or create duplicate side effects | 0012,0015 | 30,03 | SC-15 |
+| AFR-149 | Tenant files MUST use a tenant/branch path prefix (`tenants/{id}/branches/{id}/...`), MUST prevent path traversal, and MUST default to private | 0015 | 30,04 | SC-16 |
+| AFR-150 | Logging MUST carry structured tenant context and MUST NOT contain PII/secrets/tokens or leak another tenant's context across worker/request | 0015,0029 | 30,04 | SC-17 |
+| AFR-151 | Audit MUST be append-only (security/admin actions recorded, sanitized metadata, no `updated_at`, update/delete blocked at model layer) and MUST NOT be deletable | 0029,0053 | 30,07 | SC-18 |
+| AFR-152 | A suspended tenant/user or suspended/revoked membership MUST fail closed on every surface; a revoked permission MUST NOT survive as authorization via unsafe stale cache | 0053,0013 | 30,04 | SC-19 |
+| AFR-153 | The cross-tenant security test matrix (read/write/list/export/cache/queue/storage/log across tenants) MUST pass; a cross-tenant breach is a release blocker | 0011,0051 | 30,03 | SC-20 |
+| AFR-154 | A clean-checkout SaaS-core verification on the exact merged SHA MUST pass before the consolidated Step 6 GO tag | 0051,0052 | 30,13,29 | SC-21 |
+
+**154 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6).** Step 6 AGENTS-instruction and
+rule coverage is asserted in the [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every
+Step 6 AFR maps to an ADR (0011, 0012, 0013, 0015, 0029, 0051–0053), Claude rule 30, a SaaS-core fitness check
+(SC-*), and forthcoming test/CI evidence under `docs/evidence/step-6/`. No orphan permanent decision. Step 6
+consolidates the coupled core sprints per ADR 0051; SPRINT-SF-05..SF-08 remain independently gated. Business/module
+implementation, deployment, pilot, and production remain **NOT STARTED**.

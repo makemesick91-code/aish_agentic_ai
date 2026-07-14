@@ -6,9 +6,9 @@
 **Kategori produk:** Agentic AI Customer Experience, CSAT, Customer Recovery, dan Google Review Management Platform
 **Model bisnis:** Multi-tenant Software as a Service
 **Tipe dokumen:** Canonical Living Product Source
-**Versi:** 2.6.0
+**Versi:** 2.7.0
 **Status dokumen:** Active
-**Status produk:** Step 5 Runtime & Repository Bootstrap — Laravel 12 runtime foundation CODE COMPLETE and RUNTIME VERIFIED locally (health/queue/scheduler/migrate/asset on real PostgreSQL 17 + Redis 7); business/module implementation, deployment, pilot, and production NOT STARTED. (Prior: Step 4 planning baseline complete; CICD-CTRL-1 governance v2.5.0.)
+**Status produk:** Step 6 SaaS Core Foundation — secure authentication, global identity, tenant/branch lifecycle, explicit tenant memberships, immutable fail-closed tenant context, tenant-scoped RBAC, append-only audit, and tenant isolation (DB/cache/queue/storage/log) CODE COMPLETE and TESTED locally; IN PROGRESS toward merge + GO (NOT yet merged, tagged, CI-green-on-CI, or clean-checkout-verified). Business/module implementation, deployment, pilot, and production NOT STARTED; no domain owned, nothing deployed. (Prior: Step 5 runtime foundation RUNTIME VERIFIED locally, v2.6.0.)
 **Pemilik produk:** Aish Tech Solution
 **Repository kanonik:** `https://github.com/makemesick91-code/aish_agentic_ai`
 **Repository owner/name:** `makemesick91-code/aish_agentic_ai`
@@ -3881,6 +3881,74 @@ run no full CI (ADR 0050; §69; rule 28).
   **NOT STARTED**. No domain is owned; nothing is deployed.
 * The Step 5 GO tag attests runtime/repository-bootstrap readiness only — not a built product, deployment, pilot,
   or production readiness.
+
+---
+
+# 71. STEP 6 — SAAS CORE FOUNDATION
+
+**MASTER SOURCE UPDATE**
+- Previous version: 2.6.0 → New version: 2.7.0
+- Date: 2026-07-14 (Asia/Makassar)
+- Type: minor (SaaS core foundation implemented on the Step 5 runtime; no vision/business-model/architecture change)
+- Affected sections: header status; new §71; ADRs 0051–0053; Claude rule 30. Cross-refs §17, §36, §37, §43, §62.
+- Decision: deliver the SaaS Core Foundation as a consolidated release — secure authentication (Fortify;
+  self-service registration disabled; Sanctum installed; email verification; login throttling; suspended-user
+  rejection without account enumeration), a global user identity, tenant and branch lifecycle, explicit tenant
+  memberships (invited / active / suspended / revoked) with last-active-owner protection and one-time hashed
+  invitation tokens, immutable fail-closed request/job tenant context, tenant-scoped RBAC (Spatie Permission
+  teams keyed on `tenant_id`) with policies, an append-only audit trail, and tenant isolation across DB
+  (row-level `tenant_id`), cache (namespaced keys), queue (context envelope), storage (path prefix +
+  traversal-safe), and logging — without weakening any security, tenant-isolation, privacy, documentation, or
+  release gate.
+- Reason: the Step 5 runtime is verified; tenant context and identity/RBAC/audit must precede any business
+  feature (implementation sequence §62; AFR-099/100). Consolidating the canonical SaaS Foundation sprints into a
+  single release under one immutable GO tag reduces rework and release overhead (ADR 0051).
+- Impacts: establishes the multi-tenant security spine for all later modules; no MVP scope change (§47) and no
+  out-of-scope item built; truthful-status and evidence-before-claims preserved.
+- Status: IN PROGRESS toward GO — CODE COMPLETE and TESTED locally; NOT merged, NOT tagged, NOT CI-green-on-CI,
+  and NOT clean-checkout-verified at authoring time. The target Step 6 GO tag
+  `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` will attest SaaS-core-foundation readiness only.
+- Evidence: ADRs 0051–0053, Claude rule 30; runtime/CI/merge/tag evidence forthcoming under `docs/evidence/step-6/`.
+- Changelog: see root `CHANGELOG.md` v2.7.0.
+
+## 71.1 Consolidation and placement
+Step 6 consolidates the canonical SaaS Foundation sprints **SPRINT-SF-01..SF-04** (**EPIC-SF-04..09**) into one
+release governed by a single immutable GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` (ADR 0051).
+The SaaS core is placed as platform/foundation capabilities on the Step 5 Laravel 12 runtime; the Shared Kernel
+stays minimal and the 17 business modules remain **NOT STARTED** (ADR 0052; §34; rule 20).
+
+## 71.2 Secure authentication and identity
+Authentication uses Laravel Fortify with self-service registration disabled; Sanctum is installed; email
+verification, login throttling, and rejection of suspended users without account enumeration are enforced. A
+global user identity is separated from per-tenant membership (ADR 0053; §43; rules 04, 05).
+
+## 71.3 Tenant, branch, and membership lifecycle
+Tenant and branch lifecycle is modeled explicitly. Tenant memberships are explicit and status-driven
+(invited / active / suspended / revoked) with last-active-owner protection and one-time hashed invitation tokens
+(ADR 0053; §17, §36).
+
+## 71.4 Immutable fail-closed tenant context
+Request and job tenant context is resolved, immutable once set, and fail-closed: the absence of a valid tenant
+context denies access rather than defaulting to a tenant. Context propagates to queued jobs (§17; ADRs 0011,
+0012, 0015; rule 03).
+
+## 71.5 RBAC, policies, and audit
+Role-based access control is tenant-scoped using Spatie Permission teams keyed on `tenant_id`, backed by
+policies; sensitive mutations are guarded. An append-only audit trail records important actions and is not
+deletable (§36, §37; rules 03, 07).
+
+## 71.6 Tenant isolation across surfaces
+Tenant isolation is enforced across DB (row-level `tenant_id`), cache (tenant-namespaced keys), queue
+(tenant-context envelope), storage (tenant path prefix, traversal-safe), and logging. No cross-tenant leakage is
+permitted on any covered surface (§43; rules 03, 04; Tenant Isolation Control Matrix).
+
+## 71.7 Step 6 Status
+* SaaS core foundation: CODE COMPLETE and TESTED locally; **IN PROGRESS toward GO** — NOT merged, NOT tagged,
+  NOT CI-green-on-CI, and NOT clean-checkout-verified at authoring time.
+* Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness remain
+  **NOT STARTED**. No domain is owned; nothing is deployed.
+* The target Step 6 GO tag attests SaaS-core-foundation readiness only — not a built product, deployment, pilot,
+  or production readiness. Merge / CI / tag evidence is forthcoming under `docs/evidence/step-6/`.
 
 ---
 
