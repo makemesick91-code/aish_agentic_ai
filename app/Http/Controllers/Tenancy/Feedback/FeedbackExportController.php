@@ -14,6 +14,7 @@ use App\Models\FeedbackExport;
 use App\Models\FeedbackItem;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -46,9 +47,19 @@ final class FeedbackExportController extends Controller
         return back()->with('status', __('Export requested. You will be notified when it is ready.'));
     }
 
-    public function download(FeedbackExport $export): StreamedResponse
+    public function download(Request $request, FeedbackExport $export): StreamedResponse
     {
         $this->authorize('export', FeedbackItem::class);
+
+        $user = $request->user();
+        abort_if($user === null, 403);
+
+        // Re-authorize the DOWNLOAD, not just the tenant-level permission: the export snapshotted the
+        // REQUESTER's branch scope and content permission, so only the requester may consume it. This
+        // prevents a branch-restricted (or non-content) member from downloading a broader member's
+        // export via a shared/forwarded ULID (rule 33; Step 8 §18).
+        abort_unless($export->requested_by === $user->id, 403);
+        abort_if($export->includes_content && ! $user->can(Permissions::FEEDBACK_VIEW_CONTENT), 403);
 
         abort_unless($export->status === FeedbackExportStatus::Ready, 404);
         abort_if($export->isExpired(), 410);

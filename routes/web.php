@@ -35,6 +35,7 @@ use App\Http\Controllers\Tenancy\Survey\SurveyPreviewController;
 use App\Http\Controllers\Tenancy\Survey\SurveyResultController;
 use App\Http\Controllers\Tenancy\TenantProfileController;
 use App\Http\Controllers\Tenancy\TenantSelectionController;
+use App\Http\Middleware\EnsureFeedbackEnabled;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -124,21 +125,24 @@ Route::middleware('tenant')->group(function (): void {
 
     // STEP 8 — Feedback Operations (tenant-scoped; {feedback}/{tag}/{attachment}/{export} bind by
     // ULID and resolve only within the current tenant via the global tenant scope; every action
-    // authorizes server-side via FeedbackItemPolicy).
-    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
-    Route::get('/feedback/{feedback}', [FeedbackController::class, 'show'])->name('feedback.show');
-    Route::post('/feedback/{feedback}/status', [FeedbackController::class, 'updateStatus'])->name('feedback.status');
-    Route::post('/feedback/{feedback}/assign', [FeedbackController::class, 'assign'])->name('feedback.assign');
-    Route::post('/feedback/{feedback}/notes', [FeedbackNoteController::class, 'store'])->name('feedback.notes.store');
-    Route::post('/feedback/{feedback}/tags', [FeedbackTagController::class, 'attach'])->name('feedback.tags.attach');
-    Route::delete('/feedback/{feedback}/tags/{tag}', [FeedbackTagController::class, 'detach'])->name('feedback.tags.detach');
-    Route::post('/feedback/{feedback}/attachments', [FeedbackAttachmentController::class, 'store'])->name('feedback.attachments.store');
-    Route::get('/feedback/{feedback}/attachments/{attachment}/download', [FeedbackAttachmentController::class, 'download'])->name('feedback.attachments.download');
-    Route::delete('/feedback/{feedback}/attachments/{attachment}', [FeedbackAttachmentController::class, 'destroy'])->name('feedback.attachments.destroy');
-    Route::post('/feedback-tags', [FeedbackTagController::class, 'store'])->name('feedback.tags.store');
-    Route::post('/feedback-bulk', [FeedbackBulkController::class, 'store'])->name('feedback.bulk');
-    Route::post('/feedback-exports', [FeedbackExportController::class, 'store'])->name('feedback.exports.store');
-    Route::get('/feedback-exports/{export}/download', [FeedbackExportController::class, 'download'])->name('feedback.exports.download');
+    // authorizes server-side via FeedbackItemPolicy; the whole surface is gated on the
+    // FEEDBACK_ENABLED entitlement, fail-closed).
+    Route::middleware(EnsureFeedbackEnabled::class)->group(function (): void {
+        Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+        Route::get('/feedback/{feedback}', [FeedbackController::class, 'show'])->name('feedback.show');
+        Route::post('/feedback/{feedback}/status', [FeedbackController::class, 'updateStatus'])->name('feedback.status');
+        Route::post('/feedback/{feedback}/assign', [FeedbackController::class, 'assign'])->name('feedback.assign');
+        Route::post('/feedback/{feedback}/notes', [FeedbackNoteController::class, 'store'])->name('feedback.notes.store');
+        Route::post('/feedback/{feedback}/tags', [FeedbackTagController::class, 'attach'])->name('feedback.tags.attach');
+        Route::delete('/feedback/{feedback}/tags/{tag}', [FeedbackTagController::class, 'detach'])->name('feedback.tags.detach');
+        Route::post('/feedback/{feedback}/attachments', [FeedbackAttachmentController::class, 'store'])->name('feedback.attachments.store');
+        Route::get('/feedback/{feedback}/attachments/{attachment}/download', [FeedbackAttachmentController::class, 'download'])->name('feedback.attachments.download');
+        Route::delete('/feedback/{feedback}/attachments/{attachment}', [FeedbackAttachmentController::class, 'destroy'])->name('feedback.attachments.destroy');
+        Route::post('/feedback-tags', [FeedbackTagController::class, 'store'])->name('feedback.tags.store');
+        Route::post('/feedback-bulk', [FeedbackBulkController::class, 'store'])->name('feedback.bulk');
+        Route::post('/feedback-exports', [FeedbackExportController::class, 'store'])->name('feedback.exports.store');
+        Route::get('/feedback-exports/{export}/download', [FeedbackExportController::class, 'download'])->name('feedback.exports.download');
+    });
 });
 
 /*

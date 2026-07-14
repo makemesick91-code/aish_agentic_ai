@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Tenancy\Feedback;
 
+use App\Authorization\Permissions;
 use App\Enums\FeedbackStatus;
 use App\Feedback\Bulk\FeedbackBulkService;
 use App\Feedback\Exceptions\EntitlementDeniedException;
@@ -44,6 +45,16 @@ final class FeedbackBulkController extends Controller
         $data = $request->validated();
         /** @var list<int> $ids */
         $ids = array_map('intval', $data['ids']);
+
+        // Least privilege: bulk-manage is not a blanket grant — require the granular permission for
+        // the specific action too (rule 33; Step 8 §17, §21).
+        $required = match ($data['action']) {
+            'status' => Permissions::FEEDBACK_MANAGE_STATUS,
+            'assign' => Permissions::FEEDBACK_ASSIGN,
+            'attach-tag', 'remove-tag' => Permissions::FEEDBACK_TAGS_MANAGE,
+            default => null,
+        };
+        abort_if($required !== null && ! $user->can($required), 403);
 
         try {
             $this->entitlements->assertBulkActionsEnabled($this->context->tenant());
