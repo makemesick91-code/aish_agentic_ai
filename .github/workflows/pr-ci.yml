@@ -262,6 +262,26 @@ jobs:
           MAIL_MAILER: log
         run: php artisan aish:verify-step-7
 
+      - name: Verify Step 8 feedback operations foundation (real infra)
+        # Step 8: exercises idempotent projection, lifecycle, scope-validated assignment, manual
+        # tags, append-only notes, permission-aware search, entitlement-gated export, metering,
+        # audit, and cross-tenant isolation on real infrastructure (rule 33).
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: "5432"
+          DB_DATABASE: aish_agentic_ai
+          DB_USERNAME: aish
+          DB_PASSWORD: aish_ci_ephemeral
+          REDIS_CLIENT: predis
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: "6379"
+          CACHE_STORE: redis
+          QUEUE_CONNECTION: redis
+          SESSION_DRIVER: redis
+          MAIL_MAILER: log
+        run: php artisan aish:verify-step-8
+
   required-gate:
     name: Required Gate
     needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci, backend-runtime-ci]

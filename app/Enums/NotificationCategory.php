@@ -16,6 +16,7 @@ enum NotificationCategory: string
     case Subscription = 'subscription';
     case Security = 'security';
     case Survey = 'survey';
+    case Feedback = 'feedback';
 
     public function label(): string
     {
@@ -25,6 +26,7 @@ enum NotificationCategory: string
             self::Subscription => 'Subscription',
             self::Security => 'Security alerts',
             self::Survey => 'Surveys',
+            self::Feedback => 'Feedback operations',
         };
     }
 
@@ -32,6 +34,6 @@ enum NotificationCategory: string
     public static function tunable(): array
     {
         // Security is deliberately excluded: its notifications are mandatory (critical).
-        return [self::Membership, self::Tenant, self::Subscription, self::Survey];
+        return [self::Membership, self::Tenant, self::Subscription, self::Survey, self::Feedback];
     }
 }

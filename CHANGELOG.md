@@ -6,9 +6,50 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
-## [Unreleased] — Step 7 (Master Source v2.9.0): Survey & CSAT Foundation
+## [Unreleased] — Step 8 (Master Source v2.10.0): Feedback Operations Foundation
 
-Target release: annotated tag `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`.
+Target release: annotated tag `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`.
+Base branch `main`, feature branch `feature/step-8-feedback-operations-foundation`. Second customer-experience
+capability — an operable Feedback Inbox on the SaaS core + SF-05 + Step 7 substrate.
+
+### Added
+- Master Source **v2.10.0** (§74 Step 8); PRD unchanged at **v1.3.0**. ADRs **0060–0062**, **AFR-188..210**,
+  **Claude rule 33**.
+- Feedback projection: an after-commit `SurveyResponseCompleted` domain event + a queued idempotent listener/job that
+  create one `FeedbackItem` per source via a DB unique `(tenant_id, source_type, source_id)` constraint (replay/retry
+  safe), plus an idempotent `aish:feedback-reconcile` back-fill command.
+- Explicit feedback lifecycle (`new → triaged → assigned → in_progress → resolved → closed → archived`) via a guarded
+  transition service; `resolved`/`closed` are operational feedback states, not a recovery outcome.
+- Scope-validated assignment (active membership + branch scope; membership-revocation fail-close) with append-only
+  assignment history; tenant-isolated manual tags; append-only internal notes; and an append-only, sanitized,
+  immutable feedback timeline.
+- Private tenant-prefixed feedback attachments with content-based MIME allowlist validation, path-traversal
+  prevention, no public disk, and a recorded remove-state.
+- Permission-aware search: native PostgreSQL FTS (`tsvector`/GIN) with a portable `LIKE` fallback; content search
+  gated by the `feedback.view-content` permission; metadata search for any list-viewer.
+- Bounded bulk operations (hard item cap, per-action re-authorization, tenant/branch scope, timelined) and a queued,
+  entitlement-gated, metered secure CSV export written to a private+expiring location with requester-scoped
+  re-authorized download and CSV formula-injection neutralization.
+- Feedback entitlement gate (`EnsureFeedbackEnabled`) over the single authoritative resolver, idempotent tenant-scoped
+  usage metering, internal feedback notifications via the SF-05 dispatcher, and sanitized append-only audit; Google
+  Review anti-gating preserved (a feedback state/score never gates review access).
+- Independent **Step 8 security review** completed — PASS after fixes (F-1 HIGH export-download re-authorization,
+  F-2/F-3 LOW hardening fixed; 14/14 other vectors PASS); evidence
+  `docs/evidence/step-8-independent-security-review.md`.
+- Tests: feedback projection, lifecycle, assignment, tag/note, timeline, attachment, search, bulk, export,
+  notification, cross-tenant security matrix (`Sf08CrossTenantMatrixTest`), architecture boundaries
+  (`Sf08BoundariesTest`), PostgreSQL migration integrity (`Sf08MigrationIntegrityTest`), audit (`Sf08AuditTest`), and
+  console suites — full hermetic suite **352 passing**; `aish:verify-step-8` 18 checks pass.
+
+### Status
+CODE COMPLETE and TESTED locally (Pint + PHPStan clean; `aish:verify-step-8` 18 checks on SQLite; independent
+security review PASS after fixes); **NOT merged, NOT tagged, NOT CI-green-on-CI, NOT clean-checkout-verified against
+real PostgreSQL 17 + Redis 7** at authoring time. The GO tag will attest feedback-operations foundation readiness
+only — not AI/recovery/Google, not deployment, pilot, or production.
+
+## [2026-07-14] — Step 7 (Master Source v2.9.0): Survey & CSAT Foundation — MERGED & GO TAGGED
+
+Released as annotated tag `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go` (merge `1b1ba86`).
 Base branch `main`. First customer-experience capability on the SaaS core + SF-05 substrate.
 
 ### Added

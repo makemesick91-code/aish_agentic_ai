@@ -117,6 +117,44 @@ and ADR evidence — no orphan. No Step 7 foundation is claimed merged, tagged, 
 evidenced under `docs/evidence/step-7/`. Feedback/AI/recovery/Google/billing modules and deployment/pilot/production
 remain **NOT STARTED**.
 
+## Step 8 Feedback Operations Foundation (AFR-188..; rule 33; ADRs 0060-0062)
+
+Second customer-experience capability on the SaaS core + SF-05 + Step 7 substrate, placed as platform-core in
+top-level `App\Feedback\*` + `App\Models\Feedback*` (ADR 0060). Turns completed survey responses into an operable
+Feedback Inbox: idempotent projection, an explicit lifecycle, scope-validated assignment, tenant-isolated manual
+tags, append-only notes/timeline, private attachments, permission-aware search, bounded bulk operations, and queued
+secure export. Status is `IN PROGRESS (FOUNDATION)` until the Step 8 GO tag is cut with clean-checkout evidence.
+
+| Foundation | Source | Decision | Rule | Runtime/DB/Policy enforcement | Test/CI enforcement | Status | Evidence | Gap |
+|-----------|--------|----------|------|-------------------------------|---------------------|--------|----------|-----|
+| Idempotent feedback projection | MS §47; AFR-188 | After-commit event + queued listener; one item per source via unique `(tenant_id, source_type, source_id)` | [33](../../.claude/rules/33-feedback-operations-foundation.md), 03 | `SurveyResponseCompleted`; `ProjectFeedbackJob`; DB unique index | `FeedbackProjectionTest`, `Sf08MigrationIntegrityTest` | IN PROGRESS (FOUNDATION) | ADR [0060](../decisions/adr/0060-feedback-projection-and-lifecycle.md); `app/Jobs/Feedback/ProjectFeedbackJob.php` | GO tag pending |
+| Projection reconciliation | MS §47; AFR-189 | Idempotent, rerun-safe back-fill; never duplicates | 33 | `aish:feedback-reconcile` (tenant-scoped) | `Sf08CommandsTest`, `FeedbackProjectionTest` | IN PROGRESS (FOUNDATION) | `app/Console/Commands/FeedbackReconcile*` | GO tag pending |
+| Tenant/branch feedback isolation | MS §47; AFR-190 | Tenant-owned; branch scope enforced; no platform feedback access | 33, 03, 30 | `BelongsToTenant`+`TenantScope`; `FeedbackItemPolicy` | `Sf08CrossTenantMatrixTest`, `Sf08BoundariesTest` | IN PROGRESS (FOUNDATION) | `app/Models/FeedbackItem.php` | GO tag pending |
+| Explicit lifecycle | MS §47; AFR-191 | Guarded `new..archived` machine; resolved/closed ≠ recovery | 33 | lifecycle transition service; guarded transitions | `FeedbackLifecycleTest` | IN PROGRESS (FOUNDATION) | ADR 0060; `app/Feedback/*` | GO tag pending |
+| Scope-validated assignment | MS §47; AFR-192 | Active membership + branch scope; append-only history | 33, 03 | `FeedbackAssignmentService`; policy | `FeedbackAssignmentTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | ADR [0061](../decisions/adr/0061-feedback-search-timeline-assignment.md); `app/Feedback/FeedbackAssignmentService.php` | GO tag pending |
+| Membership-revocation fail-close | MS §47; AFR-193 | Revoked/suspended member unassignable; effective access fails closed | 33, 03, 30 | membership re-validation; `TenantContext` | `Sf08CrossTenantMatrixTest`, `FeedbackAssignmentTest` | IN PROGRESS (FOUNDATION) | ADR 0061; `app/Policies/FeedbackItemPolicy.php` | GO tag pending |
+| Tenant-isolated manual tags | MS §47; AFR-194 | Tenant-owned tags; no cross-tenant application | 33, 03 | `FeedbackTag` tenant scope; pivot | `FeedbackTagNoteTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | `app/Models/FeedbackTag.php` | GO tag pending |
+| Append-only notes | MS §37, §47; AFR-195 | Append-only; untrusted free text; no logging | 33, 07 | `FeedbackNote` model guard | `FeedbackTagNoteTest`, `Sf08AuditTest` | IN PROGRESS (FOUNDATION) | `app/Models/FeedbackNote.php` | GO tag pending |
+| Immutable timeline | MS §37, §47; AFR-196 | Append-only; sanitized; not deletable | 33, 07 | `FeedbackEvent` model guard | `FeedbackTimelineTest`, `Sf08AuditTest` | IN PROGRESS (FOUNDATION) | ADR 0061; `app/Feedback/FeedbackTimeline.php` | GO tag pending |
+| Private attachments | MS §43, §47; AFR-197 | Private tenant-prefixed disk; no public disk; no traversal; remove-state | 33, 04 | `FeedbackAttachmentService` (private disk, sanitized path) | `FeedbackAttachmentTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | ADR [0062](../decisions/adr/0062-feedback-attachments-and-secure-export.md); `app/Feedback/FeedbackAttachmentService.php` | GO tag pending |
+| Attachment content-MIME validation | MS §43, §47; AFR-198 | Content-based allowlist; refuse disallowed types | 33, 04 | MIME content inspection | `FeedbackAttachmentTest` | IN PROGRESS (FOUNDATION) | `app/Feedback/FeedbackAttachmentService.php` | GO tag pending |
+| Permission-aware search | MS §37, §47; AFR-199,200 | Content search gated by `feedback.view-content`; in-tenant FTS + LIKE fallback | 33, 03, 04 | `App\Feedback\Search\*` (tsvector/GIN; permission gate) | `FeedbackSearchTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | ADR 0061; `app/Feedback/Search/*` | GO tag pending |
+| Bounded bulk operations | MS §47; AFR-201 | Hard cap; per-action authorization; scoped; timelined | 33, 03 | bulk action handler; per-item policy check | `FeedbackBulkTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | `app/Http/Controllers/Tenancy/Feedback/*` | GO tag pending |
+| Queued secure export | MS §46, §47; AFR-202 | Queued; private+expiring; entitlement-gated; idempotent meter | 33, 04, 31 | `GenerateFeedbackExportJob`; `SurveyEntitlements`-style guard; `UsageMeter` | `FeedbackExportTest`, `Sf08BoundariesTest` | IN PROGRESS (FOUNDATION) | ADR 0062; `app/Jobs/Feedback/GenerateFeedbackExportJob.php` | GO tag pending |
+| CSV formula-injection guard | MS §43, §47; AFR-203 | Neutralize `= + - @` tab/CR-leading cells; escape delimiters | 33, 04 | `App\Feedback\Export\*` cell sanitizer | `FeedbackExportTest` | IN PROGRESS (FOUNDATION) | `app/Feedback/Export/*` | GO tag pending |
+| Requester-scoped export download | MS §43, §47; AFR-204 | Re-authorize requester ownership; re-check scope; private link | 33, 03, 04 | download controller ownership + scope re-check | `FeedbackExportTest`, `Sf08CrossTenantMatrixTest` | IN PROGRESS (FOUNDATION) | ADR 0062; `app/Http/Controllers/Tenancy/Feedback/*` | GO tag pending |
+| Feedback entitlement enforcement | MS §46, §47; AFR-205 | Base access entitlement-gated; fail-closed; commercial ≠ security | 33, 31 | `EnsureFeedbackEnabled` over authoritative resolver | `FeedbackExportTest`, `Sf08BoundariesTest` | IN PROGRESS (FOUNDATION) | `app/Http/Middleware/EnsureFeedbackEnabled.php` | GO tag pending |
+| Feedback usage metering | MS §46, §47; AFR-206 | Tenant-scoped idempotent meters; no double-count | 33, 07, 31 | `UsageMeter` (idempotent) | `FeedbackExportTest`, `FeedbackProjectionTest` | IN PROGRESS (FOUNDATION) | `app/Feedback/*` metering calls | GO tag pending |
+| Notification + review anti-gating | MS §16, §47; AFR-207 | SF-05 dispatcher; retry-safe; score never gates review | 33, 06, 18, 31 | `NotificationDispatcher`; `Sf05BoundariesTest` dispatcher rule | `FeedbackNotificationTest`, `Sf05BoundariesTest` | IN PROGRESS (FOUNDATION) | ADR 0060; `app/Feedback/*` notification calls | GO tag pending |
+| Feedback audit redaction | MS §37, §47; AFR-208 | Actor+tenant; no token/secret/answer content; append-only | 33, 07 | `AuditRecorder` (sanitized) | `Sf08AuditTest` | IN PROGRESS (FOUNDATION) | `app/Feedback/*` audit calls | GO tag pending |
+| Independent Step 8 security review | MS §47, §54; AFR-209 | Reviewer ≠ implementer; no unresolved critical/high/medium before GO | 33, 04 | independent adversarial review of the feedback surface | `docs/evidence/step-8-independent-security-review.md` | IN PROGRESS (FOUNDATION) | ADRs 0060–0062 | GO tag pending |
+| Clean-checkout Step 8 verification | MS §47, §54; AFR-210 | Clean-checkout verify on merged SHA before the Step 8 GO tag | 33, 13, 29 | `scripts/runtime/verify-step-8.sh` / `aish:verify-step-8` | `backend-runtime-ci`; clean-checkout run; release evidence | IN PROGRESS (FOUNDATION) | ADRs 0060–0062 | GO tag not yet cut |
+
+Every Step 8 mandatory foundation maps to Claude rule 33, a runtime/DB/policy code path, a test/CI enforcement path,
+and ADR evidence — no orphan. No Step 8 foundation is claimed merged, tagged, or clean-checkout-verified until
+evidenced under `docs/evidence/step-8/`. AI/recovery/SLA/Google/agent/RAG/billing modules and deployment/pilot/
+production remain **NOT STARTED**.
+
 ## Permanent product foundations (rules established; product implementation scheduled later)
 
 These permanent decisions are governed by rules today; their **application** implementation is scheduled in the

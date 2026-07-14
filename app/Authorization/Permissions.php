@@ -77,6 +77,27 @@ final class Permissions
 
     public const SURVEY_RESPONSES_INVALIDATE = 'survey-responses.invalidate';
 
+    // Step 8 — Feedback Operations Foundation (rule 33).
+    public const FEEDBACK_VIEW = 'feedback.view';
+
+    public const FEEDBACK_VIEW_CONTENT = 'feedback.view-content';
+
+    public const FEEDBACK_MANAGE_STATUS = 'feedback.manage-status';
+
+    public const FEEDBACK_ASSIGN = 'feedback.assign';
+
+    public const FEEDBACK_TAGS_MANAGE = 'feedback.tags.manage';
+
+    public const FEEDBACK_NOTES_CREATE = 'feedback.notes.create';
+
+    public const FEEDBACK_ATTACHMENTS_MANAGE = 'feedback.attachments.manage';
+
+    public const FEEDBACK_BULK_MANAGE = 'feedback.bulk-manage';
+
+    public const FEEDBACK_EXPORT = 'feedback.export';
+
+    public const FEEDBACK_SUMMARY_VIEW = 'feedback.summary.view';
+
     /** @return list<string> */
     public static function surveyPermissions(): array
     {
@@ -101,6 +122,42 @@ final class Permissions
             self::SURVEY_RESPONSES_INVALIDATE,
         ];
     }
+
+    /** @return list<string> */
+    public static function feedbackPermissions(): array
+    {
+        return [
+            self::FEEDBACK_VIEW,
+            self::FEEDBACK_VIEW_CONTENT,
+            self::FEEDBACK_MANAGE_STATUS,
+            self::FEEDBACK_ASSIGN,
+            self::FEEDBACK_TAGS_MANAGE,
+            self::FEEDBACK_NOTES_CREATE,
+            self::FEEDBACK_ATTACHMENTS_MANAGE,
+            self::FEEDBACK_BULK_MANAGE,
+            self::FEEDBACK_EXPORT,
+            self::FEEDBACK_SUMMARY_VIEW,
+        ];
+    }
+
+    /** Branch-scoped operational feedback work (no tenant-wide bulk actions). */
+    public const FEEDBACK_BRANCH_OPS = [
+        self::FEEDBACK_VIEW,
+        self::FEEDBACK_VIEW_CONTENT,
+        self::FEEDBACK_MANAGE_STATUS,
+        self::FEEDBACK_ASSIGN,
+        self::FEEDBACK_TAGS_MANAGE,
+        self::FEEDBACK_NOTES_CREATE,
+        self::FEEDBACK_ATTACHMENTS_MANAGE,
+        self::FEEDBACK_EXPORT,
+        self::FEEDBACK_SUMMARY_VIEW,
+    ];
+
+    /** Safe read-only feedback visibility (metadata + summary; never response content). */
+    public const FEEDBACK_READ_ONLY = [
+        self::FEEDBACK_VIEW,
+        self::FEEDBACK_SUMMARY_VIEW,
+    ];
 
     /** Read-only survey visibility (surveys + results). */
     public const SURVEY_READ_ONLY = [
@@ -139,6 +196,7 @@ final class Permissions
             self::CONTEXT_SWITCH_TENANT,
             self::CONTEXT_SWITCH_BRANCH,
             ...self::surveyPermissions(),
+            ...self::feedbackPermissions(),
         ];
     }
 }

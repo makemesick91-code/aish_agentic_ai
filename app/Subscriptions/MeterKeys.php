@@ -20,6 +20,15 @@ final class MeterKeys
     /** Survey responses completed (Step 7). */
     public const SURVEY_RESPONSES_COMPLETED = 'survey_responses.completed';
 
+    /** Feedback items projected from completed survey responses (Step 8). */
+    public const FEEDBACK_ITEMS_PROJECTED = 'feedback_items.projected';
+
+    /** Total bytes of internal feedback attachments accepted (Step 8). */
+    public const FEEDBACK_ATTACHMENTS_UPLOADED_BYTES = 'feedback_attachments.uploaded_bytes';
+
+    /** Feedback exports created (Step 8). */
+    public const FEEDBACK_EXPORTS_CREATED = 'feedback_exports.created';
+
     /** @return list<string> */
     public static function all(): array
     {
@@ -27,6 +36,9 @@ final class MeterKeys
             self::FOUNDATION_VERIFICATION,
             self::SURVEY_INVITATIONS_CREATED,
             self::SURVEY_RESPONSES_COMPLETED,
+            self::FEEDBACK_ITEMS_PROJECTED,
+            self::FEEDBACK_ATTACHMENTS_UPLOADED_BYTES,
+            self::FEEDBACK_EXPORTS_CREATED,
         ];
     }
 

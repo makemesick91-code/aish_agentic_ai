@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\AuditLog;
 use App\Models\Branch;
+use App\Models\FeedbackItem;
 use App\Models\NotificationDelivery;
 use App\Models\Survey;
 use App\Models\SurveyCampaign;
@@ -16,6 +17,7 @@ use App\Models\TenantInvitation;
 use App\Models\TenantMembership;
 use App\Policies\AuditLogPolicy;
 use App\Policies\BranchPolicy;
+use App\Policies\FeedbackItemPolicy;
 use App\Policies\NotificationDeliveryPolicy;
 use App\Policies\SurveyCampaignPolicy;
 use App\Policies\SurveyInvitationPolicy;
@@ -46,6 +48,7 @@ class AuthorizationServiceProvider extends ServiceProvider
         SurveyCampaign::class => SurveyCampaignPolicy::class,
         SurveyInvitation::class => SurveyInvitationPolicy::class,
         SurveyResponse::class => SurveyResponsePolicy::class,
+        FeedbackItem::class => FeedbackItemPolicy::class,
     ];
 
     public function boot(): void

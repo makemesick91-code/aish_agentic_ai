@@ -2,6 +2,30 @@
 
 Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Makassar.
 
+## Checkpoint 2026-07-15 — Step 8 Feedback Operations Foundation execution
+- **Branch:** `feature/step-8-feedback-operations-foundation` · **Base:** `main`.
+- **Decisions:**
+  - Feedback placed as platform-core in top-level `App\Feedback\*` + `App\Models\Feedback*` (ADR 0060), not
+    `app/Modules/`.
+  - Projection off the write path: an after-commit `SurveyResponseCompleted` domain event + a queued idempotent
+    listener/job; one item per source enforced by a DB unique `(tenant_id, source_type, source_id)` constraint;
+    idempotent `aish:feedback-reconcile` back-fill (ADR 0060).
+  - Explicit guarded lifecycle (`new..archived`); `resolved`/`closed` are operational feedback states, **not** a
+    customer-recovery outcome (ADR 0060).
+  - Search/timeline/assignment (ADR 0061): permission-aware PostgreSQL FTS (`tsvector`/GIN) with a portable `LIKE`
+    fallback, content search gated by `feedback.view-content`; append-only immutable timeline; scope-validated
+    assignment with membership-revocation fail-close; tenant-isolated tags; append-only notes.
+  - Attachments & export (ADR 0062): private tenant-prefixed disk (no public disk), content-based MIME allowlist,
+    path-traversal prevention, remove-state; queued entitlement-gated metered CSV export with requester-scoped
+    re-authorized download, private+expiring links, and CSV formula-injection neutralization.
+  - Independent Step 8 security review (reviewer ≠ implementer) — **PASS after fixes**: F-1 HIGH (export download not
+    re-authorized to requester) FIXED; F-2 LOW (base feedback not entitlement-gated) FIXED via `EnsureFeedbackEnabled`;
+    F-3 LOW (bulk lacked per-action permission) FIXED; 14/14 other vectors PASS.
+- **Result:** CODE COMPLETE + TESTED locally (full hermetic suite **352 passing**; Pint/PHPStan clean;
+  `aish:verify-step-8` 18 checks pass on SQLite). Master Source v2.10.0 (§74); ADRs 0060–0062; AFR-188..210; rule 33.
+  IN PROGRESS toward merge + GO — NOT yet merged/tagged/CI-green/clean-checkout-verified against real PostgreSQL 17 +
+  Redis 7; evidence forthcoming under `docs/evidence/step-8/`.
+
 ## Checkpoint 2026-07-14 — Step 7 Survey & CSAT Foundation execution
 - **Branch:** `feature/step-7-survey-csat-foundation` · **Base:** `main` (baseline `eb14de2`).
 - **Blocking pre-gate:** the deferred independent SF-05 security review was executed by an independent

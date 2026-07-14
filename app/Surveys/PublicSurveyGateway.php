@@ -7,6 +7,7 @@ namespace App\Surveys;
 use App\Audit\AuditRecorder;
 use App\Enums\InvitationStatus;
 use App\Enums\ResponseStatus;
+use App\Events\SurveyResponseCompleted;
 use App\Models\SurveyAnswer;
 use App\Models\SurveyCampaign;
 use App\Models\SurveyInvitation;
@@ -206,6 +207,9 @@ final class PublicSurveyGateway
         });
 
         $this->notifyInternal($tenant, $campaign, $response);
+
+        // Drive the operational feedback projection (queued, idempotent, after-commit).
+        SurveyResponseCompleted::dispatch($response->id, $tenant->id, $response->branch_id);
 
         return $response->fresh();
     }

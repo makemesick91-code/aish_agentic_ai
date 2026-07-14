@@ -32,6 +32,14 @@ final class EntitlementKeys
 
     public const SURVEY_RESPONSES_MONTHLY = 'survey_responses.monthly';
 
+    public const FEEDBACK_ENABLED = 'feedback.enabled';
+
+    public const FEEDBACK_ATTACHMENTS_ENABLED = 'feedback.attachments.enabled';
+
+    public const FEEDBACK_EXPORTS_ENABLED = 'feedback.exports.enabled';
+
+    public const FEEDBACK_BULK_ACTIONS_ENABLED = 'feedback.bulk-actions.enabled';
+
     public const GOOGLE_LOCATIONS_MAX = 'google_locations.max';
 
     public const AI_ANALYSES_MONTHLY = 'ai_analyses.monthly';
@@ -55,6 +63,10 @@ final class EntitlementKeys
             self::SURVEY_CAMPAIGNS_MAX => FeatureType::Integer,
             self::SURVEY_INVITATIONS_MONTHLY => FeatureType::Integer,
             self::SURVEY_RESPONSES_MONTHLY => FeatureType::Integer,
+            self::FEEDBACK_ENABLED => FeatureType::Boolean,
+            self::FEEDBACK_ATTACHMENTS_ENABLED => FeatureType::Boolean,
+            self::FEEDBACK_EXPORTS_ENABLED => FeatureType::Boolean,
+            self::FEEDBACK_BULK_ACTIONS_ENABLED => FeatureType::Boolean,
             self::GOOGLE_LOCATIONS_MAX => FeatureType::Integer,
             self::AI_ANALYSES_MONTHLY => FeatureType::Integer,
             self::API_ENABLED => FeatureType::Boolean,
