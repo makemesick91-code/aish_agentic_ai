@@ -94,6 +94,10 @@ final class TenancyBoundariesTest extends TestCase
             'app/Console/Commands/VerifySaasCoreCommand.php',
             // SF-05 clean-checkout verifier: runs cross-tenant checks with no ambient context.
             'app/Console/Commands/VerifySf05Command.php',
+            // Step 7 public survey plane: the SINGLE reviewed entry point that resolves a
+            // campaign/invitation cross-tenant (opaque public id + constant-time token) before
+            // establishing a membership-less tenant context (rule 32; Step 7 §18, ADR 0058).
+            'app/Surveys/PublicSurveyGateway.php',
         ];
         $allowedPrefixes = [
             'app/Tenancy/',
