@@ -27,11 +27,22 @@ enum NotificationType: string
     case SubscriptionEntitlementChanged = 'subscription.entitlement.changed';
     case SecurityAuthenticationAlert = 'security.authentication.alert';
     case SurveyResponseCompleted = 'survey.response.completed.internal';
+    case FeedbackAssigned = 'feedback.assigned';
+    case FeedbackUnassigned = 'feedback.unassigned';
+    case FeedbackStatusChanged = 'feedback.status.changed';
+    case FeedbackExportReady = 'feedback.export.ready';
+    case FeedbackExportFailed = 'feedback.export.failed';
 
     public function category(): NotificationCategory
     {
         return match ($this) {
             self::SurveyResponseCompleted => NotificationCategory::Survey,
+
+            self::FeedbackAssigned,
+            self::FeedbackUnassigned,
+            self::FeedbackStatusChanged,
+            self::FeedbackExportReady,
+            self::FeedbackExportFailed => NotificationCategory::Feedback,
 
             self::TenantInvitationCreated,
             self::TenantInvitationAccepted,
@@ -69,9 +80,17 @@ enum NotificationType: string
     public function defaultChannels(): array
     {
         return match ($this) {
-            // Entitlement changes and internal survey signals are low-signal; in-app only.
+            // Entitlement changes and internal survey/feedback signals are low-signal; in-app only.
             self::SubscriptionEntitlementChanged,
-            self::SurveyResponseCompleted => [NotificationChannel::InApp],
+            self::SurveyResponseCompleted,
+            self::FeedbackAssigned,
+            self::FeedbackUnassigned,
+            self::FeedbackStatusChanged => [NotificationChannel::InApp],
+
+            // Export completion carries an actionable link; email + in-app.
+            self::FeedbackExportReady,
+            self::FeedbackExportFailed => [NotificationChannel::InApp, NotificationChannel::Email],
+
             default => [NotificationChannel::InApp, NotificationChannel::Email],
         };
     }
