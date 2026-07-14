@@ -3,6 +3,18 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
+- **Step 6 — SaaS Core Foundation (consolidated SPRINT-SF-01..SF-04):** CODE COMPLETE / TESTED locally /
+  **IN PROGRESS toward GO** on branch `feature/step-6-saas-core-foundation` (PR #14). Delivers secure auth
+  (Fortify; public registration disabled; Sanctum + Spatie installed), global user identity, tenant + branch
+  lifecycle, explicit tenant memberships (last-active-owner protected), one-time SHA-256 hashed race-safe
+  invitations, immutable fail-closed request/job tenant context, tenant-scoped RBAC (Spatie teams on `tenant_id`)
+  + policies, append-only audit, and tenant isolation across DB/cache/queue/storage/logging. Master Source
+  **v2.7.0** (§71), PRD **v1.3.0** unchanged; ADRs 0051–0053; AFR-134..154; Claude rule 30 (ADR-0051 consolidates
+  SF-01..SF-04 into one release/GO gate). Local gates green (**96 tests**, PHPStan L6, Pint, `scripts/docs/validate.sh`
+  ALL PASS) and **real-infra verified** (`aish:verify-saas-core` on PostgreSQL 17 + Redis 7). Independent security +
+  architecture review complete (HIGH privilege-escalation gap fixed; minors addressed). **NOT yet merged, NOT tagged,
+  NOT CI-verified-on-CI, NOT clean-checkout-verified.** Business/module implementation, deployment, pilot, and
+  production: **NOT STARTED**; no domain owned; nothing deployed.
 - **Step 5 — Runtime & Repository Bootstrap:** MERGED (code PR #11 merge `a0f0ca9`, full CI `29302066914`; fix
   PR #12 merge `77f9005`, full CI `29303547776`) and **GO TAGGED**
   (`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`, tag object `c3a5a9f`, peeled `77f9005`;

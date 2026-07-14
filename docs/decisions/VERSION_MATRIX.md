@@ -5,7 +5,9 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 ## Canonical documents
 | Document | Active version | Working copy | Preserved original | Notes |
 |----------|----------------|--------------|--------------------|-------|
-| Master Source | **2.5.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.5.0.md` | CICD-CTRL-1 Safe CI Runtime Control governance (§69) |
+| Master Source | **2.7.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.7.0.md` | Step 6 SaaS Core Foundation (§71); auth/identity, tenant/branch + memberships, fail-closed context, RBAC/audit, isolation |
+| Master Source (historical) | 2.6.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.6.0.md` | Step 5 Runtime & Repository Bootstrap (§70); superseded by 2.7.0 |
+| Master Source (historical) | 2.5.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.5.0.md` | CICD-CTRL-1 Safe CI Runtime Control governance (§69); superseded by 2.6.0 |
 | PRD | **1.3.0** | `../canonical/PRD.md` | `../canonical/source/PRD_AISH_AGENTIC_AI_v1.3.0.md` | Step 4 baseline; unchanged by CICD-CTRL-1 (CI = non-functional release assurance, NFR-CI-001..006 in Master Source §6) |
 | Persona & Pilot Use Cases | **1.0.0** | `../product/PERSONA_AND_PILOT_USE_CASES.md` | `../canonical/source/PERSONA_AND_PILOT_USE_CASES_v1.0.0.md` | Canonical Step 2 persona/pilot source (unchanged) |
 | Master Source (historical) | 2.4.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.4.0.md` | Historical; superseded by 2.5.0 |
@@ -22,9 +24,11 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 `2.1.1` (canonical repository established) → `2.2.0` (Persona & Pilot Use Case baseline / Step 2) →
 `2.3.0` (Application Architecture & ADR foundation / Step 3) →
 `2.4.0` (Domain/Branding/Environment/SaaS-Foundation planning / Step 4) →
-`2.5.0` (CICD-CTRL-1 Safe CI Runtime Control governance).
-**Active: 2.5.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
-`1.3.0` (Step 4; unchanged by CICD-CTRL-1).
+`2.5.0` (CICD-CTRL-1 Safe CI Runtime Control governance) →
+`2.6.0` (Runtime & Repository Bootstrap / Step 5) →
+`2.7.0` (SaaS Core Foundation / Step 6).
+**Active: 2.7.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
+`1.3.0` (Step 4; unchanged by CICD-CTRL-1, Step 5, and Step 6).
 **Active PRD: 1.3.0.**
 
 ## Documentation-foundation release (Step 1)
@@ -71,6 +75,16 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 | Feature branch | `chore/cicd-ctrl-1-safe-ci-runtime-control` |
 | Scope | Master Source v2.5.0 (PRD unchanged v1.3.0); ADRs 0042–0046; AFR-105..126; Claude rule 28; `pr-ci.yml`/`main-post-merge.yml`/`full-ci-manual.yml`; classifier + local gates + validators; ruleset enforcement; CI docs; evidence |
 | Claim | CI/release-process governance only — application implementation, deployment, pilot readiness, pilot runtime, and production readiness remain NOT STARTED. A CI PASS is valid only for the exact tested SHA |
+
+## Step 6 release (SaaS Core Foundation)
+| Item | Value |
+|------|-------|
+| Target GO tag | `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` (annotated, immutable) — NOT yet created |
+| Base branch | `main` |
+| Consolidates | Canonical SPRINT-SF-01..SF-04 (EPIC-SF-04..09) into one release under a single GO tag |
+| Scope | Master Source v2.7.0 (PRD unchanged v1.3.0); ADRs 0051–0053; Claude rule 30; secure auth + identity; tenant/branch lifecycle + memberships; immutable fail-closed tenant context; tenant-scoped RBAC + policies; append-only audit; tenant isolation (DB/cache/queue/storage/log) |
+| Status | CODE COMPLETE + TESTED locally; IN PROGRESS toward GO — NOT merged, NOT tagged, NOT CI-green-on-CI, NOT clean-checkout-verified |
+| Claim | SaaS-core-foundation readiness only — business modules, deployment, pilot readiness, pilot runtime, and production readiness remain NOT STARTED; no domain owned, nothing deployed |
 
 ## Toolchain (Step 3 time)
 | Component | Version / status |

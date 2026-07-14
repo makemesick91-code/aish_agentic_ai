@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.6.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.7.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -97,6 +97,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `27-truthful-planning-states.md` | Planning ≠ implementation; domain candidate ≠ ownership; plan ≠ deployed; GO-tag scope |
 | `28-safe-ci-runtime-control.md` | Local-first + draft-first CI, one final-head full gate, SHA-bound evidence, internal fail-closed routing, stable required gate, lightweight post-merge/post-tag, workflow security, no false one-run claim |
 | `29-runtime-bootstrap-and-operations.md` | Reproducible Laravel 12 runtime bootstrap, pinned versions, env contract, truthful health/readiness, queue/scheduler foundation, security baseline, backend runtime CI, runtime-evidence-before-claims |
+| `30-saas-core-foundation.md` | Secure auth/identity, tenant/branch lifecycle + memberships, immutable fail-closed tenant context, tenant-scoped RBAC + policies, append-only audit, tenant isolation (DB/cache/queue/storage/log) |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -127,6 +128,16 @@ real `backend-runtime-ci` gate wired into `pr-ci / Required Gate`. MERGED (code 
 merge `77f9005`) and **GO TAGGED** (`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`, tag object
 `c3a5a9f`, peeled `77f9005`; local == remote == main). **RUNTIME VERIFIED** from a clean checkout against real
 PostgreSQL 17 + Redis 7 (live/ready positive+negative, migrate, queue dispatch+processing, scheduler, asset build).
+**Step 6 — SaaS Core Foundation** (Master Source **v2.7.0**, PRD **v1.3.0** unchanged, ADRs 0051–0053, rule 30)
+delivers the **SAAS CORE FOUNDATION** as a consolidated release (canonical SPRINT-SF-01..SF-04 / EPIC-SF-04..09
+under one target GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`): secure authentication (Fortify;
+registration disabled; Sanctum; email verification; login throttle; suspended-user rejection without enumeration),
+global identity, tenant/branch lifecycle, explicit tenant memberships (invited/active/suspended/revoked) with
+last-active-owner protection and one-time hashed invitation tokens, immutable fail-closed tenant context,
+tenant-scoped RBAC (Spatie teams on `tenant_id`) with policies, append-only audit, and tenant isolation across
+DB/cache/queue/storage/logging. Step 6 is **CODE COMPLETE** and **TESTED locally**, and **IN PROGRESS toward GO** —
+NOT yet merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified; merge/CI/tag evidence is
+forthcoming under `docs/evidence/step-6/`.
 **Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 

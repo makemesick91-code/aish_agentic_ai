@@ -31,6 +31,11 @@ Epic/sprint planning, implementation sequence, Definition of Ready/Done, deploym
   DB/redis/pool/secrets with DaengtisiaMS or Aish POS by default (AFR-102).
 - Implementation **MUST NOT** begin before the Definition of Ready is satisfied and the Step 4 GO tag is verified.
   Each sprint **MUST** have its own GO/WATCH/NO-GO gate and a Master Source update rule.
+  - **Note (Step 6 consolidation, ADR 0051):** SPRINT-SF-01..SF-04 (EPIC-SF-04..09 — config/secret +
+    authentication, tenant & branch context, RBAC & audit, queue/cache/storage isolation) are delivered as **one**
+    consolidated Step 6 SaaS Core Foundation release under a single GO tag; the per-sprint gate requirement for
+    SF-01..SF-04 is satisfied by that single consolidated gate. The ADR 0039 dependency **sequence** is unchanged
+    and SPRINT-SF-05..SF-08 keep their independent per-sprint gates. See `.claude/rules/30` and ADRs 0051–0053.
 - No application code, migration, or runtime **MUST** be claimed as created during planning; status **MUST** stay
   `NOT STARTED` until evidenced.
 

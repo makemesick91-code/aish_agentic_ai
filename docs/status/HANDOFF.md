@@ -3,6 +3,19 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
+**Step 6 — SaaS Core Foundation** (consolidated SPRINT-SF-01..SF-04 per ADR-0051) is CODE COMPLETE and TESTED
+locally on branch `feature/step-6-saas-core-foundation` (PR #14): secure auth (Fortify; registration disabled),
+global identity, tenant/branch lifecycle, memberships (last-owner protected), one-time hashed invitations,
+immutable fail-closed tenant context, tenant-scoped RBAC + policies, append-only audit, and DB/cache/queue/storage/
+logging isolation. Master Source **v2.7.0** (§71), rule 30, ADRs 0051–0053, AFR-134..154. Local gates green (96
+tests, PHPStan L6, Pint, docs validate ALL PASS) and real-infra verified (`aish:verify-saas-core` on PostgreSQL 17
++ Redis 7); independent security + architecture review complete (HIGH privilege-escalation fixed). **Next:** mark
+PR ready → one authoritative Full CI on the final head → merge → clean-checkout verification on the merged SHA →
+annotated GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` → post-tag evidence sync (no tag move).
+NOT yet merged/tagged/CI-verified. Business modules, deployment, pilot, production remain NOT STARTED.
+
+---
+
 **Step 5 — Runtime & Repository Bootstrap** delivered the bootable Laravel 12 runtime foundation (Master Source
 v2.6.0, rule 29, ADRs 0047–0050, AFR-127..133) on branch `feature/step-5-runtime-repository-bootstrap`. Runtime is
 CODE COMPLETE and RUNTIME VERIFIED locally (real PostgreSQL 17 + Redis 7). A real `backend-runtime-ci` gate is
