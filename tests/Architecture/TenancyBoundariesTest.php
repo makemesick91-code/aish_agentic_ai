@@ -92,10 +92,19 @@ final class TenancyBoundariesTest extends TestCase
             'app/Models/User.php',
             'app/Http/Middleware/ResolveTenantContext.php',
             'app/Console/Commands/VerifySaasCoreCommand.php',
+            // SF-05 clean-checkout verifier: runs cross-tenant checks with no ambient context.
+            'app/Console/Commands/VerifySf05Command.php',
         ];
         $allowedPrefixes = [
             'app/Tenancy/',
             'app/Services/Tenancy/',
+            // SPRINT-SF-05 context-free planes that MUST filter tenant-owned data explicitly:
+            // the notification dispatcher and subscription/entitlement engine run with no
+            // ambient tenant context (platform, reconciler, cross-tenant notify), and the
+            // platform operator plane never establishes a tenant context (rule 31 §10.1).
+            'app/Services/Notifications/',
+            'app/Subscriptions/',
+            'app/Http/Controllers/Platform/',
         ];
 
         $violations = [];
