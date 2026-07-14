@@ -6,12 +6,14 @@ namespace App\Surveys;
 
 use App\Audit\AuditRecorder;
 use App\Enums\InvitationStatus;
+use App\Mail\SurveyInvitationMail;
 use App\Models\SurveyCampaign;
 use App\Models\SurveyInvitation;
 use App\Models\User;
 use App\Surveys\Exceptions\SurveyStateException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Issues and manages unique survey invitations. A cryptographically strong token is generated,
@@ -71,6 +73,43 @@ final class SurveyInvitationService
         ]);
 
         return new IssuedInvitation($invitation, $plainToken);
+    }
+
+    /**
+     * Deliver the invitation email synchronously via the mail channel and record a truthful
+     * delivery state. `$url` already contains the one-time token; the token is never stored in
+     * any record or log. `sent` means accepted by the mail transport — not a proven receipt.
+     */
+    public function deliver(SurveyInvitation $invitation, string $url, User $actor): SurveyInvitation
+    {
+        if ($invitation->recipient_email === null) {
+            throw SurveyStateException::message('This invitation has no recipient email to deliver to.');
+        }
+
+        try {
+            Mail::to($invitation->recipient_email)->send(new SurveyInvitationMail(
+                subjectLine: 'Kami ingin mendengar masukan Anda',
+                url: $url,
+            ));
+        } catch (\Throwable) {
+            $failed = $this->markDeliveryFailed($invitation, 'mail_transport_error');
+            $this->audit->record('survey.invitation.delivery_requested', [
+                'subject' => $invitation->campaign,
+                'actor_id' => $actor->id,
+                'metadata' => ['invitation_public_id' => $invitation->public_id, 'channel' => 'email', 'result' => 'failed'],
+            ]);
+
+            return $failed;
+        }
+
+        $sent = $this->markSent($invitation);
+        $this->audit->record('survey.invitation.delivery_requested', [
+            'subject' => $invitation->campaign,
+            'actor_id' => $actor->id,
+            'metadata' => ['invitation_public_id' => $invitation->public_id, 'channel' => 'email', 'result' => 'sent'],
+        ]);
+
+        return $sent;
     }
 
     public function markSent(SurveyInvitation $invitation): SurveyInvitation

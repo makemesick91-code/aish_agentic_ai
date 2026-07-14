@@ -13,6 +13,9 @@ use App\Models\SurveyInvitation;
 use App\Models\SurveyResponse;
 use App\Models\SurveyVersion;
 use App\Models\Tenant;
+use App\Models\User;
+use App\Notifications\NotificationType;
+use App\Services\Notifications\NotificationDispatcher;
 use App\Subscriptions\MeterKeys;
 use App\Subscriptions\UsageMeter;
 use App\Surveys\Exceptions\InvalidSurveyLinkException;
@@ -35,6 +38,7 @@ final class PublicSurveyGateway
         private readonly ResponseValidator $validator,
         private readonly UsageMeter $usage,
         private readonly AuditRecorder $audit,
+        private readonly NotificationDispatcher $dispatcher,
     ) {}
 
     /** Resolve a public campaign link for rendering (throws generically on any failure). */
@@ -197,7 +201,39 @@ final class PublicSurveyGateway
             return $response;
         });
 
+        $this->notifyInternal($tenant, $campaign, $response);
+
         return $response->fresh();
+    }
+
+    /**
+     * Best-effort internal in-app notification to the campaign owner that a response completed.
+     * It carries no answer content and never fails the public submission (rule 32; Step 7 §22).
+     */
+    private function notifyInternal(Tenant $tenant, SurveyCampaign $campaign, SurveyResponse $response): void
+    {
+        if ($campaign->created_by === null) {
+            return;
+        }
+
+        $recipient = User::find($campaign->created_by);
+        if ($recipient === null) {
+            return;
+        }
+
+        try {
+            $this->dispatcher->dispatch(
+                NotificationType::SurveyResponseCompleted,
+                $recipient,
+                'survey-response:'.$response->correlation_id,
+                'A survey response was completed',
+                tenant: $tenant,
+                body: 'A response was submitted for the campaign "'.$campaign->name.'".',
+                branchId: $campaign->branch_id,
+            );
+        } catch (\Throwable) {
+            // An internal notification failure must never fail a public response.
+        }
     }
 
     /**
