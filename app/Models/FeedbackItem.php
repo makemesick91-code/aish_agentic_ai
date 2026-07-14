@@ -47,6 +47,11 @@ use Illuminate\Support\Str;
  * @property string|null $search_meta
  * @property string|null $search_content
  * @property int|null $created_by
+ * @property-read Branch|null $branch
+ * @property-read Survey|null $survey
+ * @property-read SurveyCampaign|null $campaign
+ * @property-read SurveyResponse|null $surveyResponse
+ * @property-read User|null $assignee
  */
 class FeedbackItem extends Model implements TenantOwned
 {
