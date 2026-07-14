@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Log;
  * projected idempotently. Safe to rerun (the projector is idempotent), tenant-aware, cursor-based,
  * and audited. It never prints response content (rule 33; Step 8 §9.4).
  */
-final class ReconcileFeedbackProjectionsCommand extends Command
+final class FeedbackReconcileCommand extends Command
 {
-    protected $signature = 'aish:reconcile-feedback-projections {--tenant= : Limit to a single tenant id} {--limit=0 : Max responses to process per tenant (0 = all)}';
+    protected $signature = 'aish:feedback-reconcile {--tenant= : Limit to a single tenant id} {--limit=0 : Max responses to process per tenant (0 = all)}';
 
     protected $description = 'Project any completed survey responses that are missing an operational feedback item.';
 

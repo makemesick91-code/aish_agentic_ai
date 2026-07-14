@@ -107,7 +107,7 @@ final class FeedbackProjectionTest extends TestCase
         $missing = SurveyResponse::factory()->completed()->create();
         $this->projector()->projectFromSurveyResponse($projected);
 
-        $this->artisan('aish:reconcile-feedback-projections', ['--tenant' => $this->tenant->id])
+        $this->artisan('aish:feedback-reconcile', ['--tenant' => $this->tenant->id])
             ->assertSuccessful();
 
         $this->assertDatabaseCount('feedback_items', 2);
