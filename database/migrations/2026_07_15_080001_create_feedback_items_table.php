@@ -28,7 +28,9 @@ return new class extends Migration
             // Generic source identity (idempotency) + concrete survey references.
             $table->string('source_type', 40);
             $table->unsignedBigInteger('source_id');
-            $table->foreignId('survey_response_id')->nullable()->constrained('survey_responses')->restrictOnDelete();
+            // Cascade: a feedback item is a projection of its response, so it is removed only when the
+            // response is (e.g. tenant-lifecycle deletion). The normal workflow never deletes responses.
+            $table->foreignId('survey_response_id')->nullable()->constrained('survey_responses')->cascadeOnDelete();
             $table->foreignId('survey_id')->nullable()->constrained('surveys')->nullOnDelete();
             $table->foreignId('survey_version_id')->nullable()->constrained('survey_versions')->nullOnDelete();
             $table->foreignId('campaign_id')->nullable()->constrained('survey_campaigns')->nullOnDelete();
