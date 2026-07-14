@@ -2,6 +2,26 @@
 
 Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Makassar.
 
+## Checkpoint 2026-07-14 — Step 6 SaaS Core Foundation execution
+- **Branch:** `feature/step-6-saas-core-foundation` · **Base:** `main` (baseline `11d75f9`) · **PR #14**.
+- **Decisions:**
+  - Owner chose to deliver Step 6 as ONE consolidated release (ADR-0051) covering canonical SPRINT-SF-01..SF-04
+    (EPIC-SF-04..09); the single consolidated GO gate satisfies rule 26's per-sprint gate for SF-01..SF-04.
+    SPRINT-SF-00 (Step 5 runtime) untouched.
+  - Auth stack per ADR-0013: Fortify (web) + Sanctum (installed, token surface deferred) + Spatie permission
+    (`teams=true`, `team_foreign_key=tenant_id`). Public registration DISABLED; invitation-only onboarding.
+    2FA/passkeys out of scope (passkeys is a hard Fortify 1.37 dep; kept installed, feature+migration off).
+  - SaaS core placed as platform-core in top-level `app/` (ADR-0052), not `app/Modules/` (business modules
+    remain NOT STARTED). Membership model + fail-closed immutable TenantContext (ADR-0053).
+  - Repo hygiene: added the missing standard `storage/**/.gitignore` keep-files and untracked pre-existing
+    generated PHPStan/view cache (865+3 files) that `main` was tracking.
+  - Security review found + fixed a HIGH within-tenant privilege escalation (Business Owner assignment/invite now
+    requires `roles.manage-foundation`; no self-role-change). Test agent found + fixed a middleware-priority bug
+    (context must resolve before route-model binding).
+- **Evidence:** Master Source v2.7.0 (§71); 96 tests / 283 assertions; PHPStan L6 0; Pint clean;
+  `scripts/docs/validate.sh` ALL GATES PASSED; `aish:verify-saas-core` PASS on real PostgreSQL 17 + Redis 7.
+  Merge/CI/tag/clean-checkout evidence recorded post-merge under `docs/evidence/step-6/` (tag not moved by sync).
+
 ## Checkpoint 2026-07-14 — Step 5 Runtime & Repository Bootstrap execution
 - **Branch:** `feature/step-5-runtime-repository-bootstrap` · **Base:** `main` (baseline `bc5acb9`).
 - **Decisions:**
