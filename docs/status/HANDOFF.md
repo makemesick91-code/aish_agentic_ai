@@ -3,16 +3,17 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
-**Step 6 — SaaS Core Foundation** (consolidated SPRINT-SF-01..SF-04 per ADR-0051) is CODE COMPLETE and TESTED
-locally on branch `feature/step-6-saas-core-foundation` (PR #14): secure auth (Fortify; registration disabled),
-global identity, tenant/branch lifecycle, memberships (last-owner protected), one-time hashed invitations,
-immutable fail-closed tenant context, tenant-scoped RBAC + policies, append-only audit, and DB/cache/queue/storage/
-logging isolation. Master Source **v2.7.0** (§71), rule 30, ADRs 0051–0053, AFR-134..154. Local gates green (96
-tests, PHPStan L6, Pint, docs validate ALL PASS) and real-infra verified (`aish:verify-saas-core` on PostgreSQL 17
-+ Redis 7); independent security + architecture review complete (HIGH privilege-escalation fixed). **Next:** mark
-PR ready → one authoritative Full CI on the final head → merge → clean-checkout verification on the merged SHA →
-annotated GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` → post-tag evidence sync (no tag move).
-NOT yet merged/tagged/CI-verified. Business modules, deployment, pilot, production remain NOT STARTED.
+**Step 6 — SaaS Core Foundation** (consolidated SPRINT-SF-01..SF-04 per ADR-0051) is **MERGED and GO TAGGED**:
+secure auth (Fortify; registration disabled), global identity, tenant/branch lifecycle, memberships (last-owner
+protected), one-time hashed invitations, immutable fail-closed tenant context, tenant-scoped RBAC + policies,
+append-only audit, and DB/cache/queue/storage/logging isolation. Master Source **v2.7.0** (§71), rule 30, ADRs
+0051–0053, AFR-134..154. Code PR #14 merge `7ca2e14` (Full CI `29312307606`); fix PR #15 merge `9c25a9c` (Full CI
+`29313262408`); GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` (object `723139b`, peeled `9c25a9c`;
+local == remote == main). CLEAN-CHECKOUT VERIFIED against real PostgreSQL 17 + Redis 7; 96 tests, PHPStan L6, Pint,
+docs validate all green; independent security + architecture review complete. Post-tag evidence in
+`docs/release/STEP_6_TAG_VERIFICATION.md` (tag not moved). **Next initiative:** SPRINT-SF-05 (notification,
+subscription & admin skeletons) after its own gate. Business modules, deployment, pilot, production remain NOT
+STARTED; no domain owned; nothing deployed.
 
 ---
 
