@@ -41,10 +41,14 @@ Every CSAT/NPS/CES figure is reproducible from stored answers, identical regardl
 by one explicit policy, and confined to the correct tenant/branch/version.
 
 ## Impacts
-- **Correctness:** one calculator, exhaustively boundary-tested (thresholds, all-promoters=100, all-detractors=−100,
-  exclusions, both CES directions).
-- **Truthful states:** null for empty populations; raw counts retained alongside derived values.
+- **Security:** deterministic computation over stored values only; no formula duplication that could diverge or be
+  manipulated via presentation.
 - **Privacy:** summaries expose aggregates only, never individual answer content.
+- **Tenant isolation:** aggregation is fail-closed tenant-scoped, branch-filterable, and version-aware; no
+  cross-tenant aggregation.
+- **Database:** none new; reads stored `survey_answers` numeric values of completed responses.
+- **Operational:** one calculator, exhaustively boundary-tested; null for empty populations (truthful "no data");
+  raw counts retained alongside derived values.
 - **Cost:** negligible; pure computation.
 
 ## Verification / fitness function

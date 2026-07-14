@@ -1,3 +1,16 @@
+---
+id: "32"
+title: Survey & CSAT Foundation
+domain: survey-csat
+scope: repository-wide
+authority: permanent
+canonical_refs:
+  - "Master Source §47, §62; §16, §50, §53, §54"
+  - "PRD v1.3.0 §10.4, §10.5, §10.6, §16, §23, §24"
+  - "ADRs 0057, 0058, 0059; ADRs 0011–0013, 0015, 0016, 0029, 0051–0056; AFR-171..187; rules 02, 03, 04, 05, 06, 07, 09, 10, 11, 18, 20, 26, 27, 28, 29, 30, 31"
+supersede: "Permanent for Step 7+. Tenant/branch ownership, immutable published versions, question/answer integrity, hashed one-time tokens with no-enumeration, completed-response immutability, deterministic versioned CSAT/NPS/CES with explicit rounding, consent semantics, untrusted-free-text handling, no-response-content-in-logs/audit, the single authoritative entitlement resolver, idempotent usage metering, the approved notification dispatcher, Google Review anti-gating, platform-role isolation, and evidence-based release cannot be weakened; superseded only by a higher-version Master Source update that preserves these guarantees."
+---
+
 # Rule 32 — Survey & CSAT Foundation
 
 ## Purpose

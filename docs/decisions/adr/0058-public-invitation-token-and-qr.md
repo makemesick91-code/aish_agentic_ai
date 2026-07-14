@@ -52,9 +52,13 @@ plane can never read draft content or reach tenant RBAC.
 - **Security:** hashed one-time tokens, constant-time compare, no-enumeration failures, allowlisted single-gateway
   scope bypass (arch-test enforced), rate limits + payload caps.
 - **Privacy:** only hashed IP/UA metadata is retained; no answer content in logs/audit; QR carries only the URL.
-- **Tenant isolation:** public resolution is explicit and single-sourced; writes stamp the resolved tenant.
-- **Dependencies:** promotes `bacon/bacon-qr-code` (already resolved via Fortify) to a direct dependency (rule 25).
-- **Cost:** negligible.
+- **Tenant isolation:** public resolution is explicit and single-sourced; the public plane holds no RBAC/platform
+  access; writes stamp the resolved tenant.
+- **Database:** adds `public_id`/`token_hash`/`idempotency_key` uniqueness on invitations/campaigns and a partial
+  unique index for one completed response per invitation.
+- **Operational:** truthful invitation states (`created/sent/opened/completed/expired/revoked/delivery_failed`);
+  promotes `bacon/bacon-qr-code` (already resolved via Fortify) to a direct dependency (rule 25).
+- **Cost:** negligible; local SVG QR, no external service.
 
 ## Verification / fitness function
 `tests/Feature/Surveys/PublicSurveyFlowTest.php`, `SurveyHttpTest.php`,

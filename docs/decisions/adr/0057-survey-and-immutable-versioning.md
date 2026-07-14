@@ -46,12 +46,16 @@ without touching published ones; concurrent publishes cannot corrupt the current
 crosses a tenant or branch boundary.
 
 ## Impacts
-- **Security / tenant isolation:** fail-closed tenant scope on all eight tables; opaque ULID public keys; branch
-  scope enforced in policies.
-- **Data:** eight tenant-owned tables (`surveys`, `survey_versions`, `survey_questions`, `survey_options`,
+- **Security:** fail-closed tenant scope on all eight tables; opaque ULID public keys (no sequential ids); published
+  content frozen at the model layer; no hard-delete of a published survey.
+- **Privacy:** free text is untrusted and never AI-fed or logged in Step 7; responses carry only minimized metadata.
+- **Tenant isolation:** every survey table is tenant-owned; branch scope enforced in policies; no cross-tenant survey
+  reference.
+- **Database:** eight tenant-owned tables (`surveys`, `survey_versions`, `survey_questions`, `survey_options`,
   `survey_campaigns`, `survey_invitations`, `survey_responses`, `survey_answers`) with unique version/question/option
-  keys+orders; a deferred FK for the survey↔version pointer.
-- **Truthful states:** version `draft/published/superseded`; survey `draft/published/paused/archived`.
+  keys+orders and a deferred FK for the survey↔version pointer.
+- **Operational:** truthful version (`draft/published/superseded`) and survey (`draft/published/paused/archived`)
+  states; race-safe idempotent publish.
 - **Cost:** negligible; no new providers.
 
 ## Verification / fitness function
