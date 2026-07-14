@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Tenancy;
 
+use App\Authorization\Permissions;
 use App\Authorization\Roles;
 use App\Http\Controllers\Controller;
 use App\Models\TenantInvitation;
@@ -31,6 +32,13 @@ final class InvitationController extends Controller
             'role' => ['required', 'string', Rule::in(Roles::names())],
             'all_branches' => ['sometimes', 'boolean'],
         ]);
+
+        // Inviting a foundation owner is a structural operation gated by a distinct
+        // permission, not by users.invite alone (rule 30; prevents vertical escalation).
+        if ($validated['role'] === Roles::BUSINESS_OWNER
+            && ! $request->user()->can(Permissions::ROLES_MANAGE_FOUNDATION)) {
+            abort(403, __('Inviting a Business Owner requires foundation role management.'));
+        }
 
         $allBranches = (bool) ($validated['all_branches'] ?? true);
 

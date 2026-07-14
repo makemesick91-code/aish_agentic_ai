@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -60,12 +61,25 @@ final class InvitationAcceptController extends Controller
             ]);
 
             $user = $existing ?? new User;
-            $user->forceFill([
-                'name' => $validated['name'],
-                'email' => $invitation->email,
-                'password' => Hash::make($validated['password']),
-                'status' => UserStatus::Active,
-            ])->save();
+
+            // Mutate the account and consume the invitation atomically: a failed
+            // acceptance rolls back the credential change (security hardening).
+            try {
+                $user = DB::transaction(function () use ($user, $validated, $invitation, $token): User {
+                    $user->forceFill([
+                        'name' => $validated['name'],
+                        'email' => $invitation->email,
+                        'password' => Hash::make($validated['password']),
+                        'status' => UserStatus::Active,
+                    ])->save();
+
+                    app(InvitationService::class)->accept($token, $user);
+
+                    return $user;
+                });
+            } catch (InvalidInvitationException $e) {
+                return back()->withErrors(['invitation' => $e->getMessage()]);
+            }
         } else {
             $authUser = $request->user();
 
@@ -75,12 +89,12 @@ final class InvitationAcceptController extends Controller
             }
 
             $user = $authUser;
-        }
 
-        try {
-            app(InvitationService::class)->accept($token, $user);
-        } catch (InvalidInvitationException $e) {
-            return back()->withErrors(['invitation' => $e->getMessage()]);
+            try {
+                app(InvitationService::class)->accept($token, $user);
+            } catch (InvalidInvitationException $e) {
+                return back()->withErrors(['invitation' => $e->getMessage()]);
+            }
         }
 
         Auth::login($user);

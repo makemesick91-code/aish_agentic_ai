@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Tenancy;
 
+use App\Authorization\Permissions;
 use App\Authorization\Roles;
 use App\Http\Controllers\Controller;
 use App\Models\TenantInvitation;
@@ -88,6 +89,18 @@ final class MembershipController extends Controller
         $validated = $request->validate([
             'role' => ['required', 'string', Rule::in(Roles::names())],
         ]);
+
+        // No self privilege change — prevents self-escalation and accidental self-demotion.
+        if ($membership->user_id === $request->user()->id) {
+            abort(403, __('You cannot change your own role.'));
+        }
+
+        // Granting the foundation owner role is a structural operation gated by a distinct
+        // permission, not by roles.assign alone (rule 30; prevents vertical escalation).
+        if ($validated['role'] === Roles::BUSINESS_OWNER
+            && ! $request->user()->can(Permissions::ROLES_MANAGE_FOUNDATION)) {
+            abort(403, __('Assigning the Business Owner role requires foundation role management.'));
+        }
 
         try {
             app(MembershipService::class)->setRole($membership, $validated['role'], $request->user()->id);

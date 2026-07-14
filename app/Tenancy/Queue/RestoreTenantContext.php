@@ -9,6 +9,7 @@ use App\Models\Tenant;
 use App\Tenancy\Exceptions\CrossTenantAccessException;
 use App\Tenancy\TenantContext;
 use App\Tenancy\TenantScope;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\PermissionRegistrar;
 
 /**
@@ -49,6 +50,8 @@ final class RestoreTenantContext
 
             $context->establish($tenant, null, $branch);
             $registrar->setPermissionsTeamId($tenant->id);
+            // Sanitised tenant log context for this job (no PII/secrets); mirrors HTTP.
+            Log::shareContext(['tenant_id' => $tenant->id]);
         }
 
         try {
@@ -56,6 +59,8 @@ final class RestoreTenantContext
         } finally {
             $context->forget();
             $registrar->setPermissionsTeamId(null);
+            // Never let context leak to the next job on this worker.
+            Log::flushSharedContext();
         }
     }
 }

@@ -11,10 +11,11 @@ use App\Tenancy\Exceptions\TenantContextMissingException;
 use RuntimeException;
 
 /**
- * The immutable, request/job-scoped tenant context. Bound as a *scoped* singleton so
- * Laravel resets it between HTTP requests and between queue jobs (no leakage across a
- * long-running worker). It is established exactly once per request/job by middleware or
- * a job envelope; nothing else mutates the tenant afterwards (rule 03, rule 30).
+ * The request/job-scoped tenant context. Bound as a *scoped* singleton so Laravel resets
+ * it between HTTP requests and between queue jobs (no leakage across a long-running
+ * worker). The tenant is immutable once established; the branch is selectable within that
+ * tenant, and forget() supports the scoped reset. It is established exactly once per
+ * request/job by middleware or a job envelope (rule 03, rule 30).
  */
 final class TenantContext
 {

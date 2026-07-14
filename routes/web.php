@@ -20,6 +20,7 @@ Route::view('/', 'welcome')->name('home');
  * tenant context — a not-yet-member may be establishing their account (rule 30).
  */
 Route::get('/invitations/{token}/accept', [InvitationAcceptController::class, 'show'])
+    ->middleware('throttle:30,1')
     ->name('invitations.accept.show');
 Route::post('/invitations/{token}/accept', [InvitationAcceptController::class, 'store'])
     ->middleware('throttle:10,1')
