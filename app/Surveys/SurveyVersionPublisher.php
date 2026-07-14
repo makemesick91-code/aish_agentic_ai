@@ -16,6 +16,7 @@ use App\Models\SurveyVersion;
 use App\Models\User;
 use App\Surveys\Exceptions\SurveyStateException;
 use App\Surveys\Exceptions\SurveyValidationException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -42,7 +43,7 @@ final class SurveyVersionPublisher
             $errors[] = 'the survey is archived and cannot publish a new version';
         }
 
-        /** @var \Illuminate\Support\Collection<int, SurveyQuestion> $questions */
+        /** @var Collection<int, SurveyQuestion> $questions */
         $questions = $version->questions()->with('options')->orderBy('display_order')->get();
 
         if ($questions->isEmpty()) {

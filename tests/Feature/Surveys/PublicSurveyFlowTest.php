@@ -7,6 +7,8 @@ namespace Tests\Feature\Surveys;
 use App\Enums\CampaignStatus;
 use App\Enums\InvitationStatus;
 use App\Enums\ResponseStatus;
+use App\Models\AuditLog;
+use App\Models\Survey;
 use App\Models\SurveyAnswer;
 use App\Models\SurveyResponse;
 use App\Models\SurveyVersion;
@@ -43,7 +45,7 @@ final class PublicSurveyFlowTest extends TestCase
         $this->actor = User::factory()->create();
     }
 
-    /** @return array{0: \App\Models\Survey, 1: SurveyVersion} */
+    /** @return array{0: Survey, 1: SurveyVersion} */
     private function publishedSurvey(): array
     {
         $svc = app(SurveyService::class);
@@ -129,7 +131,7 @@ final class PublicSurveyFlowTest extends TestCase
         $this->assertSame(1, app(UsageMeter::class)->total($this->tenant, MeterKeys::SURVEY_RESPONSES_COMPLETED));
         $this->assertDatabaseHas('audit_logs', ['event' => 'survey.response.completed', 'tenant_id' => $this->tenant->id]);
         // No answer content leaked into audit metadata.
-        $audit = \App\Models\AuditLog::where('event', 'survey.response.completed')->first();
+        $audit = AuditLog::where('event', 'survey.response.completed')->first();
         $this->assertStringNotContainsString('Bagus', json_encode($audit->metadata));
     }
 

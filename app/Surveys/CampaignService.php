@@ -24,6 +24,7 @@ final class CampaignService
 {
     public function __construct(private readonly AuditRecorder $audit) {}
 
+    /** @param array{name: string, branch_id?: int|null, invitation_expiry_days?: int|null, starts_at?: \DateTimeInterface|null, ends_at?: \DateTimeInterface|null} $data */
     public function create(Survey $survey, SurveyVersion $version, array $data, User $actor): SurveyCampaign
     {
         if ($version->survey_id !== $survey->id) {

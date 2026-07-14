@@ -6,7 +6,6 @@ namespace Tests\Feature\Surveys;
 
 use App\Enums\SurveyStatus;
 use App\Enums\SurveyVersionStatus;
-use App\Models\Survey;
 use App\Models\SurveyVersion;
 use App\Models\Tenant;
 use App\Models\User;

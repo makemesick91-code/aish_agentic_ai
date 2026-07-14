@@ -7,10 +7,13 @@ namespace Tests\Feature\Surveys;
 use App\Authorization\Roles;
 use App\Enums\InvitationStatus;
 use App\Mail\SurveyInvitationMail;
+use App\Models\Survey;
 use App\Models\SurveyInvitation;
+use App\Models\SurveyVersion;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Surveys\CampaignService;
+use App\Surveys\Exceptions\SurveyStateException;
 use App\Surveys\PublicSurveyGateway;
 use App\Surveys\SurveyInvitationService;
 use App\Surveys\SurveyService;
@@ -39,7 +42,7 @@ final class SurveyNotificationTest extends TestCase
         $this->establishTenantContext($this->tenant);
     }
 
-    /** @return array{0: \App\Models\Survey, 1: \App\Models\SurveyVersion} */
+    /** @return array{0: Survey, 1: SurveyVersion} */
     private function publishedSurvey(): array
     {
         $svc = app(SurveyService::class);
@@ -102,7 +105,7 @@ final class SurveyNotificationTest extends TestCase
         );
         $issued = app(SurveyInvitationService::class)->issue($campaign, ['idempotency_key' => 'k-1'], $this->actor);
 
-        $this->expectException(\App\Surveys\Exceptions\SurveyStateException::class);
+        $this->expectException(SurveyStateException::class);
         app(SurveyInvitationService::class)->deliver($issued->invitation, 'https://x', $this->actor);
     }
 }

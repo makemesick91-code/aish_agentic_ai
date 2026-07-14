@@ -78,7 +78,11 @@ final class SurveyService
         return $draft;
     }
 
-    /** Add a question to a draft version. */
+    /**
+     * Add a question to a draft version.
+     *
+     * @param  array{question_key: string, type: string, prompt: string, help_text?: string|null, required?: bool, display_order: int, scored?: bool, scoring_config?: array<string, mixed>|null, validation_config?: array<string, mixed>|null}  $data
+     */
     public function addQuestion(SurveyVersion $version, array $data, User $actor): SurveyQuestion
     {
         $this->assertEditable($version);
@@ -105,7 +109,11 @@ final class SurveyService
         return $question;
     }
 
-    /** Add an option to a question in a draft version. */
+    /**
+     * Add an option to a question in a draft version.
+     *
+     * @param  array{option_key: string, label: string, value: string, display_order: int, score?: int|null}  $data
+     */
     public function addOption(SurveyQuestion $question, array $data, User $actor): SurveyOption
     {
         $this->assertEditable($question->version);
@@ -163,7 +171,11 @@ final class SurveyService
         return $survey->fresh();
     }
 
-    /** @internal Create a draft version row (used by create() and the publisher's new-draft flow). */
+    /**
+     * @internal Create a draft version row (used by create() and the publisher's new-draft flow).
+     *
+     * @param  array{version_number: int, title: string, introduction?: string|null, completion_message?: string|null, locale?: string, mode?: string}  $data
+     */
     public function createDraftVersion(Survey $survey, array $data, User $actor): SurveyVersion
     {
         $version = SurveyVersion::create([

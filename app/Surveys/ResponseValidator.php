@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Surveys;
 
 use App\Enums\QuestionType;
+use App\Models\SurveyQuestion;
 use App\Models\SurveyVersion;
 use App\Surveys\Exceptions\ResponseValidationException;
 
@@ -77,7 +78,7 @@ final class ResponseValidator
     /**
      * @return list<array{question_id: int, option_id: int|null, numeric_value: int|null, boolean_value: bool|null, text_value: string|null}>
      */
-    private function specFor(\App\Models\SurveyQuestion $question, mixed $value): array
+    private function specFor(SurveyQuestion $question, mixed $value): array
     {
         $type = $question->type;
         $base = ['question_id' => $question->id, 'option_id' => null, 'numeric_value' => null, 'boolean_value' => null, 'text_value' => null];
@@ -160,7 +161,7 @@ final class ResponseValidator
     }
 
     /** @return array{0: int, 1: int} */
-    private function scaleBounds(\App\Models\SurveyQuestion $question): array
+    private function scaleBounds(SurveyQuestion $question): array
     {
         if ($question->type === QuestionType::Nps) {
             return [0, 10];

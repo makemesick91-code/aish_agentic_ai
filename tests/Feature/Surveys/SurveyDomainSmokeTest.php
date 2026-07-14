@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Surveys;
 
+use App\Enums\ResponseStatus;
 use App\Models\Survey;
 use App\Models\SurveyAnswer;
 use App\Models\SurveyOption;
@@ -118,11 +119,11 @@ final class SurveyDomainSmokeTest extends TestCase
 
         // Authorized invalidation is permitted.
         $response->update([
-            'status' => \App\Enums\ResponseStatus::Invalidated,
+            'status' => ResponseStatus::Invalidated,
             'invalidated_at' => now(),
             'invalidated_reason' => 'duplicate',
         ]);
-        $this->assertSame(\App\Enums\ResponseStatus::Invalidated, $response->fresh()->status);
+        $this->assertSame(ResponseStatus::Invalidated, $response->fresh()->status);
 
         // A different completed response cannot mutate arbitrary fields.
         $other = SurveyResponse::factory()->completed()->create();
