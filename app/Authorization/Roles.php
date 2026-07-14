@@ -46,6 +46,8 @@ final class Roles
                 Permissions::CONTEXT_SWITCH_BRANCH,
                 // Full survey authoring, distribution, and results.
                 ...Permissions::surveyPermissions(),
+                // Full tenant-wide feedback operations, including bulk actions and export.
+                ...Permissions::feedbackPermissions(),
             ],
 
             // Branch-scoped operational view; sees only its granted branch(es).
@@ -57,6 +59,8 @@ final class Roles
                 Permissions::CONTEXT_SWITCH_BRANCH,
                 // Branch-scoped survey visibility only (no authoring).
                 ...Permissions::SURVEY_BRANCH_VIEW,
+                // Branch-scoped feedback operations (no tenant-wide bulk actions).
+                ...Permissions::FEEDBACK_BRANCH_OPS,
             ],
 
             // Read-only foundation visibility.
@@ -66,6 +70,8 @@ final class Roles
                 Permissions::USERS_VIEW,
                 Permissions::CONTEXT_SWITCH_BRANCH,
                 ...Permissions::SURVEY_READ_ONLY,
+                // Safe metadata + summary view only (never response content, no mutation).
+                ...Permissions::FEEDBACK_READ_ONLY,
             ],
         ];
     }
