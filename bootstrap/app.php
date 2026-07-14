@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Health\LivenessController;
 use App\Http\Controllers\Health\ReadinessController;
+use App\Http\Middleware\EnsureUserIsActive;
+use App\Http\Middleware\RequireBranchContext;
+use App\Http\Middleware\ResolveBranchContext;
+use App\Http\Middleware\ResolveTenantContext;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -22,9 +26,28 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Foundation security posture. Tenant/branch context middleware is introduced
-        // in the SaaS Foundation implementation step (rule 03, rule 20; AFR-099).
+        // Foundation security posture (rule 04).
         $middleware->append(SecurityHeaders::class);
+
+        // Step 6 SaaS core: tenant/branch context + state enforcement (rule 03, rule 30).
+        $middleware->alias([
+            'active' => EnsureUserIsActive::class,
+            'tenant.context' => ResolveTenantContext::class,
+            'branch.context' => ResolveBranchContext::class,
+            'branch.required' => RequireBranchContext::class,
+        ]);
+
+        // The `tenant` group is the standard stack for any tenant-scoped surface:
+        // authenticated + email-verified + active account, then a re-verified tenant
+        // context and (optional) branch context. Order matters — context resolves only
+        // after the actor is proven active and verified.
+        $middleware->group('tenant', [
+            'auth',
+            'verified',
+            'active',
+            'tenant.context',
+            'branch.context',
+        ]);
 
         // Default proxy posture is trust-none (the safe default; rule 04). Trusted
         // proxy CIDRs (config/security.php: security.trusted_proxies) are wired in at
