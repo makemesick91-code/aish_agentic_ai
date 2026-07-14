@@ -116,9 +116,95 @@ jobs:
           scripts/ci/validate-workflow-security.sh
           scripts/ci/validate-ci-topology.sh
 
+  backend-runtime-ci:
+    name: Backend runtime CI
+    needs: classify-changes
+    # The Laravel application exists as of Step 5, so the runtime suite is now REAL,
+    # not a placeholder (rule 28, AFR-125 satisfied; AFR-133). It runs on every ready
+    # PR (never skipped) against real PostgreSQL + Redis service containers, so a
+    # `skipped` conclusion can never masquerade as a pass on the required gate.
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: aish_agentic_ai
+          POSTGRES_USER: aish
+          POSTGRES_PASSWORD: aish_ci_ephemeral
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U aish -d aish_agentic_ai"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+      DB_DATABASE: aish_agentic_ai
+      DB_USERNAME: aish
+      DB_PASSWORD: aish_ci_ephemeral
+      REDIS_CLIENT: predis
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: "6379"
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+      VERIFY_COMPOSE: "0"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, mbstring, dom, curl, xml, bcmath
+          coverage: none
+          tools: composer:v2
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Make scripts executable
+        run: chmod +x scripts/runtime/*.sh scripts/ci/*.sh
+      - name: Validate composer
+        run: composer validate --strict
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      - name: Formatting (Pint)
+        run: vendor/bin/pint --test
+      - name: Static analysis (PHPStan/Larastan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+      - name: Unit + feature + architecture tests
+        run: php artisan test
+      - name: Dependency audit (PHP)
+        run: composer audit
+      - name: Install + build frontend
+        run: |
+          npm ci
+          npm run build
+      - name: Dependency audit (JS)
+        run: npm audit --audit-level=high
+      - name: End-to-end runtime verification (Postgres + Redis)
+        run: scripts/runtime/verify-runtime.sh
+
   required-gate:
     name: Required Gate
-    needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci]
+    needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci, backend-runtime-ci]
     # Runs on BOTH draft and ready (always()). On a draft the decision script exits
     # NON-ZERO on purpose, so `pr-ci / Required Gate` is RED until a ready run posts a
     # real green — a draft's fast-CI-only pass can never satisfy branch protection on
@@ -136,12 +222,13 @@ jobs:
           FAST_RESULT: ${{ needs.draft-fast-ci.result }}
           FULL_DOC_RESULT: ${{ needs.full-documentation-ci.result }}
           WF_SEC_RESULT: ${{ needs.workflow-security-ci.result }}
+          BACKEND_RESULT: ${{ needs.backend-runtime-ci.result }}
           IS_DRAFT: ${{ github.event.pull_request.draft }}
           CATEGORIES: ${{ needs.classify-changes.outputs.categories }}
         run: |
           echo "PR #${{ github.event.pull_request.number }} — tested head: ${{ github.event.pull_request.head.sha }}"
           echo "Change categories: ${CATEGORIES:-<none>}"
           echo "Draft: ${IS_DRAFT}"
-          echo "Suites: classify=${CLASSIFY_RESULT} fast=${FAST_RESULT} full-doc=${FULL_DOC_RESULT} wf-sec=${WF_SEC_RESULT}"
+          echo "Suites: classify=${CLASSIFY_RESULT} fast=${FAST_RESULT} full-doc=${FULL_DOC_RESULT} wf-sec=${WF_SEC_RESULT} backend=${BACKEND_RESULT}"
           chmod +x scripts/ci/required-gate-decision.sh
           scripts/ci/required-gate-decision.sh
