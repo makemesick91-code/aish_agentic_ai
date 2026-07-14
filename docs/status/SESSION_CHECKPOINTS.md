@@ -20,7 +20,13 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
     (context must resolve before route-model binding).
 - **Evidence:** Master Source v2.7.0 (§71); 96 tests / 283 assertions; PHPStan L6 0; Pint clean;
   `scripts/docs/validate.sh` ALL GATES PASSED; `aish:verify-saas-core` PASS on real PostgreSQL 17 + Redis 7.
-  Merge/CI/tag/clean-checkout evidence recorded post-merge under `docs/evidence/step-6/` (tag not moved by sync).
+- **Outcome:** MERGED and GO TAGGED. Code PR #14 merge `7ca2e14` (Full CI `29312307606`); a post-merge false
+  positive in the clean-checkout secret guard was fixed via fix PR #15 (merge `9c25a9c`, Full CI `29313262408`)
+  per CICD-CTRL-1 §21.6 — the defective commit `7ca2e14` was NOT tagged. Clean-checkout verification on `9c25a9c`
+  (fresh clone, real PostgreSQL 17 + Redis 7): `verify-saas-core.sh` + `verify-runtime.sh` all PASS. Immutable
+  annotated GO tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` (object `723139b`, peeled `9c25a9c`;
+  local == remote == main). GitHub Release published; post-tag docs sync via `docs/step-6-post-tag-evidence`
+  (tag not moved). See `docs/release/STEP_6_TAG_VERIFICATION.md`.
 
 ## Checkpoint 2026-07-14 — Step 5 Runtime & Repository Bootstrap execution
 - **Branch:** `feature/step-5-runtime-repository-bootstrap` · **Base:** `main` (baseline `bc5acb9`).
