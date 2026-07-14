@@ -62,7 +62,11 @@ step "7. No secret VALUE leaked into verification logs"
 if grep -Eq '\$2[aby]\$[0-9]{2}\$|[A-Za-z0-9]{40,}' "$EVID"/*.log; then bad "a verification log leaked a secret-like value"; else pass "verification logs free of secret values"; fi
 
 step "8. Hermetic test suite"
-if php artisan test >"$EVID/phpunit.log" 2>&1; then pass "php artisan test"; else bad "php artisan test (see $EVID/phpunit.log)"; fi
+# Unset any infra env the operator may have exported for the real-infra steps above so the suite is
+# always hermetic (sqlite/array/sync via phpunit.xml), regardless of the surrounding shell.
+if env -u DB_CONNECTION -u DB_HOST -u DB_PORT -u DB_DATABASE -u DB_USERNAME -u DB_PASSWORD \
+       -u CACHE_STORE -u QUEUE_CONNECTION -u SESSION_DRIVER -u REDIS_HOST -u REDIS_PORT \
+       php artisan test >"$EVID/phpunit.log" 2>&1; then pass "php artisan test"; else bad "php artisan test (see $EVID/phpunit.log)"; fi
 
 step "Summary"
 if [ "$fail" -eq 0 ]; then echo "STEP 8 VERIFICATION: PASS (evidence in $EVID/)"; else echo "STEP 8 VERIFICATION: FAILED"; exit 1; fi
