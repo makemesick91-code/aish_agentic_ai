@@ -9,9 +9,15 @@ python3 - "$ROOT" <<'PY'
 import os, re, sys
 root = sys.argv[1]
 link_re = re.compile(r'(?<!\!)\[[^\]]*\]\(([^)]+)\)')
+# Skip VCS, generated, and third-party dependency/build trees. Dependency dirs
+# (vendor/, node_modules/) are gitignored and only exist after a local install;
+# their bundled READMEs are not repository-owned docs and must not gate the repo.
+SKIP_DIRS = ('.git', 'node_modules', 'vendor', '.graphify', 'graphify-out')
+SKIP_SUBPATHS = ('/scripts/graphify/out', '/storage/framework', '/public/build')
 md_files = []
 for dirpath, dirnames, filenames in os.walk(root):
-    if '/.git' in dirpath or '/scripts/graphify/out' in dirpath:
+    dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+    if any(s in dirpath for s in SKIP_SUBPATHS):
         continue
     for fn in filenames:
         if fn.endswith('.md'):

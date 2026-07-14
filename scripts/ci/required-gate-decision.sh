@@ -26,6 +26,7 @@ CLASSIFY_RESULT="${CLASSIFY_RESULT:-}"
 FAST_RESULT="${FAST_RESULT:-}"
 FULL_DOC_RESULT="${FULL_DOC_RESULT:-}"
 WF_SEC_RESULT="${WF_SEC_RESULT:-}"
+BACKEND_RESULT="${BACKEND_RESULT:-}"
 IS_DRAFT="${IS_DRAFT:-false}"
 
 fail=0
@@ -47,7 +48,7 @@ if [ "$CLASSIFY_RESULT" != "success" ]; then
 fi
 
 # Any explicit failure fails the gate.
-for kv in "classify=$CLASSIFY_RESULT" "fast=$FAST_RESULT" "full-doc=$FULL_DOC_RESULT" "wf-sec=$WF_SEC_RESULT"; do
+for kv in "classify=$CLASSIFY_RESULT" "fast=$FAST_RESULT" "full-doc=$FULL_DOC_RESULT" "wf-sec=$WF_SEC_RESULT" "backend=$BACKEND_RESULT"; do
   name="${kv%%=*}"; res="${kv#*=}"
   case "$res" in
     failure)   note "job '$name' FAILED"; fail=1 ;;
@@ -66,6 +67,12 @@ if [ "$IS_DRAFT" != "true" ]; then
   fi
   if [ "$WF_SEC_RESULT" != "success" ]; then
     note "ready PR requires the workflow-security gate to succeed (result='$WF_SEC_RESULT')"; fail=1
+  fi
+  # The application exists as of Step 5, so the backend runtime gate is real and
+  # mandatory on every ready PR — a `skipped` result on a ready PR is a failure
+  # (AFR-125 satisfied; AFR-133; rule 28).
+  if [ "$BACKEND_RESULT" != "success" ]; then
+    note "ready PR requires the backend runtime gate to succeed (result='$BACKEND_RESULT')"; fail=1
   fi
 fi
 

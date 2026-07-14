@@ -66,10 +66,13 @@ classify_one() {
     docs/canonical/*|docs/decisions/*|docs/architecture/*) mark documentation; mark governance ;;
     docs/*)                                      mark documentation ;;
     scripts/docs/*|scripts/graphify/*|scripts/codex/*|scripts/hooks/*) mark governance ;;
-    app/*|routes/*)                              mark backend ;;
+    scripts/runtime/*)                           mark backend ;;
+    app/*|routes/*|bootstrap/*)                  mark backend ;;
+    artisan|phpstan.neon|phpstan.neon.dist|phpunit.xml|phpunit.xml.dist) mark backend ;;
+    Makefile|.env.example)                        mark backend ;;
     config/*)                                    mark backend; mark security ;;
     database/*|*/migrations/*)                   mark database ;;
-    resources/*)                                 mark frontend ;;
+    resources/*|vite.config.js|tailwind.config.*|postcss.config.*) mark frontend ;;
     package.json|package-lock.json|pnpm-lock.yaml|yarn.lock) mark frontend; mark dependency ;;
     composer.json|composer.lock)                 mark backend; mark dependency ;;
     tests/Security/*)                            mark security; mark test ;;

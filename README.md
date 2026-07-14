@@ -12,17 +12,23 @@ multi-branch businesses.
 
 ## Current stage
 
-This repository is being established through a **Documentation & Claude Rules Foundation**
-release. It stores canonical product knowledge, persistent Claude project memory/rules,
-tooling governance, validation, and CI — it does **not** yet contain application code.
+The documentation, persona/pilot, architecture, Step 4 planning, and CICD-CTRL-1 foundations are complete and
+GO-tagged. **Step 5 — Runtime & Repository Bootstrap** (Master Source v2.6.0) turns this into a bootable
+**Laravel 12** application: modular skeleton, `.env` contract, idempotent bootstrap/verify scripts,
+Docker-Compose PostgreSQL 17 + Redis 7, truthful `/live` + `/ready` probes, queue + scheduler foundation, a
+security-headers baseline, PHPUnit/Pint/PHPStan, and a real `backend-runtime-ci` gate.
 
-> **Application implementation status: NOT STARTED.**
-> This foundation does not claim the product is built, deployed, pilot-ready, or
-> production-ready.
+Get started: [docs/getting-started/local-development.md](docs/getting-started/local-development.md)
+(`make bootstrap` then `make verify`).
 
-## Canonical documentation (established on the documentation-foundation branch)
+> **Runtime foundation: CODE COMPLETE and RUNTIME VERIFIED locally.**
+> **Business/module implementation, deployment, pilot readiness, and production readiness: NOT STARTED.**
+> This foundation does not claim the product is feature-complete, deployed, pilot-ready, or production-ready, and
+> no domain is owned.
 
-Once the documentation-foundation pull request is merged, authoritative knowledge lives here:
+## Canonical documentation
+
+Authoritative knowledge lives here:
 
 - `CLAUDE.md` — concise instruction index and source-authority map for Claude Code.
 - `.claude/rules/` — modular, enforceable product / architecture / security / AI / release rules.

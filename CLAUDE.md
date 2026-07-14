@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.5.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.6.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -96,6 +96,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `26-saas-foundation-implementation-planning.md` | SaaS Foundation sequence, epics/sprints, DoR/DoD, deployment-target class, readiness gates |
 | `27-truthful-planning-states.md` | Planning ≠ implementation; domain candidate ≠ ownership; plan ≠ deployed; GO-tag scope |
 | `28-safe-ci-runtime-control.md` | Local-first + draft-first CI, one final-head full gate, SHA-bound evidence, internal fail-closed routing, stable required gate, lightweight post-merge/post-tag, workflow security, no false one-run claim |
+| `29-runtime-bootstrap-and-operations.md` | Reproducible Laravel 12 runtime bootstrap, pinned versions, env contract, truthful health/readiness, queue/scheduler foundation, security baseline, backend runtime CI, runtime-evidence-before-claims |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -118,8 +119,15 @@ AFR-105..126, rule 28) MERGED (PR #9, merge commit `8cbf564`) and GO TAGGED
 (`aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`, peeled `8cbf564`): unified draft-first
 `pr-ci.yml`, lightweight `main-post-merge.yml`, manual `full-ci-manual.yml`, deterministic change classifier, a
 stable enforced required gate (`main` ruleset `18890571`), and a GitHub Release with post-tag evidence.
-**Application implementation: NOT STARTED.** Domain ownership, deployment, pilot readiness,
-pilot runtime, and production readiness: NOT STARTED. No domain is owned; no package is installed; nothing is deployed.
+**Step 5 — Runtime & Repository Bootstrap** (Master Source **v2.6.0**, PRD **v1.3.0** unchanged, ADRs 0047–0050,
+AFR-127..133, rule 29) turns the repository into a bootable **Laravel 12** application: modular skeleton, `.env`
+contract, idempotent bootstrap/preflight/verify scripts, Docker-Compose Postgres 17 + Redis 7, truthful
+`/live` + `/ready` probes, queue + scheduler foundation, security-headers baseline, PHPUnit/Pint/PHPStan, and a
+real `backend-runtime-ci` gate wired into `pr-ci / Required Gate`. The runtime is **CODE COMPLETE** and
+**RUNTIME VERIFIED** locally against real PostgreSQL 17 + Redis 7 (live/ready positive+negative, migrate, queue
+dispatch+processing, scheduler, asset build). GO-tag status is recorded post-merge in the release evidence.
+**Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
+No domain is owned; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks
 

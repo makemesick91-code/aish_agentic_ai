@@ -39,9 +39,14 @@ printf '%s' "$cmd" | grep -Eq '\.(pem|key|p12|pfx)([[:space:]]|$)' && block "rea
 # Reckless recursive delete of the whole tree / root.
 printf '%s' "$cmd" | grep -Eq 'rm[[:space:]]+-[a-z]*r[a-z]*f?[[:space:]]+(/|~|\*|\.)([[:space:]]|$)' && block "recursive delete of / ~ . or * is prohibited"
 
-# Step 4 planning safeguards: no dependency install, provisioning, deployment, or DNS/registrar mutation
-# (planning steps install nothing and provision nothing — AFR-096, AFR-102; rules 25, 21).
-printf '%s' "$cmd" | grep -Eq '(composer|npm|yarn|pnpm)[[:space:]]+(create-project|install|ci|require|add)([[:space:]]|$)' && block "package installation is out of scope in planning (no dependency install without approval)"
+# Implementation-phase supply-chain safeguards (Step 5+).
+# The Step-4 planning "install nothing" safeguard is superseded for application
+# implementation by the Step 5 Runtime & Repository Bootstrap Master Source update
+# (rule 25, AFR-096 supersession; AFR-127): dependency *install* is a normal
+# implementation activity and is permitted. Supply-chain integrity is enforced by
+# committed lockfiles, `composer audit` / `npm audit`, dependency review, and the
+# secret scan — not by this hook. Publishing, provisioning/deployment, and DNS
+# mutation remain out of scope and are still blocked (AFR-102; rules 25, 21).
 printf '%s' "$cmd" | grep -Eq '(npm|composer)[[:space:]]+publish([[:space:]]|$)' && block "package publishing is prohibited"
 printf '%s' "$cmd" | grep -Eq 'terraform[[:space:]]+(apply|destroy)|pulumi[[:space:]]+up|kubectl[[:space:]]+(apply|delete)|docker[[:space:]]+push' && block "cloud provisioning / deployment is out of scope in planning"
 printf '%s' "$cmd" | grep -Eq 'nsupdate|route53[[:space:]]+[^|]*(change|create|delete)|gcloud[[:space:]]+dns' && block "DNS mutation is out of scope in planning"

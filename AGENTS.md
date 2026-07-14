@@ -5,10 +5,10 @@ knowledge. It stays in sync with `CLAUDE.md` and `.claude/rules/` — there is *
 
 ## Authority (read before acting)
 1. Latest explicit product-owner decision.
-2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.5.0**).
+2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.6.0**).
 3. PRD — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved ADRs — `docs/decisions/adr/` (0001–0046) and `docs/decisions/DECISION_LOG.md`.
-5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..126).
+5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..133).
 6. Other repo docs → derived artifacts → graph/index (**never** authoritative).
 
 Full rules live in `.claude/rules/00`–`28`. Nested `AGENTS.md` files add area-specific rules
@@ -55,6 +55,9 @@ pilot-ready without evidence (AFR-066,067,068).
 ## Truthful status (current)
 Documentation, Step 2 persona/pilot, Step 3 architecture, and Step 4 domain/branding/environment/SaaS-Foundation
 planning are GO-tagged documentation/governance/planning baselines. CICD-CTRL-1 (Master Source v2.5.0) adds CI
-runtime-control governance; CI/release process is configured and evidenced. No domain is owned; no package is
-installed; nothing is deployed. **Application implementation: NOT STARTED.** Domain ownership, deployment, pilot
-readiness, pilot runtime, and production readiness: **NOT STARTED.**
+runtime-control governance; CI/release process is configured and evidenced. **Step 5 — Runtime & Repository
+Bootstrap** (Master Source v2.6.0, ADRs 0047–0050, AFR-127..133, rule 29) makes the repository a bootable Laravel 12
+application: runtime foundation is **CODE COMPLETE** and **RUNTIME VERIFIED** locally against real PostgreSQL 17 +
+Redis 7 (health/queue/scheduler/migrate/asset), with a real `backend-runtime-ci` gate. No domain is owned; nothing
+is deployed. **Business/module implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and
+production readiness: **NOT STARTED.**
