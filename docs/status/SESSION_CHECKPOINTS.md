@@ -2,6 +2,23 @@
 
 Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Makassar.
 
+## Checkpoint 2026-07-14 — Step 7 Survey & CSAT Foundation execution
+- **Branch:** `feature/step-7-survey-csat-foundation` · **Base:** `main` (baseline `eb14de2`).
+- **Blocking pre-gate:** the deferred independent SF-05 security review was executed by an independent
+  security-reviewer over `75cd8c2..ca0bea6` — **PASS**, no critical/high/medium (evidence
+  `docs/evidence/sf-05-independent-security-review.md`); LOW/INFO items backlogged. SF-05 GO tag not moved.
+- **Decisions:**
+  - Survey placed as platform-core in top-level `App\Surveys\*` + `App\Models\*` (ADR 0057), not `app/Modules/`.
+  - Immutable versioning: survey = identity, content in versions; race-safe idempotent publisher; edit → new draft
+    (ADR 0057).
+  - Public token architecture: opaque ULID public ids + SHA-256 hashed one-time invitation tokens, single reviewed
+    gateway with no-enumeration + membership-less context; QR encodes only the URL via `bacon/bacon-qr-code`
+    (promoted to a direct dependency) (ADR 0058).
+  - Scoring: single deterministic `MetricCalculator`, versioned config, explicit 2-decimal rounding, null-on-empty
+    (ADR 0059).
+- **Result:** CODE COMPLETE + TESTED locally (full suite green on real PostgreSQL 17 + Redis 7; Pint/PHPStan clean;
+  `aish:verify-step-7` PASS). Master Source v2.9.0 (§73); AFR-171..187; rule 32. IN PROGRESS toward merge + GO.
+
 ## Checkpoint 2026-07-14 — Step 6 SaaS Core Foundation execution
 - **Branch:** `feature/step-6-saas-core-foundation` · **Base:** `main` (baseline `11d75f9`) · **PR #14**.
 - **Decisions:**

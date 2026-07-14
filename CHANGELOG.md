@@ -6,6 +6,39 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — Step 7 (Master Source v2.9.0): Survey & CSAT Foundation
+
+Target release: annotated tag `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`.
+Base branch `main`. First customer-experience capability on the SaaS core + SF-05 substrate.
+
+### Added
+- Master Source **v2.9.0** (§73 Step 7); PRD unchanged at **v1.3.0**. ADRs **0057–0059**, **AFR-171..187**, **Claude rule 32**.
+- Survey domain: eight tenant-owned tables (survey, version, question, option, campaign, invitation, response,
+  answer) with fail-closed tenant scope, opaque ULID public ids, hashed one-time invitation tokens, tenant-leading
+  idempotency, and a partial unique index enforcing one completed response per invitation.
+- Immutable versioning: race-safe idempotent publisher, published-content model guards, new-draft-from-published,
+  exact-version response binding, write-once answers, completed-response immutability, no hard-delete of published.
+- Deterministic CSAT/NPS/CES calculator (single service, versioned config, explicit 2-decimal rounding, null on
+  empty) + tenant/branch/version-scoped summaries.
+- Services: survey/campaign/invitation lifecycle, response validator, public survey gateway (opaque resolution,
+  no-enumeration, membership-less context, one-time submission, usage + audit), invitation mailer + internal
+  completion notification via the SF-05 dispatcher.
+- HTTP: survey permissions + role assignments; survey/campaign/invitation/response policies with branch scoping;
+  tenant-aware FormRequests; tenant builder controllers + Blade (create/questions/options/publish/pause/resume/
+  archive/new-version/preview/results/campaigns/invitations); public survey plane + QR endpoint (bacon/qr-code);
+  per-token+IP rate limiters; payload caps; entitlement/usage enforcement via one guard over the authoritative
+  resolver.
+- Independent **SF-05 security review** completed — PASS (no critical/high/medium); evidence
+  `docs/evidence/sf-05-independent-security-review.md`.
+- Tests: domain, scoring (16 boundary), lifecycle, public flow, summary, notification, HTTP authz, cross-tenant
+  security matrix, Step-7 architecture boundaries, PostgreSQL migration integrity, and audit suites — full suite
+  green against real PostgreSQL 17 + Redis 7.
+- `bacon/bacon-qr-code` promoted to a direct dependency (already resolved via Fortify) for URL-only QR SVG.
+
+### Status
+CODE COMPLETE and TESTED locally; **NOT merged, NOT tagged, NOT CI-green-on-CI, NOT clean-checkout-verified** at
+authoring time. The GO tag attests survey & CSAT foundation readiness only — not deployment, pilot, or production.
+
 ## [Unreleased] — SPRINT-SF-05 (Master Source v2.8.0): Notification, Subscription, and Platform Admin Skeletons
 
 Target release: annotated tag `aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`.

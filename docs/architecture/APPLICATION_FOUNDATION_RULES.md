@@ -258,8 +258,31 @@ and the SPRINT-SF-05 GO gate. These are platform-core capabilities in top-level 
 | AFR-168 | Platform operator provisioning MUST be secure (reset/invitation onboarding, no fixed/plaintext password, no logged password, duplicate-safe); tenant status changes (suspend/reactivate/mark-deletion-pending) MUST require a reason (except reactivation), be audited, notify owners, and MUST NOT hard-delete; metrics MUST be truthful; impersonation MUST be prohibited without a dedicated ADR | 0056 | 31,04 | SC-35 |
 | AFR-169 | Subscription events and platform support notes MUST be append-only (no `updated_at`; update/delete blocked at the model layer); audit metadata MUST be sanitized (no secrets/tokens/passwords/message bodies/medical) and MUST distinguish platform from tenant context | 0054,0055,0056,0029 | 31,07 | SC-36 |
 | AFR-170 | A clean-checkout SPRINT-SF-05 verification (`scripts/runtime/verify-sf-05.sh`) on the exact merged SHA MUST pass before the SPRINT-SF-05 GO tag | 0051,0054 | 31,13,29 | SC-37 |
+| AFR-171 | Every survey MUST be tenant-owned; a branch-owned survey MUST NOT be used by another branch; platform roles MUST NOT imply survey access; a published survey MUST NOT be hard-deleted | 0057,0052 | 32,03,30 | SV-01 |
+| AFR-172 | Published survey versions MUST be immutable (question text/order/type, options, required, scoring, locale, mode); editing published content MUST create a new draft version and MUST NOT mutate the published one | 0057 | 32 | SV-02 |
+| AFR-173 | Publishing MUST be transactional and race-safe (no two current versions) and validated (≥1 question, unique order/key, choice ≥2 options, valid CSAT/NPS/CES scales); it MUST be idempotent | 0057 | 32 | SV-03 |
+| AFR-174 | Historical responses MUST always resolve to the exact answered survey version; a completed response MUST be immutable except an authorized reasoned audited invalidation; answers are write-once | 0057 | 32,07 | SV-04 |
+| AFR-175 | Question type and answer type MUST match; options MUST belong to their question; an answer MUST NOT reference a question/option from another version (enforced in DB where practical) | 0057 | 32 | SV-05 |
+| AFR-176 | Public survey routes MUST use opaque validated access and MUST NOT expose draft/preview content; preview MUST require authoring authorization | 0058 | 32,03 | SV-06 |
+| AFR-177 | Invitation secrets MUST be strong tokens stored only as a one-way hash (SHA-256+), constant-time compared, one-time, expiring, and revocable; the plaintext MUST NOT be persisted or appear in logs, audit, session, delivery records, or error output | 0058,0004 | 32,04 | SV-07 |
+| AFR-178 | Public resolution failures MUST be generic (no enumeration oracle); the public plane MUST NOT gain tenant application access, RBAC, or platform access; the cross-tenant scope bypass MUST be confined to the single reviewed public gateway | 0058 | 32,03,30 | SV-08 |
+| AFR-179 | Public submission MUST be server-validated, rate-limited per token and per IP, payload-bounded, transactional, and idempotent; a unique invitation MUST complete at most once (concurrent duplicates yield one completion) | 0058 | 32,04 | SV-09 |
+| AFR-180 | A QR code MUST contain only the protected public URL (no customer data, tenant secret, unprotected id, or health info), MUST be deterministic, and MUST require no external service | 0058 | 32,04 | SV-10 |
+| AFR-181 | CSAT/NPS/CES MUST be deterministic, versioned, and computed only through the single MetricCalculator over stored raw answers — never from UI labels and never re-implemented in a controller/view/query | 0059 | 32,10 | SV-11 |
+| AFR-182 | Raw counts MUST be retained; rounding MUST be explicit (2 decimals at the boundary); an empty population MUST return a truthful null, not a fabricated zero | 0059 | 32,10,27 | SV-12 |
+| AFR-183 | Survey metrics MUST be tenant/branch/version scoped with no cross-tenant aggregation and no answer content in summaries | 0059,0057 | 32,03 | SV-13 |
+| AFR-184 | Consent MUST use explicit text, store an accepted/rejected boolean with the consent-text version, MUST NOT default to accepted or pre-check; survey completion MUST NOT be marketing consent; anonymous responses MUST NOT silently create a customer identity | 0057,0058 | 32,04,18 | SV-14 |
+| AFR-185 | Survey entitlement decisions MUST use the single authoritative resolver via one guard; unknown/ungranted keys fail closed; usage meters (`survey_invitations.created`, `survey_responses.completed`) MUST be tenant-scoped and idempotent (no metering on preview/failed submission; no double-count on retry) | 0055,0058 | 32,31 | SV-15 |
+| AFR-186 | Survey invitation mail MUST go through a reviewed mail adapter; internal survey notifications MUST use the approved SF-05 dispatcher; a retry MUST NOT create a duplicate logical invitation; a survey score MUST NEVER gate Google Review access (anti-gating preserved) | 0054,0058 | 32,06,18,31 | SV-16 |
+| AFR-187 | A clean-checkout Step 7 verification (`scripts/runtime/verify-step-7.sh` / `php artisan aish:verify-step-7`) on the exact merged SHA MUST pass before the Step 7 GO tag | 0057,0058,0059 | 32,13,29 | SV-17 |
 
-**170 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05).** SPRINT-SF-05
+**187 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7).**
+Step 7 (Survey & CSAT Foundation) AFR-171..AFR-187 each map to an ADR (0057–0059 with supporting 0011–0016, 0029,
+0051–0053), Claude rule 32, a survey fitness check (SV-01..SV-17), and test/CI evidence under `docs/evidence/step-7/`.
+No orphan permanent decision. Step 7 delivers the first customer-experience capability on the SaaS core + SF-05
+substrate; feedback/AI/recovery/Google/billing modules and deployment/pilot/production remain **NOT STARTED**.
+
+SPRINT-SF-05
 AGENTS-instruction and rule coverage is asserted in the
 [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every SPRINT-SF-05 AFR maps to an ADR
 (0054–0056 with supporting 0011–0016, 0029, 0051–0053), Claude rule 31, a SaaS-core fitness check (SC-22..SC-37),

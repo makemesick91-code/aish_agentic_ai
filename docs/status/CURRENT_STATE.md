@@ -3,6 +3,24 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
+- **Step 7 — Survey & CSAT Foundation:** **CODE COMPLETE and TESTED locally**; **IN PROGRESS toward GO** — NOT
+  merged, NOT tagged, NOT CI-green-on-CI, NOT clean-checkout-verified. Target tag
+  `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`. Delivers tenant-owned surveys with immutable versioning
+  (race-safe publisher; published content frozen; edit → new draft; responses bind the exact answered version;
+  write-once answers), questions/options with type↔answer integrity, campaigns bound to immutable published
+  versions, secure public distribution (opaque ULIDs; 256-bit invitation tokens stored only as SHA-256 hashes,
+  constant-time compared, one-time, revocable, never logged/audited/sessioned; single reviewed public gateway with
+  no-enumeration + membership-less context; per-token+IP rate limits; payload caps; URL-only QR via bacon/qr-code),
+  deterministic CSAT/NPS/CES (single calculator, versioned config, explicit 2-decimal rounding, null-on-empty),
+  tenant/branch/version-scoped summaries, consent semantics, entitlement/usage via one guard over the authoritative
+  resolver, invitation mail via a reviewed adapter + internal notification via the SF-05 dispatcher, and sanitized
+  survey audit. Master Source **v2.9.0** (§73), PRD **v1.3.0** unchanged; ADRs 0057–0059; AFR-171..187; Claude rule
+  32. Local gates: full suite green against real PostgreSQL 17 + Redis 7 (survey domain/scoring/services/HTTP/
+  security-matrix/architecture/migration/audit), Pint + PHPStan clean; **real-infra verified** via
+  `php artisan aish:verify-step-7` (16 positive+negative checks). The deferred **independent SF-05 security review**
+  is **COMPLETE — PASS** (no critical/high/medium; `docs/evidence/sf-05-independent-security-review.md`). Google
+  Review anti-gating preserved. Feedback/AI/Google/recovery/billing modules, deployment, pilot, and production
+  remain **NOT STARTED**.
 - **Step 6 — SaaS Core Foundation (consolidated SPRINT-SF-01..SF-04):** MERGED (code PR #14 merge `7ca2e14`,
   Full CI `29312307606`; fix PR #15 merge `9c25a9c`, Full CI `29313262408`) and **GO TAGGED**
   (`aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`, tag object `723139b`, peeled `9c25a9c`;

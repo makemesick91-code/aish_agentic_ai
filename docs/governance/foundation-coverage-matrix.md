@@ -88,6 +88,35 @@ ADR evidence — no orphan. No SPRINT-SF-05 foundation is claimed verified, merg
 are `PLANNED`/pending. Payment/invoicing/AI/Google integrations, business feature modules under `app/Modules/`,
 deployment, pilot, and production remain **NOT STARTED**.
 
+## Step 7 survey & CSAT foundation (AFR-171..187; rule 32; ADRs 0057–0059)
+
+First customer-experience capability on the SaaS core + SF-05 substrate, placed as platform-core in top-level
+`App\Surveys\*` + `App\Models\*` (ADR 0057). Survey authoring with immutable versioning, secure public invitation/
+response, and deterministic CSAT/NPS/CES. Status is `IN PROGRESS (FOUNDATION)` until the Step 7 GO tag is cut with
+clean-checkout evidence.
+
+| Foundation | Source | Decision | Rule | Runtime/DB/Policy enforcement | Test/CI enforcement | Status | Evidence | Gap |
+|-----------|--------|----------|------|-------------------------------|---------------------|--------|----------|-----|
+| Tenant/branch-owned surveys | MS §47; AFR-171 | Tenant-owned; branch scope enforced; no platform survey access; no hard-delete of published | [32](../../.claude/rules/32-survey-csat-foundation.md), 03, 30 | `BelongsToTenant`+`TenantScope`; `SurveyPolicy`/`ScopesToBranch`; model delete guard | `Sf07CrossTenantMatrixTest`, `SurveyHttpTest`, `Sf07BoundariesTest` | IN PROGRESS (FOUNDATION) | ADR [0057](../decisions/adr/0057-survey-and-immutable-versioning.md); `app/Models/Survey*.php` | GO tag pending |
+| Immutable published versions | MS §47; AFR-172,173 | Published content frozen; race-safe idempotent publish; new draft to edit | 32 | `SurveyVersionPublisher` (row-lock); model updating guards | `SurveyLifecycleTest`, `SurveyDomainSmokeTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/SurveyVersionPublisher.php` | GO tag pending |
+| Exact-version response binding | MS §47; AFR-174 | Response binds answered version; completed immutable; write-once answers | 32, 07 | restrict-on-delete FK; response/answer model guards | `SurveyDomainSmokeTest`, `Sf07MigrationIntegrityTest` | IN PROGRESS (FOUNDATION) | `app/Models/SurveyResponse.php` | GO tag pending |
+| Question/answer integrity | MS §47; AFR-175 | Type match; option-of-question; no cross-version reference | 32 | `ResponseValidator`; DB unique keys/orders | `PublicSurveyFlowTest`, `Sf07MigrationIntegrityTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/ResponseValidator.php` | GO tag pending |
+| Public token security & no-enumeration | MS §47; AFR-176,177,178 | Opaque ids; hashed one-time token; generic failures; single gateway bypass | 32, 04, 03 | `PublicSurveyGateway` (constant-time; allowlisted scope bypass); `token_hash` hidden | `Sf07CrossTenantMatrixTest`, `TenancyBoundariesTest`, `Sf07BoundariesTest` | IN PROGRESS (FOUNDATION) | ADR [0058](../decisions/adr/0058-public-invitation-token-and-qr.md); `app/Surveys/PublicSurveyGateway.php` | GO tag pending |
+| One-time submission + rate/payload limits | MS §47; AFR-179 | Transactional, idempotent, one completion; per-token+IP limits | 32, 04 | partial unique index; `AppServiceProvider` limiters; `SubmitSurveyResponseRequest` | `PublicSurveyFlowTest`, `SurveyHttpTest`, `Sf07MigrationIntegrityTest` | IN PROGRESS (FOUNDATION) | `routes/web.php` | GO tag pending |
+| QR URL-only | MS §47; AFR-180 | QR encodes only the protected URL; deterministic; local SVG | 32, 04 | `SurveyQrController` (bacon/qr-code) | `SurveyHttpTest` | IN PROGRESS (FOUNDATION) | `app/Http/Controllers/PublicSurvey/SurveyQrController.php` | GO tag pending |
+| Deterministic CSAT/NPS/CES | MS §47; AFR-181,182 | Single calculator; versioned; explicit rounding; null on empty | 32, 10, 27 | `MetricCalculator`; arch-test scoping | `MetricCalculatorTest` (16), `SurveySummaryTest`, `Sf07BoundariesTest` | IN PROGRESS (FOUNDATION) | ADR [0059](../decisions/adr/0059-csat-nps-ces-scoring-contract.md); `app/Surveys/Scoring/*` | GO tag pending |
+| Tenant/branch/version-scoped summaries | MS §47; AFR-183 | No cross-tenant aggregation; no answer content in summaries | 32, 03 | `SurveySummaryService` (fail-closed scope) | `SurveySummaryTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/SurveySummaryService.php` | GO tag pending |
+| Consent & privacy | MS §47; AFR-184 | Explicit non-default consent; completion≠marketing; no silent customer | 32, 04, 18 | consent question type; anonymous mode; no customer creation | `PublicSurveyFlowTest` | IN PROGRESS (FOUNDATION) | `app/Enums/QuestionType.php`, `app/Enums/SurveyMode.php` | GO tag pending |
+| Entitlement + idempotent usage | MS §46, §47; AFR-185 | Single guard over authoritative resolver; fail-closed; idempotent meters | 32, 31 | `SurveyEntitlements`; `UsageMeter` | `SurveyHttpTest`, `PublicSurveyFlowTest`, `Sf07BoundariesTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/SurveyEntitlements.php` | GO tag pending |
+| Notification + review anti-gating | MS §16, §47; AFR-186 | Reviewed mail adapter; SF-05 dispatcher; score never gates review | 32, 06, 18, 31 | `SurveyInvitationMailer`; `NotificationDispatcher`; `Sf05BoundariesTest` mail-adapter rule | `SurveyNotificationTest`, `Sf05BoundariesTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/SurveyInvitationMailer.php` | GO tag pending |
+| Survey audit | MS §37, §47; AFR-171..186 | Lifecycle audited; actor+tenant; no token/answer content | 32, 07 | `AuditRecorder` (sanitized) | `Sf07AuditTest` | IN PROGRESS (FOUNDATION) | `app/Surveys/*` audit calls | GO tag pending |
+| Clean-checkout Step 7 verification | MS §47, §54; AFR-187 | Clean-checkout verify on merged SHA before the Step 7 GO tag | 32, 13, 29 | `scripts/runtime/verify-step-7.sh` / `aish:verify-step-7` | `backend-runtime-ci`; clean-checkout run; release evidence | IN PROGRESS (FOUNDATION) | ADRs 0057–0059 | GO tag not yet cut |
+
+Every Step 7 mandatory foundation maps to Claude rule 32, a runtime/DB/policy code path, a test/CI enforcement path,
+and ADR evidence — no orphan. No Step 7 foundation is claimed merged, tagged, or clean-checkout-verified until
+evidenced under `docs/evidence/step-7/`. Feedback/AI/recovery/Google/billing modules and deployment/pilot/production
+remain **NOT STARTED**.
+
 ## Permanent product foundations (rules established; product implementation scheduled later)
 
 These permanent decisions are governed by rules today; their **application** implementation is scheduled in the
