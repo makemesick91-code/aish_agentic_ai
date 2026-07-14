@@ -10,6 +10,8 @@ use App\Enums\FeedbackStatus;
 use App\Feedback\Exceptions\InvalidStatusTransitionException;
 use App\Models\FeedbackItem;
 use App\Models\User;
+use App\Notifications\NotificationType;
+use App\Services\Notifications\NotificationDispatcher;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -23,9 +25,10 @@ final class FeedbackLifecycle
     public function __construct(
         private readonly FeedbackTimeline $timeline,
         private readonly AuditRecorder $audit,
+        private readonly NotificationDispatcher $dispatcher,
     ) {}
 
-    public function transition(FeedbackItem $item, FeedbackStatus $to, User $actor, ?string $reason = null): FeedbackItem
+    public function transition(FeedbackItem $item, FeedbackStatus $to, User $actor, ?string $reason = null, bool $notify = true): FeedbackItem
     {
         $from = $item->status;
 
@@ -68,7 +71,43 @@ final class FeedbackLifecycle
             ],
         ]);
 
+        if ($notify) {
+            $this->notifyAssignee($item, $from, $to, $actor);
+        }
+
         return $item;
+    }
+
+    /**
+     * Notify the current assignee (if any, and not the actor) of a status change. In-app only;
+     * failure never breaks the transition.
+     */
+    private function notifyAssignee(FeedbackItem $item, FeedbackStatus $from, FeedbackStatus $to, User $actor): void
+    {
+        $assigneeId = $item->current_assignee_id;
+        if ($assigneeId === null || $assigneeId === $actor->id) {
+            return;
+        }
+
+        $assignee = User::find($assigneeId);
+        if ($assignee === null) {
+            return;
+        }
+
+        try {
+            $this->dispatcher->dispatch(
+                NotificationType::FeedbackStatusChanged,
+                $assignee,
+                'feedback-status:'.$item->id.':'.$from->value.':'.$to->value.':'.now()->timestamp,
+                'A feedback item you are assigned to changed status',
+                tenant: $item->tenant,
+                body: 'Feedback item '.$item->ulid.' moved to '.$to->label().'.',
+                data: ['feedback_ulid' => $item->ulid, 'status' => $to->value],
+                branchId: $item->branch_id,
+            );
+        } catch (\Throwable) {
+            // A notification failure must never fail the transition.
+        }
     }
 
     private function stampTransitionTime(FeedbackItem $item, FeedbackStatus $to, bool $isReopen): void

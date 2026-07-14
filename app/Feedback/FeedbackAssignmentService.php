@@ -34,7 +34,7 @@ final class FeedbackAssignmentService
         private readonly PermissionRegistrar $registrar,
     ) {}
 
-    public function assign(FeedbackItem $item, ?User $assignee, User $actor, ?string $reason = null): FeedbackItem
+    public function assign(FeedbackItem $item, ?User $assignee, User $actor, ?string $reason = null, bool $notify = true): FeedbackItem
     {
         if ($assignee !== null) {
             $this->assertAssignable($item, $assignee);
@@ -88,7 +88,7 @@ final class FeedbackAssignmentService
             ],
         ]);
 
-        if ($assignee !== null) {
+        if ($assignee !== null && $notify) {
             $this->notifyAssignee($item, $assignee, $assignment);
         }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Feedback\Search;
 
 use App\Authorization\Permissions;
-use App\Models\BranchAccessGrant;
+use App\Feedback\Support\FeedbackBranchScope;
 use App\Models\FeedbackItem;
 use App\Models\User;
 use App\Tenancy\TenantContext;
@@ -44,22 +44,7 @@ final class FeedbackSearchService
      */
     private function applyBranchScope(Builder $query): void
     {
-        $membership = $this->context->membership();
-        if ($membership->all_branches) {
-            return;
-        }
-
-        $accessible = BranchAccessGrant::query()
-            ->where('tenant_membership_id', $membership->id)
-            ->pluck('branch_id')
-            ->all();
-
-        $query->where(function (Builder $scoped) use ($accessible): void {
-            $scoped->whereNull('branch_id');
-            if ($accessible !== []) {
-                $scoped->orWhereIn('branch_id', $accessible);
-            }
-        });
+        FeedbackBranchScope::apply($query, $this->context);
     }
 
     /**
