@@ -1,0 +1,45 @@
+# Aish Agentic AI — local development services (Step 5 runtime bootstrap).
+# Reproducible PostgreSQL + Redis for local dev and runtime verification.
+# NOT a deployment topology and NOT for staging/pilot/production (rule 23, rule 27):
+# pilot/production use a dedicated isolated deployment class (AFR-102).
+#
+# Host ports are non-standard (55432/63790) so these containers never collide with
+# a native PostgreSQL/Redis already listening on 5432/6379. Point .env at them:
+#   DB_HOST=127.0.0.1 DB_PORT=55432   REDIS_HOST=127.0.0.1 REDIS_PORT=63790
+#
+# Credentials here are LOCAL, non-secret development defaults only. Real secrets are
+# per-environment and never committed (rule 04, rule 24).
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: aish-postgres
+    environment:
+      POSTGRES_DB: aish_agentic_ai
+      POSTGRES_USER: aish
+      POSTGRES_PASSWORD: aish_local_dev
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - aish-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aish -d aish_agentic_ai"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: aish-redis
+    command: ["redis-server", "--appendonly", "no", "--save", ""]
+    ports:
+      - "127.0.0.1:63790:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  aish-postgres-data:
+    driver: local

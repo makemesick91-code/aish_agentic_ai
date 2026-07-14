@@ -59,6 +59,7 @@ venv/
 /.graphify/
 /graphify.db
 /graphify-graph.json
+/graphify-out/
 scripts/graphify/out/
 
 # Local evidence scratch (curated evidence under docs/evidence/ IS committed)
