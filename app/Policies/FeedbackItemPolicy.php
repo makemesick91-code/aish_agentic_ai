@@ -65,6 +65,12 @@ class FeedbackItemPolicy
         return $user->can(Permissions::FEEDBACK_BULK_MANAGE);
     }
 
+    /** Tenant-level tag catalog management (create/archive), distinct from attaching to an item. */
+    public function manageTags(User $user): bool
+    {
+        return $user->can(Permissions::FEEDBACK_TAGS_MANAGE);
+    }
+
     public function export(User $user): bool
     {
         return $user->can(Permissions::FEEDBACK_EXPORT);

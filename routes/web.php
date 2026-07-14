@@ -16,6 +16,12 @@ use App\Http\Controllers\PublicSurvey\SurveyQrController;
 use App\Http\Controllers\Tenancy\AuditLogController;
 use App\Http\Controllers\Tenancy\BranchController;
 use App\Http\Controllers\Tenancy\BranchSelectionController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackAttachmentController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackBulkController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackExportController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackNoteController;
+use App\Http\Controllers\Tenancy\Feedback\FeedbackTagController;
 use App\Http\Controllers\Tenancy\FoundationDashboardController;
 use App\Http\Controllers\Tenancy\InvitationController;
 use App\Http\Controllers\Tenancy\MembershipController;
@@ -115,6 +121,24 @@ Route::middleware('tenant')->group(function (): void {
 
     Route::post('/survey-invitations', [SurveyInvitationController::class, 'store'])->name('survey-invitations.store');
     Route::delete('/survey-invitations/{invitation}', [SurveyInvitationController::class, 'revoke'])->name('survey-invitations.revoke');
+
+    // STEP 8 — Feedback Operations (tenant-scoped; {feedback}/{tag}/{attachment}/{export} bind by
+    // ULID and resolve only within the current tenant via the global tenant scope; every action
+    // authorizes server-side via FeedbackItemPolicy).
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+    Route::get('/feedback/{feedback}', [FeedbackController::class, 'show'])->name('feedback.show');
+    Route::post('/feedback/{feedback}/status', [FeedbackController::class, 'updateStatus'])->name('feedback.status');
+    Route::post('/feedback/{feedback}/assign', [FeedbackController::class, 'assign'])->name('feedback.assign');
+    Route::post('/feedback/{feedback}/notes', [FeedbackNoteController::class, 'store'])->name('feedback.notes.store');
+    Route::post('/feedback/{feedback}/tags', [FeedbackTagController::class, 'attach'])->name('feedback.tags.attach');
+    Route::delete('/feedback/{feedback}/tags/{tag}', [FeedbackTagController::class, 'detach'])->name('feedback.tags.detach');
+    Route::post('/feedback/{feedback}/attachments', [FeedbackAttachmentController::class, 'store'])->name('feedback.attachments.store');
+    Route::get('/feedback/{feedback}/attachments/{attachment}/download', [FeedbackAttachmentController::class, 'download'])->name('feedback.attachments.download');
+    Route::delete('/feedback/{feedback}/attachments/{attachment}', [FeedbackAttachmentController::class, 'destroy'])->name('feedback.attachments.destroy');
+    Route::post('/feedback-tags', [FeedbackTagController::class, 'store'])->name('feedback.tags.store');
+    Route::post('/feedback-bulk', [FeedbackBulkController::class, 'store'])->name('feedback.bulk');
+    Route::post('/feedback-exports', [FeedbackExportController::class, 'store'])->name('feedback.exports.store');
+    Route::get('/feedback-exports/{export}/download', [FeedbackExportController::class, 'download'])->name('feedback.exports.download');
 });
 
 /*
