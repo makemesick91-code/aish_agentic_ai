@@ -3,6 +3,17 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
+**Step 7 — Survey & CSAT Foundation** is **CODE COMPLETE and TESTED locally** on branch
+`feature/step-7-survey-csat-foundation` (base `main`), **IN PROGRESS toward GO** (NOT merged/tagged/CI-green/
+clean-checkout-verified). Full suite green against real PostgreSQL 17 + Redis 7; Pint/PHPStan clean;
+`php artisan aish:verify-step-7` PASS (16 checks). Master Source **v2.9.0** (§73); ADRs 0057–0059; AFR-171..187;
+rule 32. Delivers immutable-versioned surveys, secure public invitation/token/QR, deterministic CSAT/NPS/CES,
+entitlement/usage, and sanitized audit. The deferred **independent SF-05 security review** is COMPLETE — PASS.
+**Next:** draft PR `[STEP-7] Survey & CSAT Foundation` → ready → authoritative Full CI on the final head → merge →
+clean-checkout verify on the merged SHA (`scripts/runtime/verify-step-7.sh`) → annotated GO tag → GitHub Release →
+post-tag evidence sync. Google Review anti-gating preserved; feedback/AI/Google/recovery/billing, deployment, pilot,
+and production remain **NOT STARTED**.
+
 **Step 6 — SaaS Core Foundation** (consolidated SPRINT-SF-01..SF-04 per ADR-0051) is **MERGED and GO TAGGED**:
 secure auth (Fortify; registration disabled), global identity, tenant/branch lifecycle, memberships (last-owner
 protected), one-time hashed invitations, immutable fail-closed tenant context, tenant-scoped RBAC + policies,

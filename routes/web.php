@@ -11,6 +11,8 @@ use App\Http\Controllers\Platform\PlatformUserController;
 use App\Http\Controllers\Platform\SubscriptionDirectoryController;
 use App\Http\Controllers\Platform\SupportNoteController;
 use App\Http\Controllers\Platform\TenantDirectoryController;
+use App\Http\Controllers\PublicSurvey\PublicSurveyController;
+use App\Http\Controllers\PublicSurvey\SurveyQrController;
 use App\Http\Controllers\Tenancy\AuditLogController;
 use App\Http\Controllers\Tenancy\BranchController;
 use App\Http\Controllers\Tenancy\BranchSelectionController;
@@ -20,6 +22,11 @@ use App\Http\Controllers\Tenancy\MembershipController;
 use App\Http\Controllers\Tenancy\NotificationInboxController;
 use App\Http\Controllers\Tenancy\NotificationPreferenceController;
 use App\Http\Controllers\Tenancy\SubscriptionOverviewController;
+use App\Http\Controllers\Tenancy\Survey\SurveyCampaignController;
+use App\Http\Controllers\Tenancy\Survey\SurveyController;
+use App\Http\Controllers\Tenancy\Survey\SurveyInvitationController;
+use App\Http\Controllers\Tenancy\Survey\SurveyPreviewController;
+use App\Http\Controllers\Tenancy\Survey\SurveyResultController;
 use App\Http\Controllers\Tenancy\TenantProfileController;
 use App\Http\Controllers\Tenancy\TenantSelectionController;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +90,48 @@ Route::middleware('tenant')->group(function (): void {
 
     // SPRINT-SF-05 — tenant subscription overview (read-only for the tenant).
     Route::get('/subscription', [SubscriptionOverviewController::class, 'show'])->name('subscription.show');
+
+    // STEP 7 — Survey & CSAT builder (tenant-scoped; {survey}/{campaign}/{invitation} bind by
+    // ULID under the fail-closed TenantScope; every action authorizes server-side).
+    Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+    Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+    Route::get('/surveys/{survey}', [SurveyController::class, 'show'])->name('surveys.show');
+    Route::get('/surveys/{survey}/results', [SurveyResultController::class, 'show'])->name('surveys.results');
+    Route::get('/surveys/{survey}/preview/{version}', [SurveyPreviewController::class, 'show'])->name('surveys.preview');
+    Route::post('/surveys/{survey}/questions', [SurveyController::class, 'storeQuestion'])->name('surveys.questions.store');
+    Route::post('/surveys/{survey}/questions/{question}/options', [SurveyController::class, 'storeOption'])->name('surveys.options.store');
+    Route::post('/surveys/{survey}/publish', [SurveyController::class, 'publish'])->name('surveys.publish');
+    Route::post('/surveys/{survey}/new-version', [SurveyController::class, 'newVersion'])->name('surveys.new-version');
+    Route::patch('/surveys/{survey}/pause', [SurveyController::class, 'pause'])->name('surveys.pause');
+    Route::patch('/surveys/{survey}/resume', [SurveyController::class, 'resume'])->name('surveys.resume');
+    Route::patch('/surveys/{survey}/archive', [SurveyController::class, 'archive'])->name('surveys.archive');
+
+    Route::get('/survey-campaigns', [SurveyCampaignController::class, 'index'])->name('survey-campaigns.index');
+    Route::post('/survey-campaigns', [SurveyCampaignController::class, 'store'])->name('survey-campaigns.store');
+    Route::get('/survey-campaigns/{campaign}', [SurveyCampaignController::class, 'show'])->name('survey-campaigns.show');
+    Route::patch('/survey-campaigns/{campaign}/activate', [SurveyCampaignController::class, 'activate'])->name('survey-campaigns.activate');
+    Route::patch('/survey-campaigns/{campaign}/pause', [SurveyCampaignController::class, 'pause'])->name('survey-campaigns.pause');
+    Route::patch('/survey-campaigns/{campaign}/end', [SurveyCampaignController::class, 'end'])->name('survey-campaigns.end');
+
+    Route::post('/survey-invitations', [SurveyInvitationController::class, 'store'])->name('survey-invitations.store');
+    Route::delete('/survey-invitations/{invitation}', [SurveyInvitationController::class, 'revoke'])->name('survey-invitations.revoke');
+});
+
+/*
+ * STEP 7 — Public survey plane. Unauthenticated, NO tenant context/RBAC. {campaign}/{invitation}
+ * are opaque public ids (string params, NOT model-bound, so the TenantScope is never engaged
+ * cross-tenant); the gateway resolves them. Rate-limited per token and per IP; draft content is
+ * unreachable here (rule 32; Step 7 §18).
+ */
+Route::middleware('throttle:public-survey-view')->group(function (): void {
+    Route::get('/s/c/{campaign}', [PublicSurveyController::class, 'showCampaign'])->name('survey.public.campaign');
+    Route::get('/s/c/{campaign}/qr', [SurveyQrController::class, 'show'])->name('survey.public.qr');
+    Route::get('/s/i/{invitation}/{token}', [PublicSurveyController::class, 'showInvitation'])->name('survey.public.invitation');
+});
+
+Route::middleware('throttle:public-survey-submit')->group(function (): void {
+    Route::post('/s/c/{campaign}', [PublicSurveyController::class, 'submitCampaign'])->name('survey.public.campaign.submit');
+    Route::post('/s/i/{invitation}/{token}', [PublicSurveyController::class, 'submitInvitation'])->name('survey.public.invitation.submit');
 });
 
 /*

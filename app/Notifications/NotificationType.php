@@ -26,10 +26,13 @@ enum NotificationType: string
     case SubscriptionStatusChanged = 'subscription.status.changed';
     case SubscriptionEntitlementChanged = 'subscription.entitlement.changed';
     case SecurityAuthenticationAlert = 'security.authentication.alert';
+    case SurveyResponseCompleted = 'survey.response.completed.internal';
 
     public function category(): NotificationCategory
     {
         return match ($this) {
+            self::SurveyResponseCompleted => NotificationCategory::Survey,
+
             self::TenantInvitationCreated,
             self::TenantInvitationAccepted,
             self::MembershipActivated,
@@ -66,8 +69,9 @@ enum NotificationType: string
     public function defaultChannels(): array
     {
         return match ($this) {
-            // Entitlement changes are low-signal; in-app only by default.
-            self::SubscriptionEntitlementChanged => [NotificationChannel::InApp],
+            // Entitlement changes and internal survey signals are low-signal; in-app only.
+            self::SubscriptionEntitlementChanged,
+            self::SurveyResponseCompleted => [NotificationChannel::InApp],
             default => [NotificationChannel::InApp, NotificationChannel::Email],
         };
     }

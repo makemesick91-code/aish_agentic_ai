@@ -40,6 +40,83 @@ final class Permissions
 
     public const CONTEXT_SWITCH_BRANCH = 'context.switch-branch';
 
+    // Step 7 — Survey & CSAT Foundation (rule 32).
+    public const SURVEYS_VIEW = 'surveys.view';
+
+    public const SURVEYS_CREATE = 'surveys.create';
+
+    public const SURVEYS_UPDATE = 'surveys.update';
+
+    public const SURVEYS_PUBLISH = 'surveys.publish';
+
+    public const SURVEYS_PAUSE = 'surveys.pause';
+
+    public const SURVEYS_ARCHIVE = 'surveys.archive';
+
+    public const SURVEYS_RESULTS_VIEW = 'surveys.results.view';
+
+    public const SURVEY_CAMPAIGNS_VIEW = 'survey-campaigns.view';
+
+    public const SURVEY_CAMPAIGNS_CREATE = 'survey-campaigns.create';
+
+    public const SURVEY_CAMPAIGNS_UPDATE = 'survey-campaigns.update';
+
+    public const SURVEY_CAMPAIGNS_ACTIVATE = 'survey-campaigns.activate';
+
+    public const SURVEY_CAMPAIGNS_PAUSE = 'survey-campaigns.pause';
+
+    public const SURVEY_CAMPAIGNS_END = 'survey-campaigns.end';
+
+    public const SURVEY_INVITATIONS_VIEW = 'survey-invitations.view';
+
+    public const SURVEY_INVITATIONS_CREATE = 'survey-invitations.create';
+
+    public const SURVEY_INVITATIONS_REVOKE = 'survey-invitations.revoke';
+
+    public const SURVEY_RESPONSES_VIEW = 'survey-responses.view';
+
+    public const SURVEY_RESPONSES_INVALIDATE = 'survey-responses.invalidate';
+
+    /** @return list<string> */
+    public static function surveyPermissions(): array
+    {
+        return [
+            self::SURVEYS_VIEW,
+            self::SURVEYS_CREATE,
+            self::SURVEYS_UPDATE,
+            self::SURVEYS_PUBLISH,
+            self::SURVEYS_PAUSE,
+            self::SURVEYS_ARCHIVE,
+            self::SURVEYS_RESULTS_VIEW,
+            self::SURVEY_CAMPAIGNS_VIEW,
+            self::SURVEY_CAMPAIGNS_CREATE,
+            self::SURVEY_CAMPAIGNS_UPDATE,
+            self::SURVEY_CAMPAIGNS_ACTIVATE,
+            self::SURVEY_CAMPAIGNS_PAUSE,
+            self::SURVEY_CAMPAIGNS_END,
+            self::SURVEY_INVITATIONS_VIEW,
+            self::SURVEY_INVITATIONS_CREATE,
+            self::SURVEY_INVITATIONS_REVOKE,
+            self::SURVEY_RESPONSES_VIEW,
+            self::SURVEY_RESPONSES_INVALIDATE,
+        ];
+    }
+
+    /** Read-only survey visibility (surveys + results). */
+    public const SURVEY_READ_ONLY = [
+        self::SURVEYS_VIEW,
+        self::SURVEYS_RESULTS_VIEW,
+    ];
+
+    /** Branch-scoped operational survey visibility. */
+    public const SURVEY_BRANCH_VIEW = [
+        self::SURVEYS_VIEW,
+        self::SURVEYS_RESULTS_VIEW,
+        self::SURVEY_CAMPAIGNS_VIEW,
+        self::SURVEY_INVITATIONS_VIEW,
+        self::SURVEY_RESPONSES_VIEW,
+    ];
+
     /**
      * @return list<string>
      */
@@ -61,6 +138,7 @@ final class Permissions
             self::AUDIT_VIEW,
             self::CONTEXT_SWITCH_TENANT,
             self::CONTEXT_SWITCH_BRANCH,
+            ...self::surveyPermissions(),
         ];
     }
 }

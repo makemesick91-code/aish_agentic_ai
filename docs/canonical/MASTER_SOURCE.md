@@ -6,9 +6,18 @@
 **Kategori produk:** Agentic AI Customer Experience, CSAT, Customer Recovery, dan Google Review Management Platform
 **Model bisnis:** Multi-tenant Software as a Service
 **Tipe dokumen:** Canonical Living Product Source
-**Versi:** 2.8.0
+**Versi:** 2.9.0
 **Status dokumen:** Active
-**Status produk:** SPRINT-SF-05 (Notification, Subscription, and Platform Admin Skeletons) — tenant-safe notification delivery with truthful states + idempotency, subscription/entitlement with a single fail-closed resolver (commercial ≠ payment; security suspension precedence), and a separate least-privilege platform-admin plane (no impersonation) — CODE COMPLETE and TESTED locally; IN PROGRESS toward merge + GO (NOT yet merged, tagged, CI-green-on-CI, or clean-checkout-verified). Payment/AI/Google integrations, business/module implementation, deployment, pilot, and production NOT STARTED; no domain owned, nothing deployed. (Prior: Step 6 SaaS Core Foundation CODE COMPLETE + TESTED locally, v2.7.0.)
+**Status produk:** Step 7 (Survey & CSAT Foundation) — the first customer-experience capability on the SaaS core +
+SF-05 substrate: tenant-owned surveys with immutable versioning, questions/options, campaigns, secure public
+invitation/link/QR distribution, tokenized public responses, and deterministic CSAT/NPS/CES with explicit rounding —
+**CODE COMPLETE and TESTED locally** (full suite green against real PostgreSQL 17 + Redis 7; Pint/PHPStan clean);
+**IN PROGRESS toward merge + GO** (NOT yet merged, tagged, CI-green-on-CI, or clean-checkout-verified) under target
+tag `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`. The deferred **independent SF-05 security review** is
+**COMPLETE — PASS** (no critical/high/medium; evidence `docs/evidence/sf-05-independent-security-review.md`). Prior:
+**SPRINT-SF-05** MERGED (`ca0bea6`) and **GO TAGGED**; **Step 6 SaaS Core Foundation** MERGED (`9c25a9c`) and GO
+TAGGED (v2.7.0). Feedback/AI/Google/recovery/billing modules, deployment, pilot, and production **NOT STARTED**; no
+domain owned, nothing deployed.
 **Pemilik produk:** Aish Tech Solution
 **Repository kanonik:** `https://github.com/makemesick91-code/aish_agentic_ai`
 **Repository owner/name:** `makemesick91-code/aish_agentic_ai`
@@ -207,6 +216,38 @@ Digunakan untuk:
 ---
 
 # 6. CHANGELOG BASELINE
+
+## Version 2.9.0 — Step 7 Survey & CSAT Foundation
+
+**MASTER SOURCE UPDATE**
+- Previous version: 2.8.0 → New version: 2.9.0
+- Date: 2026-07-14 (Asia/Makassar)
+- Type: minor (first customer-experience capability on the SaaS core + SF-05 substrate; no vision/business-model/architecture change)
+- Affected sections: header status; new §73; ADRs 0057–0059; Claude rule 32; AFR-171..187. Cross-refs §47, §62, §16, §36, §37, §46, §50, §53, §54.
+- Decision: deliver Step 7 — tenant-owned surveys with **immutable versioning** (published content frozen; editing
+  creates a new draft; responses bind the exact answered version), questions/options with type↔answer integrity,
+  campaign lifecycle bound to an immutable published version, **secure public distribution** (opaque public ids;
+  256-bit invitation tokens stored only as a SHA-256 hash, constant-time compared, one-time, revocable, never
+  logged/audited/sessioned; a single reviewed public gateway that resolves cross-tenant with no enumeration and
+  membership-less context; per-token+IP rate limits; payload caps; URL-only QR), **deterministic CSAT/NPS/CES**
+  (single calculator over stored raw answers, versioned config, explicit 2-decimal rounding, null on empty),
+  tenant/branch/version-scoped summaries, consent semantics (explicit, non-default; completion ≠ marketing), survey
+  entitlement/usage via the single authoritative resolver + guard (fail-closed; idempotent meters), invitation mail
+  via a reviewed adapter + internal notification via the SF-05 dispatcher, and sanitized survey audit — without
+  weakening any security, tenant-isolation, privacy, review-policy, documentation, or release gate. The deferred
+  independent SF-05 security review is COMPLETE — PASS (no critical/high/medium).
+- Reason: the SaaS core (Step 6) and platform substrate (SF-05) are in place; per the implementation sequence (§62)
+  Survey & CSAT is the first business capability and the foundation for feedback, recovery, and reputation.
+- Impacts: adds eight tenant-owned survey tables and the tenant builder + public survey plane; no MVP scope change
+  (§47) and no out-of-scope item built (feedback analysis/AI/Google/recovery/billing and WhatsApp/SMS delivery remain
+  out of scope); Google Review anti-gating preserved (a survey score never gates review access); truthful-status and
+  evidence-before-claims preserved.
+- Status: IN PROGRESS toward GO — CODE COMPLETE and TESTED locally; NOT merged, NOT tagged, NOT CI-green-on-CI, and
+  NOT clean-checkout-verified at authoring time. The target Step 7 GO tag
+  `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go` will attest survey & CSAT foundation readiness only.
+- Evidence: ADRs 0057–0059, Claude rule 32, AFR-171..187; runtime/CI/merge/tag evidence forthcoming under
+  `docs/evidence/step-7/`.
+- Changelog: see root `CHANGELOG.md` v2.9.0.
 
 ## Version 2.8.0 — SPRINT-SF-05 Notification, Subscription, and Platform Admin Skeletons
 
@@ -4071,6 +4112,69 @@ Rules and the Foundation Coverage Matrix. Coverage is verified by
 After SPRINT-SF-05 is merged, CI-green on the final head, clean-checkout-verified on the merged SHA
 (`scripts/runtime/verify-sf-05.sh`), and GO-tagged, the next canonical sprint is **SPRINT-SF-06** (observability),
 which keeps its own independent GO/WATCH/NO-GO gate (ADR 0039 sequence; rule 26).
+
+---
+
+# 73. STEP 7 — SURVEY & CSAT FOUNDATION
+
+## 73.1 Scope
+Step 7 delivers the first customer-experience capability on the Step 6 SaaS core + SPRINT-SF-05 substrate: survey
+definition, immutable survey versioning, questions/options, survey campaigns, QR/public/unique invitation
+distribution, public survey responses, deterministic CSAT/NPS/CES calculation, and basic result summaries — all
+tenant- and branch-safe, auditable, privacy-aware, entitlement-aware, and truthful. It is platform-core in top-level
+`App\Surveys\*` + `App\Models\*` (ADR 0057), not `app/Modules/`; other business modules remain **NOT STARTED**.
+
+## 73.2 Survey & immutable versioning (ADR 0057; AFR-171..175)
+A survey is a tenant-owned stable identity; content lives in `survey_versions`. A version is authored as `draft`,
+published exactly once (immutable), and `superseded` when a newer version publishes. Publishing is transactional and
+race-safe (survey-row lock; one current version), validated (≥1 question, unique order/key, choice ≥2 options, valid
+scales), and idempotent. Editing published content creates a new draft version. Responses bind the exact answered
+version; a completed response is immutable except an authorized reasoned audited invalidation; answers are
+write-once. A published survey is never hard-deleted. Question type and answer type must match; options belong to
+their question; free text is untrusted (length-limited, escaped, not AI-fed in Step 7, never in logs/audit).
+
+## 73.3 Public invitation, token & QR (ADR 0058; AFR-176..180, 184)
+Public routes use opaque ULIDs and never expose draft/preview. Unique invitations carry a 256-bit token stored only
+as a SHA-256 hash (constant-time compared, one-time, expiring, revocable); the plaintext is never persisted or put in
+logs/audit/session/delivery records/errors and is delivered solely inside the emailed link. A single reviewed public
+gateway resolves campaigns/invitations cross-tenant (allowlisted scope bypass) with generic no-enumeration failures,
+then operates under a membership-less context (no RBAC/platform access). Submission is server-validated,
+rate-limited per token and per IP, payload-bounded, transactional, and idempotent (one completion per unique
+invitation). A QR encodes only the protected public URL (local SVG, deterministic). Consent is explicit and
+non-default; survey completion is not marketing consent; anonymous responses never silently create a customer.
+
+## 73.4 CSAT/NPS/CES scoring (ADR 0059; AFR-181..183)
+All metric computation goes through the single `MetricCalculator` over stored raw answers of completed responses,
+using versioned per-question config — never UI labels, never re-implemented elsewhere. CSAT = satisfied ÷ valid ×
+100 (threshold applied in the configured direction); NPS uses fixed categories (detractors 0–6, passives 7–8,
+promoters 9–10) with score = promoter% − detractor% in [−100, +100]; CES is the average of valid values with a
+configured direction. Raw counts are authoritative; percentages/averages round to 2 decimals; an empty population is
+a truthful null. Summaries are tenant/branch/version scoped with no cross-tenant aggregation and no answer content.
+
+## 73.5 Entitlement, usage, notification & audit (AFR-185, 186; rules 31, 32)
+Survey entitlement/limit decisions use the single authoritative `EntitlementResolver` via one guard
+(`SurveyEntitlements`); an unknown/ungranted key fails closed; a commercial state never overrides a security
+suspension. Usage meters (`survey_invitations.created`, `survey_responses.completed`) are tenant-scoped and
+idempotent (no metering on preview/failed submission; no double-count on retry). Invitation mail goes through a
+reviewed adapter; internal survey notifications use the SF-05 dispatcher; a retry never creates a duplicate logical
+invitation. Security-relevant survey actions are audited with actor + tenant; metadata carries no token, secret, or
+free-text answer content. **Google Review anti-gating is preserved: a survey score never determines whether Google
+Review access is shown** (rules 06, 18).
+
+## 73.6 Release gate & truthful status
+Step 7 GO requires all Step 7 tests green, security matrix + architecture + migration + audit suites green,
+Pint/PHPStan clean, secret scan clean, documentation gates green, a clean-checkout Step 7 verification
+(`scripts/runtime/verify-step-7.sh` / `php artisan aish:verify-step-7`) on the exact merged SHA against real
+PostgreSQL 17 + Redis 7, authoritative Full CI green on the final head, merge evidence, and an exact-match annotated
+GO tag. Step 7 is **CODE COMPLETE and TESTED locally** and **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT
+CI-green-on-CI, and NOT clean-checkout-verified at authoring time. The target Step 7 GO tag
+`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go` attests survey & CSAT foundation readiness only — not
+feedback/AI/Google/recovery/billing, not deployment, pilot, or production readiness.
+
+## 73.7 Next step
+After Step 7 is merged, CI-green on the final head, clean-checkout-verified on the merged SHA, and GO-tagged, the next
+canonical capability is the **Feedback Inbox** (Master Source §62 implementation order), which keeps its own
+independent GO/WATCH/NO-GO gate.
 
 ---
 

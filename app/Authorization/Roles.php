@@ -44,6 +44,8 @@ final class Roles
                 Permissions::AUDIT_VIEW,
                 Permissions::CONTEXT_SWITCH_TENANT,
                 Permissions::CONTEXT_SWITCH_BRANCH,
+                // Full survey authoring, distribution, and results.
+                ...Permissions::surveyPermissions(),
             ],
 
             // Branch-scoped operational view; sees only its granted branch(es).
@@ -53,6 +55,8 @@ final class Roles
                 Permissions::USERS_VIEW,
                 Permissions::AUDIT_VIEW,
                 Permissions::CONTEXT_SWITCH_BRANCH,
+                // Branch-scoped survey visibility only (no authoring).
+                ...Permissions::SURVEY_BRANCH_VIEW,
             ],
 
             // Read-only foundation visibility.
@@ -61,6 +65,7 @@ final class Roles
                 Permissions::BRANCHES_VIEW,
                 Permissions::USERS_VIEW,
                 Permissions::CONTEXT_SWITCH_BRANCH,
+                ...Permissions::SURVEY_READ_ONLY,
             ],
         ];
     }

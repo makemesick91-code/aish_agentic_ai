@@ -22,7 +22,15 @@ final class EntitlementKeys
 
     public const USERS_MAX = 'users.max';
 
+    public const SURVEYS_ENABLED = 'surveys.enabled';
+
+    public const SURVEYS_MAX = 'surveys.max';
+
+    public const SURVEY_CAMPAIGNS_MAX = 'survey_campaigns.max';
+
     public const SURVEY_INVITATIONS_MONTHLY = 'survey_invitations.monthly';
+
+    public const SURVEY_RESPONSES_MONTHLY = 'survey_responses.monthly';
 
     public const GOOGLE_LOCATIONS_MAX = 'google_locations.max';
 
@@ -42,7 +50,11 @@ final class EntitlementKeys
         return [
             self::BRANCHES_MAX => FeatureType::Integer,
             self::USERS_MAX => FeatureType::Integer,
+            self::SURVEYS_ENABLED => FeatureType::Boolean,
+            self::SURVEYS_MAX => FeatureType::Integer,
+            self::SURVEY_CAMPAIGNS_MAX => FeatureType::Integer,
             self::SURVEY_INVITATIONS_MONTHLY => FeatureType::Integer,
+            self::SURVEY_RESPONSES_MONTHLY => FeatureType::Integer,
             self::GOOGLE_LOCATIONS_MAX => FeatureType::Integer,
             self::AI_ANALYSES_MONTHLY => FeatureType::Integer,
             self::API_ENABLED => FeatureType::Boolean,

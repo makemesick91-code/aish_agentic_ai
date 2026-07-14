@@ -97,15 +97,21 @@ final class Sf05BoundariesTest extends TestCase
 
     public function test_mail_is_only_sent_from_the_mail_channel(): void
     {
-        $allowed = 'app/Services/Notifications/Channels/MailChannel.php';
+        // Outbound mail is centralized to reviewed adapters only: the member notification
+        // MailChannel, and the Step 7 customer survey-invitation mailer (customers are
+        // non-members and cannot use the member-only channel) (rule 31 §8.2, rule 32 §22).
+        $allowed = [
+            'app/Services/Notifications/Channels/MailChannel.php',
+            'app/Surveys/SurveyInvitationMailer.php',
+        ];
 
         foreach ($this->phpFiles('app') as $file) {
             $contents = (string) file_get_contents($file);
             if (str_contains($contents, 'Mail::to(')) {
-                $this->assertSame(
-                    $allowed,
+                $this->assertContains(
                     $this->relativePath($file),
-                    'Mail must only be sent from the MailChannel adapter (rule 31 §8.2).',
+                    $allowed,
+                    'Mail must only be sent from a reviewed mail adapter (rule 31 §8.2).',
                 );
             }
         }

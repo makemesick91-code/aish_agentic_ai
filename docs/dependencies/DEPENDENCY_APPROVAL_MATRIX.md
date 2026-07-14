@@ -113,3 +113,9 @@ Every dependency below carries: purpose · official source · license · support
 ## Status
 
 Approval matrix documented as planning decisions. Baseline entries such as Laravel 12, PHP 8.4, PostgreSQL 17, PHPUnit, PHPStan, Pint carry **APPROVED FOR IMPLEMENTATION**; unresolved items (Horizon, OpenTelemetry, Sentry, Alpine.js, Pest-vs-PHPUnit choice, backup tooling) carry **EVALUATE DURING IMPLEMENTATION**. No lock file exists; nothing is installed. **PLANNING BASELINE — NOT IMPLEMENTED.**
+
+### Step 7 addition (implemented)
+`bacon/bacon-qr-code` (`^3.0`) — **APPROVED FOR IMPLEMENTATION**. Already resolved transitively via `laravel/fortify`
+(2FA) and now promoted to a direct dependency for URL-only survey QR SVG rendering (ADR 0058). Official Packagist
+source, pinned in `composer.lock`, pure-PHP SVG backend (no imagick/GD requirement), `composer audit` clean. No new
+network dependency was downloaded (the package was already vendored).

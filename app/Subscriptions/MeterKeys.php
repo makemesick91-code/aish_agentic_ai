@@ -14,11 +14,19 @@ final class MeterKeys
     /** The single internal meter used to prove the metering foundation end-to-end. */
     public const FOUNDATION_VERIFICATION = 'foundation.verification';
 
+    /** Survey invitations issued (Step 7). */
+    public const SURVEY_INVITATIONS_CREATED = 'survey_invitations.created';
+
+    /** Survey responses completed (Step 7). */
+    public const SURVEY_RESPONSES_COMPLETED = 'survey_responses.completed';
+
     /** @return list<string> */
     public static function all(): array
     {
         return [
             self::FOUNDATION_VERIFICATION,
+            self::SURVEY_INVITATIONS_CREATED,
+            self::SURVEY_RESPONSES_COMPLETED,
         ];
     }
 
