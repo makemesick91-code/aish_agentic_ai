@@ -79,8 +79,11 @@ Do not move prior GO tags (ba1c80f / abf1d00 / 764a484).
 ## SPRINT-SF-05 handoff
 SF-05 (notification foundation, subscription/entitlement skeleton, platform-admin plane) implemented on branch
 `feature/sprint-sf-05-notification-subscription-platform-admin-skeletons`. Master Source v2.8.0 / PRD v1.3.0 unchanged.
-182 tests green; Pint/PHPStan clean; real-infra verified; `scripts/docs/validate.sh` all gates pass. Remaining:
-commit → draft PR → mark ready → one authoritative Full CI on the final head → merge → clean-checkout verify
-(`scripts/runtime/verify-sf-05.sh`) on the merged SHA → annotated GO tag
-`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go` → GitHub Release →
-post-tag evidence sync under `docs/evidence/sprint-sf-05/`. Do not move any prior GO tag.
+182 tests green; Pint/PHPStan clean; real-infra verified; `scripts/docs/validate.sh` all gates pass. **COMPLETE:**
+MERGED (PR #17, merge `ca0bea6`), authoritative Full CI green on `899e888` (run `29326645691`), main-post-merge
+lightweight success on `ca0bea6`, clean-checkout verified on the merged SHA (`scripts/runtime/verify-sf-05.sh`) against
+real PostgreSQL 17 + Redis 7, immutable annotated GO tag
+`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go` (object `08451100`, peeled
+`ca0bea6`; local == remote == main), GitHub Release published, and this post-tag evidence sync under
+`docs/evidence/sprint-sf-05/` + `docs/release/SPRINT_SF_05_*`. Prior GO tags unchanged. Next: SPRINT-SF-06 per ADR 0039
+sequence (do not move any prior GO tag).

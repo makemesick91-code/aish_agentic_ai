@@ -72,9 +72,9 @@ Skeletons** (Master Source v2.8.0, ADRs 0054–0056, AFR-155..170, rule 31) adds
 skeleton (typed allowlisted entitlements, single fail-closed resolver, idempotent usage metering; commercial ≠
 payment; security-suspension precedence), and a separate least-privilege platform-admin plane (platform ≠ tenant
 roles, no `Gate::before` bypass, self-escalation blocked, last-super-admin protected, impersonation prohibited).
-SF-05 is **CODE COMPLETE** and **TESTED locally** (182 tests; Pint/PHPStan clean; verified against real PostgreSQL 17
-+ Redis 7 via `aish:verify-sf-05`), **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT
-clean-checkout-verified on the merged SHA; target GO tag
-`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`; evidence forthcoming
-under `docs/evidence/sprint-sf-05/`. No domain is owned; nothing is deployed. **Business/module
+SF-05 is **CODE COMPLETE**, **TESTED** (182 tests; Pint/PHPStan clean; verified against real PostgreSQL 17 + Redis 7
+via `aish:verify-sf-05`), **MERGED** (PR #17, merge `ca0bea6`) and **GO TAGGED**
+(`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`, object `08451100`, peeled
+`ca0bea6`; local == remote == main); authoritative Full CI green on `899e888`; clean-checkout verified on the merged
+SHA; GitHub Release published; evidence under `docs/evidence/sprint-sf-05/`. No domain is owned; nothing is deployed. **Business/module
 implementation: NOT STARTED.** Deployment, pilot readiness, pilot runtime, and production readiness: **NOT STARTED.**

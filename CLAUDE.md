@@ -150,10 +150,11 @@ least-privilege **platform-admin** plane (platform roles distinct from tenant ro
 per-permission authorization, secure `aish:platform-admin-provision`, reason-required audited tenant status changes,
 append-only support notes, truthful metrics, impersonation prohibited). **CODE COMPLETE** and **TESTED locally** (182
 tests; Pint/PHPStan clean; SF-05 foundations verified against real PostgreSQL 17 + Redis 7 via `aish:verify-sf-05`),
-and **IN PROGRESS toward GO** — NOT yet merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified on the
-merged SHA; target GO tag
-`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`; merge/CI/tag evidence
-forthcoming under `docs/evidence/sprint-sf-05/`.
+and is **MERGED** (PR #17, merge `ca0bea6`) and **GO TAGGED**
+(`aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`, object `08451100`, peeled
+`ca0bea6`; local == remote == main). Authoritative Full CI green on `899e888` (run `29326645691`); main-post-merge
+lightweight success on `ca0bea6`; **clean-checkout verified** on the merged SHA against real PostgreSQL 17 + Redis 7;
+GitHub Release published; evidence under `docs/evidence/sprint-sf-05/` and `docs/release/SPRINT_SF_05_*`.
 **Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 
