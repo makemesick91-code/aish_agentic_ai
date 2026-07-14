@@ -11,9 +11,10 @@
 **Status produk:** Step 7 (Survey & CSAT Foundation) — the first customer-experience capability on the SaaS core +
 SF-05 substrate: tenant-owned surveys with immutable versioning, questions/options, campaigns, secure public
 invitation/link/QR distribution, tokenized public responses, and deterministic CSAT/NPS/CES with explicit rounding —
-**CODE COMPLETE and TESTED locally** (full suite green against real PostgreSQL 17 + Redis 7; Pint/PHPStan clean);
-**IN PROGRESS toward merge + GO** (NOT yet merged, tagged, CI-green-on-CI, or clean-checkout-verified) under target
-tag `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`. The deferred **independent SF-05 security review** is
+**MERGED** (PR #19, merge `1b1ba86`, authoritative Full CI `29338786077` success) and **GO TAGGED**
+(`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, object `5e55359`, peeled `1b1ba86`; local == remote ==
+main), **CLEAN-CHECKOUT VERIFIED** on `1b1ba86` against real PostgreSQL 17 + Redis 7, and **GITHUB RELEASE
+PUBLISHED** (post-tag evidence synced without moving the tag). The deferred **independent SF-05 security review** is
 **COMPLETE — PASS** (no critical/high/medium; evidence `docs/evidence/sf-05-independent-security-review.md`). Prior:
 **SPRINT-SF-05** MERGED (`ca0bea6`) and **GO TAGGED**; **Step 6 SaaS Core Foundation** MERGED (`9c25a9c`) and GO
 TAGGED (v2.7.0). Feedback/AI/Google/recovery/billing modules, deployment, pilot, and production **NOT STARTED**; no

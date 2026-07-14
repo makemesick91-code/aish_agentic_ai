@@ -155,6 +155,19 @@ and is **MERGED** (PR #17, merge `ca0bea6`) and **GO TAGGED**
 `ca0bea6`; local == remote == main). Authoritative Full CI green on `899e888` (run `29326645691`); main-post-merge
 lightweight success on `ca0bea6`; **clean-checkout verified** on the merged SHA against real PostgreSQL 17 + Redis 7;
 GitHub Release published; evidence under `docs/evidence/sprint-sf-05/` and `docs/release/SPRINT_SF_05_*`.
+**Step 7 — Survey & CSAT Foundation** (Master Source **v2.9.0** §73, PRD **v1.3.0** unchanged, ADRs 0057–0059,
+AFR-171..187, rule 32) delivers the first customer-experience capability on the SaaS core + SF-05 substrate:
+tenant-owned surveys with immutable versioning, questions/options, campaigns, secure public invitation/link/QR
+distribution (opaque ULIDs; SHA-256 hashed one-time invitation tokens never logged/audited; single reviewed
+no-enumeration gateway; per-token+IP rate limits; URL-only QR via bacon/qr-code), tokenized one-time public
+responses, deterministic CSAT/NPS/CES (single calculator; explicit rounding; null-on-empty), entitlement/usage via
+one guard over the authoritative resolver, invitation mail via a reviewed adapter + internal notification via the
+SF-05 dispatcher, and sanitized audit; Google Review anti-gating preserved. **MERGED** (PR #19, merge `1b1ba86`) and
+**GO TAGGED** (`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, object `5e55359`, peeled `1b1ba86`;
+local == remote == main). Authoritative Full CI green on `957857f` (run `29338786077`); main-post-merge lightweight success; **clean-checkout verified** on `1b1ba86` against real PostgreSQL 17 + Redis 7
+(`aish:verify-step-7` 16 checks; hermetic suite 265 passed); GitHub Release published; the deferred **independent
+SF-05 security review** is COMPLETE — PASS (no critical/high/medium); evidence under `docs/evidence/step-7/` and
+`docs/release/STEP_7_TAG_VERIFICATION.md`.
 **Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 

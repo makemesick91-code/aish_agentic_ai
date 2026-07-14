@@ -3,9 +3,13 @@
 Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
-- **Step 7 — Survey & CSAT Foundation:** **CODE COMPLETE and TESTED locally**; **IN PROGRESS toward GO** — NOT
-  merged, NOT tagged, NOT CI-green-on-CI, NOT clean-checkout-verified. Target tag
-  `aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`. Delivers tenant-owned surveys with immutable versioning
+- **Step 7 — Survey & CSAT Foundation:** MERGED (PR #19, final head `957857f`, authoritative Full CI run
+  `29338786077` success; merge commit `1b1ba86`) and **GO TAGGED**
+  (`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, tag object `5e55359`, peeled `1b1ba86`;
+  local == remote == main). **CLEAN-CHECKOUT VERIFIED** from a fresh clone at `1b1ba86` against real PostgreSQL 17 +
+  Redis 7 (`aish:verify-step-7` 16 checks + `verify-saas-core` + `verify-sf-05` + hermetic suite 265 passed).
+  **GITHUB RELEASE PUBLISHED**; tag not moved by post-tag evidence sync (`docs/release/STEP_7_TAG_VERIFICATION.md`).
+  Delivers tenant-owned surveys with immutable versioning
   (race-safe publisher; published content frozen; edit → new draft; responses bind the exact answered version;
   write-once answers), questions/options with type↔answer integrity, campaigns bound to immutable published
   versions, secure public distribution (opaque ULIDs; 256-bit invitation tokens stored only as SHA-256 hashes,
