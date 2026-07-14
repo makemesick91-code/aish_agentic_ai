@@ -6,14 +6,12 @@ namespace App\Surveys;
 
 use App\Audit\AuditRecorder;
 use App\Enums\InvitationStatus;
-use App\Mail\SurveyInvitationMail;
 use App\Models\SurveyCampaign;
 use App\Models\SurveyInvitation;
 use App\Models\User;
 use App\Surveys\Exceptions\SurveyStateException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Issues and manages unique survey invitations. A cryptographically strong token is generated,
@@ -23,7 +21,10 @@ use Illuminate\Support\Facades\Mail;
  */
 final class SurveyInvitationService
 {
-    public function __construct(private readonly AuditRecorder $audit) {}
+    public function __construct(
+        private readonly AuditRecorder $audit,
+        private readonly SurveyInvitationMailer $mailer,
+    ) {}
 
     /**
      * Issue (or idempotently return) a unique invitation for an active campaign.
@@ -87,10 +88,7 @@ final class SurveyInvitationService
         }
 
         try {
-            Mail::to($invitation->recipient_email)->send(new SurveyInvitationMail(
-                subjectLine: 'Kami ingin mendengar masukan Anda',
-                url: $url,
-            ));
+            $this->mailer->send($invitation->recipient_email, $url);
         } catch (\Throwable) {
             $failed = $this->markDeliveryFailed($invitation, 'mail_transport_error');
             $this->audit->record('survey.invitation.delivery_requested', [
