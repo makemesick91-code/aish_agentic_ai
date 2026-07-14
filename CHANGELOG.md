@@ -6,6 +6,39 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — Step 5: Runtime & Repository Bootstrap
+
+Target release: annotated tag `aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go`.
+Base branch `main`; feature branch `feature/step-5-runtime-repository-bootstrap`.
+
+### Added
+- Master Source **v2.6.0** (§70 Step 5); PRD unchanged at **v1.3.0**. ADRs **0047–0050**, **AFR-127..133**,
+  **Claude rule 29**.
+- Bootable **Laravel 12** application (PHP 8.4 / PostgreSQL 17 / Redis 7 / Node 22): modular skeleton,
+  `bootstrap/app.php` routing + middleware, `app/Support` health/runtime foundation, `app/Console/Commands`
+  (`aish:preflight`, `aish:heartbeat`, `aish:queue-smoke`).
+- Truthful health probes `GET /live` and `GET /ready` (503 on dependency failure, no leakage); `SecurityHeaders`
+  middleware; `config/health.php`, `config/security.php`.
+- `.env.example` environment contract; `docker-compose.yml` (Postgres 17 + Redis 7); `Makefile` and
+  `scripts/runtime/{preflight,bootstrap-local,verify-runtime}.sh`.
+- Test suite (Architecture/Unit/Feature/Security, 24 tests); Pint + PHPStan/Larastan (level 6); predis + larastan
+  dev deps; frontend (Vite 7 + Tailwind 4) bootstrap surface.
+- Real `backend-runtime-ci` job in `pr-ci.yml` (Postgres + Redis service containers), wired into
+  `pr-ci / Required Gate`; classifier + gate-decision + tests updated.
+- Runtime docs: `docs/architecture/runtime-bootstrap.md`, `docs/getting-started/local-development.md`,
+  `docs/operations/runtime-verification.md`, `docs/governance/foundation-coverage-matrix.md`,
+  `docs/evidence/step-5-runtime-repository-bootstrap.md`.
+
+### Changed
+- `scripts/hooks/guard-dangerous-commands.sh`: implementation-phase supply-chain safeguard — package **install**
+  permitted (supersedes Step-4 planning no-install, AFR-096); publish/deploy/DNS still blocked. Guard test updated.
+- CLAUDE.md / AGENTS.md / Master Source bumped to v2.6.0; scaffolding AGENTS/README updated to Step 5 (runtime
+  implemented, business modules NOT STARTED).
+
+### Status
+Runtime foundation CODE COMPLETE + RUNTIME VERIFIED locally (real PostgreSQL 17 + Redis 7). Deployment, pilot,
+production, and business modules **NOT STARTED**.
+
 ## [Unreleased] — CICD-CTRL-1: Safe CI Runtime Control and Single-Final-Head Release Gate
 
 Target release: annotated tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`.

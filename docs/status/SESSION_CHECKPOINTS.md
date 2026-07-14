@@ -2,6 +2,21 @@
 
 Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Makassar.
 
+## Checkpoint 2026-07-14 — Step 5 Runtime & Repository Bootstrap execution
+- **Branch:** `feature/step-5-runtime-repository-bootstrap` · **Base:** `main` (baseline `bc5acb9`).
+- **Decisions:**
+  - Bootstrapped Laravel 12 (v12.63.0) into the repo, preserving docs/AGENTS scaffolding; PHP `^8.3`, platform
+    pinned 8.4.1; PostgreSQL 17; Redis 7 via **predis** (no phpredis extension needed); Node 22.
+  - Implementation-phase governance: guard hook now permits package **install** (supersedes Step-4 no-install,
+    AFR-096); publish/deploy/DNS still blocked; guard test updated.
+  - Health probes `/live`+`/ready` outside web middleware group (no session cookies); readiness list in
+    `config/health.php`; truthful 503 on dependency failure (verified with Redis down).
+  - Real `backend-runtime-ci` job added to `pr-ci.yml` (Postgres+Redis services) and required on ready PRs
+    (AFR-125 satisfied — app now exists; no fake gate).
+  - Master Source → **v2.6.0** (§70); ADRs 0047–0050; AFR-127..133; rule 29; v2.6.0 source snapshot + checksum.
+- **Evidence:** `docs/evidence/step-5/runtime/` (all runtime checks PASS); local gates green (24 tests, PHPStan L6,
+  Pint, composer/npm audit). Release/tag evidence recorded post-merge (tag not moved by post-tag sync).
+
 ## Checkpoint 2026-07-13 — Documentation Foundation execution
 - **Branch:** `chore/aish-agentic-ai-documentation-foundation` · **Base:** `main`.
 - **Bootstrap commit:** `516d1bd` (README + .gitignore) pushed to `main`; remote-verified; NOT a GO.

@@ -170,3 +170,23 @@ Catalog](../quality/CICD_CTRL_1_VALIDATION_CATALOG.md) maps each AFR to a valida
 **126 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1).** CICD-CTRL-1 AGENTS-instruction and rule coverage is
 asserted in the [CICD-CTRL-1 Traceability Matrix](../quality/CICD_CTRL_1_TRACEABILITY_MATRIX.md); every AFR maps to
 an ADR, Claude rule 28, an AGENTS instruction, a validator, and actual GitHub run evidence. No orphan permanent decision.
+
+## Step 5 — Runtime & Repository Bootstrap (AFR-127..133)
+
+Runtime foundation rules. Each maps to an ADR (0047–0050), Claude rule 29, and a runtime fitness check (RT-*)
+verified by `scripts/runtime/verify-runtime.sh`, the `backend-runtime-ci` job, and the test suite. Coverage is
+mapped in the [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md).
+
+| AFR | Statement (MUST / MUST NOT) | ADR | Rule | FF/Gate |
+|-----|-----------------------------|-----|------|---------|
+| AFR-127 | The runtime baseline (Laravel 12 / PHP 8.4 min ^8.3 / PostgreSQL 17 / Redis 7 / Node 22) MUST be pinned and identical across local, CI, and documentation | 0047 | 29,25 | RT-01 |
+| AFR-128 | A clean checkout MUST bootstrap reproducibly; bootstrap MUST be idempotent, fail-fast, MUST NOT run as root, MUST NOT overwrite an existing `.env`, MUST NOT drop the database without an explicit flag, and MUST NOT print secrets | 0048 | 29,24 | RT-02 |
+| AFR-129 | Health probes MUST be truthful: `/live` depends on no external dependency; `/ready` returns 503 when a mandatory dependency is down and MUST NOT leak credentials, connection strings, stack traces, queries, or internal paths | 0049 | 29,10,11 | RT-03 |
+| AFR-130 | The backend runtime CI gate MUST run against real PostgreSQL + Redis, MUST be required on every ready PR, and MUST NOT be a fake/mock Laravel gate | 0050 | 29,28 | RT-04 |
+| AFR-131 | Connectivity MUST be proven not assumed (`select 1`, cache round-trip, queue dispatch+processing); `APP_DEBUG` MUST NOT be true in production | 0047,0049 | 29,04 | RT-05 |
+| AFR-132 | The queue/scheduler foundation MUST stay foundation-only (no business/agent jobs, no fabricated scheduled tasks); retry MUST NOT create duplicate side effects and a failed-job path MUST exist | 0048 | 29,05,02 | RT-06 |
+| AFR-133 | Runtime evidence MUST precede any runtime/deployment claim; a clean-checkout verification on the exact merged SHA MUST pass before a Step 5 GO tag | 0050 | 29,13,27 | RT-07 |
+
+**133 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5).** Step 5 AGENTS-instruction and rule coverage
+is asserted in the [Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every AFR maps to an
+ADR, Claude rule 29, a runtime fitness check, and actual runtime/CI evidence. No orphan permanent decision.

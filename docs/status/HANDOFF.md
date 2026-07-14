@@ -1,8 +1,16 @@
 # Handoff — Aish Agentic AI
 
-Updated: 2026-07-13 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
+Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
+**Step 5 — Runtime & Repository Bootstrap** delivered the bootable Laravel 12 runtime foundation (Master Source
+v2.6.0, rule 29, ADRs 0047–0050, AFR-127..133) on branch `feature/step-5-runtime-repository-bootstrap`. Runtime is
+CODE COMPLETE and RUNTIME VERIFIED locally (real PostgreSQL 17 + Redis 7). A real `backend-runtime-ci` gate is
+wired into `pr-ci / Required Gate`. Next: draft PR → authoritative full CI on the final head → merge →
+clean-checkout runtime verification on the merged SHA → annotated GO tag
+`aish-agentic-ai-step-5-runtime-repository-bootstrap-v1.0.0-go` → post-tag evidence sync (no tag move). Business
+modules, deployment, pilot, and production remain NOT STARTED.
+
 CICD-CTRL-1 — Safe CI Runtime Control is **MERGED and GO TAGGED** for `makemesick91-code/aish_agentic_ai` (PR #9,
 merge commit `8cbf564`, tag `aish-agentic-ai-cicd-ctrl-1-safe-ci-runtime-control-v1.0.0-go`). Steps 1–4 also MERGED
 and GO TAGGED. `main` is protected by ruleset `18890571` (requires `pr-ci / Required Gate`; force-push/deletion

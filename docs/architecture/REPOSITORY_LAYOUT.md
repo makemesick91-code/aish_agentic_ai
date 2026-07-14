@@ -1,11 +1,15 @@
 # Repository Application Layout — Aish Agentic AI
 
-**Status:** ARCHITECTURE BASELINE (Step 3) · **Application implementation: NOT STARTED.**
-**Canonical:** Master Source v2.3.0 §34, §36 · **Rules:** `.claude/rules/08`, `20` · **ADR:** [0010](../decisions/adr/0010-repository-layout-and-module-boundaries.md).
+**Status:** ARCHITECTURE BASELINE (Step 3) · Step 5 realized the runtime foundation dirs · **Business/module
+implementation: NOT STARTED.**
+**Canonical:** Master Source v2.6.0 §34, §36, §70 · **Rules:** `.claude/rules/08`, `20`, `29` · **ADRs:**
+[0010](../decisions/adr/0010-repository-layout-and-module-boundaries.md),
+[0047](../decisions/adr/0047-runtime-version-and-support-policy.md).
 
-> This is the **future implementation layout**. Any directory created during Step 3 is an empty scaffold that
-> carries a `FUTURE IMPLEMENTATION SCAFFOLD — NO RUNTIME IMPLEMENTATION` marker. No production PHP, routes,
-> controllers, models, migrations, or seeders are created in Step 3.
+> Step 5 realized the runtime-foundation directories (`app/Http`, `app/Console`, `app/Support`, `bootstrap`,
+> `config`, `routes`, `database`, `resources`, `tests`) with a bootable Laravel 12 runtime — see
+> [runtime-bootstrap.md](runtime-bootstrap.md). The **business** layer (`app/Modules/*`, `app/Shared/`) remains a
+> reserved scaffold: no module code, models, or business migrations exist yet.
 
 ## 1. Top-level layout
 ```text

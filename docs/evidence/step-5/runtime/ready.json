@@ -1,0 +1,1 @@
+{"status":"ready","checks":[{"name":"database","ok":true,"status":"ok"},{"name":"cache","ok":true,"status":"ok"},{"name":"configuration","ok":true,"status":"ok"}]}
