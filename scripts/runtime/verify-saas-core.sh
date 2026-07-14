@@ -50,8 +50,10 @@ if php artisan aish:tenant-provision \
 else
   bad "aish:tenant-provision (see $EVID/provision.log)"
 fi
-# The provisioning output must never contain a plaintext password or token.
-if grep -Eiq 'password|token' "$EVID/provision.log"; then bad "provision output leaked a secret keyword"; else pass "provision output free of password/token"; fi
+# The provisioning output must never contain an actual secret VALUE — a bcrypt hash or a
+# long random token (the invitation token is 64 chars; ULIDs are only 26, so they do not
+# match). We check for secret patterns, not the benign words "password"/"token".
+if grep -Eq '\$2[aby]\$[0-9]{2}\$|[A-Za-z0-9]{32,}' "$EVID/provision.log"; then bad "provision output leaked a secret value"; else pass "provision output free of secret values"; fi
 
 step "4. Real-infra tenant isolation (DB + Redis cache + Redis queue)"
 if php artisan aish:verify-saas-core >"$EVID/isolation.log" 2>&1; then pass "aish:verify-saas-core"; else bad "aish:verify-saas-core (see $EVID/isolation.log)"; cat "$EVID/isolation.log"; fi
