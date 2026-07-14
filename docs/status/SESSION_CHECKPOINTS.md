@@ -133,3 +133,9 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
 - GitHub Release published with 7 post-tag evidence artifacts (no evidence-only full-CI PR).
 - 4 independent report-only reviews (release-gov, security, traceability, architecture): 3 HIGH + MEDIUM/LOW all fixed.
 - This branch `docs/cicd-ctrl-1-post-tag-evidence` = post-tag documentation sync (historical release metadata).
+
+## SPRINT-SF-05
+- Baseline verified: Step 6 tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go` intact (object `723139b`, peeled `9c25a9c`); main clean at `75cd8c2`.
+- Implemented notification/subscription/platform-admin foundations; 182 tests; Pint/PHPStan clean; real Postgres 17 + Redis 7 verification (`aish:verify-sf-05`) PASS after fixing a Postgres `FOR UPDATE` aggregate bug.
+- Governance: Master Source v2.8.0 (§72), ADRs 0054–0056, AFR-155..170, rule 31, coverage matrix; `scripts/docs/validate.sh` ALL GATES PASSED.
+- Pending at checkpoint: draft PR → ready → authoritative Full CI → merge → clean-checkout verify → GO tag → GitHub Release → post-tag evidence.

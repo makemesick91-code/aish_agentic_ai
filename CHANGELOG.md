@@ -6,6 +6,36 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [Unreleased] — SPRINT-SF-05 (Master Source v2.8.0): Notification, Subscription, and Platform Admin Skeletons
+
+Target release: annotated tag `aish-agentic-ai-sprint-sf-05-notification-subscription-platform-admin-skeletons-v1.0.0-go`.
+Base branch `main`. Adds three platform-core foundations (notification, subscription/entitlement, platform-admin).
+
+### Added
+- Master Source **v2.8.0** (§72 SPRINT-SF-05); PRD unchanged at **v1.3.0**. ADRs **0054–0056**, **AFR-155..170**, **Claude rule 31**.
+- Notification foundation: single tenant-safe dispatcher, per-(recipient,channel) globally-unique dedup, truthful
+  delivery state machine (pending→queued→sending→sent/failed/cancelled/suppressed), bounded idempotent retry,
+  in-app + email channels only, timezone-aware preferences/quiet-hours, critical-notification bypass, ownership-checked
+  in-app inbox, queued `FoundationNotificationMail`.
+- Subscription & entitlement skeleton: plan `(code,version)` catalog, typed allowlisted entitlements, guarded
+  subscription state machine, single authoritative fail-closed `EntitlementResolver`, idempotent tenant-scoped usage
+  metering, idempotent `aish:subscription-reconcile`. No payment/invoicing — commercial state ≠ payment.
+- Platform-admin plane (`/platform-admin/*`): platform roles distinct from tenant roles (no `Gate::before` bypass),
+  per-permission authorization, secure `aish:platform-admin-provision`, reason-required audited tenant
+  suspend/reactivate/deletion-pending, append-only support notes, truthful metrics; impersonation prohibited.
+- New audit events; DB constraints (notification dedup, usage idempotency, one subscription per tenant, plan
+  `(code,version)`, one platform role per user); architecture fitness tests (`tests/Architecture/Sf05BoundariesTest.php`);
+  and `scripts/runtime/verify-sf-05.sh` + `aish:verify-sf-05` real-infra verification wired into `backend-runtime-ci`.
+
+### Changed
+- `.claude/rules/` extended to rule 31; `CLAUDE.md`, `AGENTS.md`, coverage matrix, and `VERSION_MATRIX` bumped to
+  reflect v2.8.0 / AFR-170 / ADR-0056.
+
+### Status
+- **CODE COMPLETE**, **TESTED locally** (182 tests; Pint/PHPStan clean; composer/npm audits clean; verified against
+  real PostgreSQL 17 + Redis 7). **IN PROGRESS toward GO** — NOT yet merged on CI, NOT tagged, NOT
+  clean-checkout-verified on the merged SHA. Business/module implementation, deployment, pilot, production: **NOT STARTED**.
+
 ## [Unreleased] — Step 6: SaaS Core Foundation
 
 Target release: annotated tag `aish-agentic-ai-step-6-saas-core-foundation-v1.0.0-go`.

@@ -230,3 +230,40 @@ Step 6 AFR maps to an ADR (0011, 0012, 0013, 0015, 0029, 0051–0053), Claude ru
 (SC-*), and forthcoming test/CI evidence under `docs/evidence/step-6/`. No orphan permanent decision. Step 6
 consolidates the coupled core sprints per ADR 0051; SPRINT-SF-05..SF-08 remain independently gated. Business/module
 implementation, deployment, pilot, and production remain **NOT STARTED**.
+
+## SPRINT-SF-05 — Notification, Subscription, and Platform Admin (AFR-155..170)
+
+SPRINT-SF-05 platform-core rules (notification delivery, subscription/entitlement, platform operator plane). Each
+maps to an ADR (0054, 0055, 0056; with supporting 0011–0016, 0029, 0051–0053), Claude rule 31, and a SaaS-core
+fitness check (SC-*) verified by `tests/Feature/{Notifications,Subscriptions,Platform,Security,Audit,Console}/*`,
+`tests/Architecture/Sf05BoundariesTest.php`, the cross-tenant security test matrix, the `backend-runtime-ci` job,
+and the SPRINT-SF-05 GO gate. These are platform-core capabilities in top-level `app/` namespaces, not
+`app/Modules/` (ADR 0052); business modules remain NOT STARTED.
+
+| AFR | Statement (MUST / MUST NOT) | ADR | Rule | FF/Gate |
+|-----|-----------------------------|-----|------|---------|
+| AFR-155 | Tenant notifications MUST be tenant-scoped; the recipient's active membership MUST be verified before dispatch and a tenant MUST NOT notify another tenant's members; only in-app and email channels exist (WhatsApp/SMS/Slack/Teams/push/webhook OUT) | 0054,0052 | 31,03 | SC-22 |
+| AFR-156 | Notifications MUST be enqueued only through the single dispatcher and produce exactly one delivery per recipient per channel (globally-unique dedup key); retries MUST be bounded and idempotent and MUST NOT duplicate a logical delivery or side effect | 0054,0016 | 31 | SC-23 |
+| AFR-157 | Delivery state MUST be truthful (`pending/queued/sending/sent/failed/cancelled/suppressed`): `queued` is NOT `sent`, `sent` means transport-accepted not proven receipt; a failed delivery MUST carry an explicit state and a sanitized failure code | 0054 | 31,10 | SC-24 |
+| AFR-158 | Preferences and quiet hours MUST be timezone-aware; critical security notifications MUST NOT be silenced by a preference; suppressed deliveries MUST be recorded truthfully; content MUST NOT contain tokens/secrets/PII/medical | 0054 | 31,04 | SC-25 |
+| AFR-159 | The in-app inbox MUST be scoped to the current tenant and acting recipient; mark-as-read MUST re-verify ownership (no recipient-swap / delivery IDOR) | 0054,0012 | 31,03 | SC-26 |
+| AFR-160 | Plans MUST be a versioned `(code, version)` catalog with `draft/active/retired`; a plan version MUST NOT silently change historical meaning; a retired plan MUST NOT be newly assigned but existing references MUST stay valid | 0055 | 31 | SC-27 |
+| AFR-161 | Entitlement keys MUST be typed and allowlisted; unknown/missing/expired MUST fail closed; all entitlement decisions MUST use the single authoritative resolver (no duplicated plan logic) | 0055 | 31,04 | SC-28 |
+| AFR-162 | Tenant subscription state (`trialing/active/grace/suspended/cancelled/expired`) MUST use a guarded state machine; an invalid transition MUST be rejected | 0055 | 31 | SC-29 |
+| AFR-163 | Usage records MUST be tenant-scoped and idempotent (a repeated increment MUST NOT double-count); a negative quantity MUST be refused outside an explicit correction; period boundaries MUST be timezone-aware | 0055,0015 | 31,03 | SC-30 |
+| AFR-164 | Reconciliation MUST be idempotent and safe to rerun, emitting a transition/notification at most once; commercial state and payment state are NOT equivalent — no paid/collected state MUST be claimed without provider evidence (payment/invoicing/tax/dunning OUT) | 0055 | 31 | SC-31 |
+| AFR-165 | A commercial restriction MUST be distinct from a security suspension; security suspension ALWAYS takes precedence and a commercial state MUST NOT override a tenant/user/membership security state | 0055,0053 | 31,04 | SC-32 |
+| AFR-166 | Platform roles and tenant roles MUST be separate (a platform role grants no tenant-data access and a tenant role grants no platform access); there MUST NOT be a `Gate::before` bypass or universal hidden tenant bypass | 0056,0013 | 31,03 | SC-33 |
+| AFR-167 | Every platform mutation MUST be authorized by a specific platform permission (least privilege) and MUST be audited; self-escalation MUST be prohibited; only a Super Admin MAY grant Super Admin; the last Platform Super Admin MUST NOT be removed, revoked, or demoted | 0056 | 31 | SC-34 |
+| AFR-168 | Platform operator provisioning MUST be secure (reset/invitation onboarding, no fixed/plaintext password, no logged password, duplicate-safe); tenant status changes (suspend/reactivate/mark-deletion-pending) MUST require a reason (except reactivation), be audited, notify owners, and MUST NOT hard-delete; metrics MUST be truthful; impersonation MUST be prohibited without a dedicated ADR | 0056 | 31,04 | SC-35 |
+| AFR-169 | Subscription events and platform support notes MUST be append-only (no `updated_at`; update/delete blocked at the model layer); audit metadata MUST be sanitized (no secrets/tokens/passwords/message bodies/medical) and MUST distinguish platform from tenant context | 0054,0055,0056,0029 | 31,07 | SC-36 |
+| AFR-170 | A clean-checkout SPRINT-SF-05 verification (`scripts/runtime/verify-sf-05.sh`) on the exact merged SHA MUST pass before the SPRINT-SF-05 GO tag | 0051,0054 | 31,13,29 | SC-37 |
+
+**170 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05).** SPRINT-SF-05
+AGENTS-instruction and rule coverage is asserted in the
+[Foundation Coverage Matrix](../governance/foundation-coverage-matrix.md); every SPRINT-SF-05 AFR maps to an ADR
+(0054–0056 with supporting 0011–0016, 0029, 0051–0053), Claude rule 31, a SaaS-core fitness check (SC-22..SC-37),
+and forthcoming test/CI evidence under `docs/evidence/sprint-sf-05/`. No orphan permanent decision. SPRINT-SF-05
+delivers three platform-core skeletons on the Step 6 SaaS core; SPRINT-SF-06..SF-08 remain independently gated.
+Payment, AI, and Google integrations, business/module implementation, deployment, pilot, and production remain
+**NOT STARTED**.
