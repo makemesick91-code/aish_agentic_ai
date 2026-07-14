@@ -1,8 +1,29 @@
 # Current State — Aish Agentic AI
 
-Updated: 2026-07-14 (Asia/Makassar). Rule: `.claude/rules/14`.
+Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
+- **Step 8 — Feedback Operations Foundation:** **CODE COMPLETE** and **TESTED locally** on branch
+  `feature/step-8-feedback-operations-foundation` (base `main`), and **IN PROGRESS toward GO** — **NOT** yet merged,
+  **NOT** tagged, **NOT** CI-green-on-CI, and **NOT** clean-checkout-verified against real PostgreSQL 17 + Redis 7.
+  Turns completed survey responses into an operable Feedback Inbox: an after-commit `SurveyResponseCompleted` event +
+  queued idempotent projection (one item per source via a DB unique `(tenant_id, source_type, source_id)` constraint;
+  `aish:feedback-reconcile` back-fill), an explicit guarded lifecycle (`new..archived`; resolved/closed ≠ recovery),
+  scope-validated assignment with membership-revocation fail-close and append-only history, tenant-isolated manual
+  tags, append-only notes, an append-only sanitized immutable timeline, private tenant-prefixed attachments with
+  content-based MIME validation and no public disk, permission-aware search (PostgreSQL FTS + LIKE fallback; content
+  search gated by `feedback.view-content`), bounded bulk operations, and a queued entitlement-gated metered secure CSV
+  export (private+expiring; requester-scoped re-authorized download; CSV formula-injection guard). Base access is
+  entitlement-gated (`EnsureFeedbackEnabled`); internal notifications use the SF-05 dispatcher; audit is sanitized and
+  append-only; Google Review anti-gating preserved. Master Source **v2.10.0** (§74), PRD **v1.3.0** unchanged; ADRs
+  0060–0062; AFR-188..210; Claude rule 33. Local gates: full hermetic suite **352 passing**, Pint + PHPStan clean,
+  `aish:verify-step-8` 18 checks pass on SQLite. The **independent Step 8 security review** is **PASS after fixes**
+  (F-1 HIGH export-download re-authorization; F-2/F-3 LOW hardening fixed; 14/14 other vectors PASS;
+  `docs/evidence/step-8-independent-security-review.md`). Merge/CI/tag/real-infra evidence is forthcoming under
+  `docs/evidence/step-8/`. AI/recovery/SLA/Google/agent/RAG/billing modules, deployment, pilot, and production remain
+  **NOT STARTED**. **Next:** draft PR → ready → authoritative Full CI on the final head → merge → clean-checkout verify
+  on the merged SHA (`scripts/runtime/verify-step-8.sh`) → annotated GO tag
+  `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` → GitHub Release → post-tag evidence sync.
 - **Step 7 — Survey & CSAT Foundation:** MERGED (PR #19, final head `957857f`, authoritative Full CI run
   `29338786077` success; merge commit `1b1ba86`) and **GO TAGGED**
   (`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, tag object `5e55359`, peeled `1b1ba86`;

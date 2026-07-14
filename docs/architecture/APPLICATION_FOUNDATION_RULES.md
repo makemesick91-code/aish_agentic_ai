@@ -275,12 +275,43 @@ and the SPRINT-SF-05 GO gate. These are platform-core capabilities in top-level 
 | AFR-185 | Survey entitlement decisions MUST use the single authoritative resolver via one guard; unknown/ungranted keys fail closed; usage meters (`survey_invitations.created`, `survey_responses.completed`) MUST be tenant-scoped and idempotent (no metering on preview/failed submission; no double-count on retry) | 0055,0058 | 32,31 | SV-15 |
 | AFR-186 | Survey invitation mail MUST go through a reviewed mail adapter; internal survey notifications MUST use the approved SF-05 dispatcher; a retry MUST NOT create a duplicate logical invitation; a survey score MUST NEVER gate Google Review access (anti-gating preserved) | 0054,0058 | 32,06,18,31 | SV-16 |
 | AFR-187 | A clean-checkout Step 7 verification (`scripts/runtime/verify-step-7.sh` / `php artisan aish:verify-step-7`) on the exact merged SHA MUST pass before the Step 7 GO tag | 0057,0058,0059 | 32,13,29 | SV-17 |
+| AFR-188 | A feedback item MUST be created from a source event exactly once; projection MUST be idempotent via a DB unique constraint `(tenant_id, source_type, source_id)` so a replay/retry/duplicate event resolves to the same item with no duplicate side effect; projection MUST run off the source write path via an after-commit event + queued listener | 0060,0016 | 33,03 | FB-01 |
+| AFR-189 | Projection reconciliation (`aish:feedback-reconcile`) MUST be idempotent and safe to rerun, back-filling missing items without creating a duplicate, and MUST NOT be a second uncontrolled write path | 0060 | 33 | FB-02 |
+| AFR-190 | Every feedback-owned record MUST carry `tenant_id` (and `branch_id` where the source is branch-scoped); a branch-restricted user MUST see only their branch's feedback; platform roles MUST NOT imply feedback access; cross-tenant/cross-branch feedback access is a release blocker | 0060,0012,0011 | 33,03,30 | FB-03 |
+| AFR-191 | Lifecycle state MUST be explicit (`new → triaged → assigned → in_progress → resolved → closed → archived`) and changed only through a guarded transition (invalid transitions rejected); `resolved`/`closed` are operational feedback states only and MUST NOT be presented as a customer-recovery/refund/compensation outcome | 0060 | 33 | FB-04 |
+| AFR-192 | Assignment MUST target only a member with an active tenant membership whose branch scope includes the item's branch; a branch-restricted item MUST NOT be assigned outside its branch; assignment changes MUST append to the timeline/history | 0061,0013 | 33,03 | FB-05 |
+| AFR-193 | A member whose tenant membership is revoked or suspended MUST fail closed — MUST NOT act on or be newly assigned a feedback item (effective access re-validated, not cached stale) | 0061,0053 | 33,03,30 | FB-06 |
+| AFR-194 | Manual tags MUST be tenant-owned; a tag from one tenant MUST NOT be applied to another tenant's item | 0061,0012 | 33,03 | FB-07 |
+| AFR-195 | Internal notes MUST be append-only (no edit/delete at the model layer), tenant/branch-scoped; note free text is untrusted (escaped on output, never logged, not AI-fed in Step 8) | 0061,0029 | 33,07 | FB-08 |
+| AFR-196 | The feedback timeline (`FeedbackEvent`) MUST be append-only (no `updated_at`; update/delete blocked at the model layer) and MUST NOT be deletable; it records every lifecycle/assignment/tag/note/attachment change with actor + tenant | 0061,0029 | 33,07 | FB-09 |
+| AFR-197 | Feedback attachments MUST be stored on a private tenant-prefixed disk (`tenants/{id}/feedback/{item_id}/...`); there MUST NOT be a public disk or public listing; user-supplied names MUST NOT be used as a path segment (path traversal prevented); removal MUST be a recorded remove-state, not a silent hard delete | 0062,0004 | 33,04 | FB-10 |
+| AFR-198 | Attachment MIME MUST be validated by content inspection against an allowlist (not by extension or the client `Content-Type`); a disallowed type MUST be refused | 0062,0004 | 33,04 | FB-11 |
+| AFR-199 | Metadata search MAY be available to any feedback list-viewer; content search over free text MUST be gated by the `feedback.view-content` permission and MUST be excluded from the query (never returned, never a match source) for users without it | 0061,0013 | 33,03,04 | FB-12 |
+| AFR-200 | Search indexing MUST stay inside the tenant boundary (native PostgreSQL FTS `tsvector`/GIN with a portable `LIKE` fallback); it MUST NOT introduce an unscoped external index that could leak across tenants | 0061 | 33,03 | FB-13 |
+| AFR-201 | Bulk operations MUST be bounded (a hard item cap), MUST re-authorize the specific per-action permission for every item, MUST stay within tenant/branch scope, and MUST record each change on the timeline | 0061 | 33,03 | FB-14 |
+| AFR-202 | Export MUST be a queued job writing to a private, expiring location; it MUST be entitlement-gated via the single authoritative resolver and metered as tenant-scoped idempotent usage (a retry MUST NOT double-count) | 0062,0055 | 33,04,31 | FB-15 |
+| AFR-203 | Every exported cell beginning with `=`, `+`, `-`, `@`, tab, or CR MUST be neutralized against CSV formula-injection; delimiters/quotes MUST be escaped; export fields MUST be minimized (no secret/token/unrelated-tenant data) | 0062,0004 | 33,04 | FB-16 |
+| AFR-204 | The export download MUST re-authorize the requesting user (ownership of the export record) and re-check tenant/branch/content scope; another user MUST NOT fetch someone else's export and a download link MUST NOT be public | 0062,0004 | 33,03,04 | FB-17 |
+| AFR-205 | Base feedback access MUST be entitlement-gated (`EnsureFeedbackEnabled`); an unknown/ungranted key MUST fail closed; a commercial state MUST NOT override a security suspension | 0055,0060 | 33,31 | FB-18 |
+| AFR-206 | Feedback usage meters MUST be tenant-scoped and idempotent; a failed or duplicate operation MUST NOT double-count | 0055,0015 | 33,07,31 | FB-19 |
+| AFR-207 | Internal feedback notifications MUST use the approved SF-05 dispatcher (membership-verified recipients, truthful delivery states); a retry MUST NOT create a duplicate logical notification; a feedback state/score MUST NEVER gate Google Review access (anti-gating preserved) | 0054,0060 | 33,06,18,31 | FB-20 |
+| AFR-208 | Feedback audit metadata MUST be sanitized and MUST NOT contain tokens, secrets, passwords, or free-text answer/customer/medical content; audit MUST be append-only and carry actor + tenant | 0060,0029 | 33,07 | FB-21 |
+| AFR-209 | An independent security review (reviewer ≠ implementer) of the Step 8 feedback surface MUST be completed with no unresolved CRITICAL/HIGH/MEDIUM before the Step 8 GO tag | 0060,0061,0062 | 33,04 | FB-22 |
+| AFR-210 | A clean-checkout Step 8 verification (`scripts/runtime/verify-step-8.sh` / `php artisan aish:verify-step-8`) on the exact merged SHA MUST pass before the Step 8 GO tag | 0060,0061,0062,0013,0029 | 33,13,29 | FB-23 |
 
-**187 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7).**
+**210 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7 + 23 Step 8).**
 Step 7 (Survey & CSAT Foundation) AFR-171..AFR-187 each map to an ADR (0057–0059 with supporting 0011–0016, 0029,
 0051–0053), Claude rule 32, a survey fitness check (SV-01..SV-17), and test/CI evidence under `docs/evidence/step-7/`.
 No orphan permanent decision. Step 7 delivers the first customer-experience capability on the SaaS core + SF-05
 substrate; feedback/AI/recovery/Google/billing modules and deployment/pilot/production remain **NOT STARTED**.
+
+Step 8 (Feedback Operations Foundation) AFR-188..AFR-210 each map to an ADR (0060–0062 with supporting 0011–0016,
+0029, 0051–0057), Claude rule 33, a feedback fitness check (FB-01..FB-23), and test/CI evidence under
+`docs/evidence/step-8/`. No orphan permanent decision. Step 8 turns completed survey responses into an operable,
+tenant/branch-safe Feedback Inbox (idempotent projection, explicit lifecycle, scope-validated assignment, tenant-
+isolated tags, append-only notes/timeline, private content-MIME-validated attachments, permission-aware search,
+bounded bulk operations, and queued requester-scoped CSV export) with entitlement/usage, SF-05 notification, and
+sanitized audit; AI/recovery/SLA/Google/agent/RAG, deployment, pilot, and production remain **NOT STARTED**.
 
 SPRINT-SF-05
 AGENTS-instruction and rule coverage is asserted in the

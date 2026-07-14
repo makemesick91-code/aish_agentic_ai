@@ -99,6 +99,8 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `29-runtime-bootstrap-and-operations.md` | Reproducible Laravel 12 runtime bootstrap, pinned versions, env contract, truthful health/readiness, queue/scheduler foundation, security baseline, backend runtime CI, runtime-evidence-before-claims |
 | `30-saas-core-foundation.md` | Secure auth/identity, tenant/branch lifecycle + memberships, immutable fail-closed tenant context, tenant-scoped RBAC + policies, append-only audit, tenant isolation (DB/cache/queue/storage/log) |
 | `31-notification-subscription-platform-admin-foundation.md` | Tenant-safe notification delivery + truthful states, subscription/entitlement (fail-closed resolver; commercial ≠ payment), separate least-privilege platform-admin plane (no impersonation) |
+| `32-survey-csat-foundation.md` | Tenant/branch-owned surveys, immutable versioning, question/answer integrity, hashed one-time invitation tokens + no-enumeration, deterministic CSAT/NPS/CES, consent semantics, single entitlement resolver, review anti-gating preserved |
+| `33-feedback-operations-foundation.md` | Idempotent feedback projection + lifecycle, scope-validated assignment + membership-revocation fail-close, tenant-isolated tags, append-only notes/timeline, private content-MIME-validated attachments, permission-aware search, bounded bulk, queued requester-scoped secure export, entitlement/usage, review anti-gating preserved |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -168,7 +170,26 @@ local == remote == main). Authoritative Full CI green on `957857f` (run `2933878
 (`aish:verify-step-7` 16 checks; hermetic suite 265 passed); GitHub Release published; the deferred **independent
 SF-05 security review** is COMPLETE — PASS (no critical/high/medium); evidence under `docs/evidence/step-7/` and
 `docs/release/STEP_7_TAG_VERIFICATION.md`.
-**Business/module implementation, deployment, pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
+**Step 8 — Feedback Operations Foundation** (Master Source **v2.10.0** §74, PRD **v1.3.0** unchanged, ADRs 0060–0062,
+AFR-188..210, rule 33) delivers the second customer-experience capability — an operable Feedback Inbox on the SaaS
+core + SF-05 + Step 7 substrate: idempotent feedback projection from an after-commit `SurveyResponseCompleted` event
+(one item per source via a DB unique `(tenant_id, source_type, source_id)` constraint; `aish:feedback-reconcile`
+back-fill), an explicit guarded lifecycle (`new..archived`; resolved/closed ≠ recovery), scope-validated assignment
+with membership-revocation fail-close, tenant-isolated manual tags, append-only notes and an immutable sanitized
+timeline, private tenant-prefixed attachments with content-based MIME validation and no public disk, permission-aware
+search (PostgreSQL FTS + LIKE fallback; content search gated by `feedback.view-content`), bounded bulk operations, and
+a queued entitlement-gated metered secure CSV export (private+expiring; requester-scoped re-authorized download; CSV
+formula-injection guard), with base access entitlement-gated (`EnsureFeedbackEnabled`), SF-05-dispatched
+notifications, and sanitized append-only audit; Google Review anti-gating preserved. **CODE COMPLETE** and **TESTED
+locally** (full hermetic suite 352 passing; Pint + PHPStan clean; `aish:verify-step-8` 18 checks on SQLite; the
+independent Step 8 security review is **PASS after fixes** — F-1 HIGH export-download re-authorization and F-2/F-3 LOW
+hardening FIXED, 14/14 other vectors PASS), and **IN PROGRESS toward GO** — **NOT** yet merged, **NOT** tagged, **NOT**
+CI-green-on-CI, and **NOT** clean-checkout-verified against real PostgreSQL 17 + Redis 7 on branch
+`feature/step-8-feedback-operations-foundation`; merge/CI/tag/real-infra evidence is forthcoming under
+`docs/evidence/step-8/` and `docs/release/STEP_8_TAG_VERIFICATION.md`. The target GO tag is
+`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`.
+**Business/module implementation (AI/recovery/SLA/Google/agent/RAG/billing), deployment, pilot readiness, pilot
+runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks

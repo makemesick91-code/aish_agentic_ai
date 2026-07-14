@@ -6,19 +6,22 @@
 **Kategori produk:** Agentic AI Customer Experience, CSAT, Customer Recovery, dan Google Review Management Platform
 **Model bisnis:** Multi-tenant Software as a Service
 **Tipe dokumen:** Canonical Living Product Source
-**Versi:** 2.9.0
+**Versi:** 2.10.0
 **Status dokumen:** Active
-**Status produk:** Step 7 (Survey & CSAT Foundation) — the first customer-experience capability on the SaaS core +
-SF-05 substrate: tenant-owned surveys with immutable versioning, questions/options, campaigns, secure public
-invitation/link/QR distribution, tokenized public responses, and deterministic CSAT/NPS/CES with explicit rounding —
-**MERGED** (PR #19, merge `1b1ba86`, authoritative Full CI `29338786077` success) and **GO TAGGED**
-(`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, object `5e55359`, peeled `1b1ba86`; local == remote ==
-main), **CLEAN-CHECKOUT VERIFIED** on `1b1ba86` against real PostgreSQL 17 + Redis 7, and **GITHUB RELEASE
-PUBLISHED** (post-tag evidence synced without moving the tag). The deferred **independent SF-05 security review** is
-**COMPLETE — PASS** (no critical/high/medium; evidence `docs/evidence/sf-05-independent-security-review.md`). Prior:
-**SPRINT-SF-05** MERGED (`ca0bea6`) and **GO TAGGED**; **Step 6 SaaS Core Foundation** MERGED (`9c25a9c`) and GO
-TAGGED (v2.7.0). Feedback/AI/Google/recovery/billing modules, deployment, pilot, and production **NOT STARTED**; no
-domain owned, nothing deployed.
+**Status produk:** Step 8 (Feedback Operations Foundation) — the second customer-experience capability on the SaaS
+core + SF-05 + Step 7 substrate: an operable Feedback Inbox that turns completed survey responses into idempotently
+projected, tenant/branch-scoped feedback items with an explicit lifecycle, scope-validated assignment, tenant-isolated
+manual tags, append-only notes and an immutable timeline, private content-MIME-validated attachments, permission-aware
+search, bounded bulk operations, and a queued requester-scoped secure CSV export — is **CODE COMPLETE** and **TESTED
+locally** (full hermetic suite 352 passing; Pint + PHPStan clean; `aish:verify-step-8` 18 checks on SQLite; the
+independent Step 8 security review is **PASS after fixes**, no unresolved critical/high/medium), and **IN PROGRESS
+toward GO** — **NOT** merged, **NOT** tagged, **NOT** CI-green-on-CI, and **NOT** clean-checkout-verified against real
+PostgreSQL 17 + Redis 7 at authoring time; merge/CI/tag/real-infra evidence is forthcoming under
+`docs/evidence/step-8/`. Prior: **Step 7 Survey & CSAT Foundation** MERGED (PR #19, merge `1b1ba86`) and **GO TAGGED**
+(`aish-agentic-ai-step-7-survey-csat-foundation-v1.0.0-go`, object `5e55359`, peeled `1b1ba86`), clean-checkout
+verified and GitHub Release published; **SPRINT-SF-05** MERGED (`ca0bea6`) and **GO TAGGED**; **Step 6 SaaS Core
+Foundation** MERGED (`9c25a9c`) and GO TAGGED. AI/recovery/SLA/Google/agent/RAG/billing modules, deployment, pilot,
+and production **NOT STARTED**; no domain owned, nothing deployed.
 **Pemilik produk:** Aish Tech Solution
 **Repository kanonik:** `https://github.com/makemesick91-code/aish_agentic_ai`
 **Repository owner/name:** `makemesick91-code/aish_agentic_ai`
@@ -217,6 +220,45 @@ Digunakan untuk:
 ---
 
 # 6. CHANGELOG BASELINE
+
+## Version 2.10.0 — Step 8 Feedback Operations Foundation
+
+**MASTER SOURCE UPDATE**
+- Previous version: 2.9.0 → New version: 2.10.0
+- Date: 2026-07-15 (Asia/Makassar)
+- Type: minor (second customer-experience capability on the SaaS core + SF-05 + Step 7 substrate; no vision/business-model/architecture change)
+- Affected sections: header status; new §74; ADRs 0060–0062; Claude rule 33; AFR-188..210. Cross-refs §47, §62, §16, §37, §43, §46, §50, §53, §54.
+- Decision: deliver Step 8 — an operable **Feedback Inbox** that turns completed survey responses into feedback via an
+  **after-commit `SurveyResponseCompleted` domain event + a queued idempotent projection** (one item per source
+  enforced by a DB unique `(tenant_id, source_type, source_id)` constraint; replay/retry safe; idempotent
+  `aish:feedback-reconcile` back-fill), an **explicit guarded lifecycle** (`new..archived`; `resolved`/`closed` are
+  operational states, **not** a customer-recovery outcome), **scope-validated assignment** with active-membership +
+  branch-scope checks and membership-revocation fail-close, **tenant-isolated manual tags**, **append-only** internal
+  notes and an **append-only immutable timeline**, **private tenant-prefixed attachments** with content-based MIME
+  allowlist validation, path-traversal prevention, no public disk, and a remove-state, **permission-aware search**
+  (native PostgreSQL FTS `tsvector`/GIN with a portable `LIKE` fallback; content search gated by
+  `feedback.view-content`), **bounded bulk operations** (hard cap, per-action re-authorization, tenant/branch scope,
+  timelined), and a **queued entitlement-gated metered secure CSV export** (private + expiring; requester-scoped
+  re-authorized download; CSV formula-injection neutralization) — with base access entitlement-gated
+  (`EnsureFeedbackEnabled`) over the single authoritative resolver, idempotent tenant-scoped usage metering, internal
+  notifications via the SF-05 dispatcher, and sanitized append-only audit — without weakening any security,
+  tenant-isolation, privacy, review-policy, documentation, or release gate. The independent Step 8 security review is
+  COMPLETE — PASS after fixes (F-1 HIGH export-download re-authorization; F-2/F-3 LOW hardening — all FIXED with
+  regression coverage; 14/14 other vectors PASS).
+- Reason: Step 7 (Survey & CSAT) is in place; per the implementation sequence (§62) the Feedback Inbox is the next
+  business capability and the foundation for customer recovery, AI analysis, and reputation operations.
+- Impacts: adds feedback-owned tables (items, timeline, assignment history, tags + pivot, notes, attachments,
+  exports) and the tenant feedback plane; no MVP scope change (§47) and no out-of-scope item built (AI sentiment/
+  topic/severity/summary, customer recovery, SLA, Google OAuth/review, agent orchestration, RAG, and WhatsApp/SMS/push
+  delivery remain out of scope); Google Review anti-gating preserved (a feedback state/score never gates review
+  access); truthful-status and evidence-before-claims preserved.
+- Status: IN PROGRESS toward GO — CODE COMPLETE and TESTED locally; NOT merged, NOT tagged, NOT CI-green-on-CI, and
+  NOT clean-checkout-verified against real PostgreSQL 17 + Redis 7 at authoring time. The target Step 8 GO tag
+  `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` will attest feedback-operations foundation
+  readiness only.
+- Evidence: ADRs 0060–0062, Claude rule 33, AFR-188..210, `docs/evidence/step-8-independent-security-review.md`;
+  runtime/CI/merge/tag evidence forthcoming under `docs/evidence/step-8/`.
+- Changelog: see root `CHANGELOG.md` v2.10.0.
 
 ## Version 2.9.0 — Step 7 Survey & CSAT Foundation
 
@@ -4176,6 +4218,73 @@ feedback/AI/Google/recovery/billing, not deployment, pilot, or production readin
 After Step 7 is merged, CI-green on the final head, clean-checkout-verified on the merged SHA, and GO-tagged, the next
 canonical capability is the **Feedback Inbox** (Master Source §62 implementation order), which keeps its own
 independent GO/WATCH/NO-GO gate.
+
+---
+
+# 74. STEP 8 — FEEDBACK OPERATIONS FOUNDATION
+
+## 74.1 Scope
+Step 8 delivers the second customer-experience capability on the Step 6 SaaS core + SPRINT-SF-05 + Step 7 substrate:
+an operable **Feedback Inbox** that turns completed survey responses (and future feedback sources) into feedback
+items with an explicit lifecycle, assignment, manual tags/notes, attachments, an immutable timeline, permission-aware
+search, bounded bulk operations, and secure export — all tenant- and branch-safe, auditable, privacy-aware,
+entitlement-aware, and truthful. It is platform-core in top-level `App\Feedback\*` + `App\Models\Feedback*` (ADR
+0060), not `app/Modules/`; other business modules remain **NOT STARTED**.
+
+## 74.2 Projection & lifecycle (ADR 0060; AFR-188..191, 208)
+Completing a survey response emits `SurveyResponseCompleted` **after** the response transaction commits; a queued
+listener/job creates one `FeedbackItem` per source, idempotent via a DB unique `(tenant_id, source_type, source_id)`
+constraint (replay/retry safe). `aish:feedback-reconcile` is an idempotent, rerun-safe back-fill, not a second write
+path. A feedback item moves through an explicit guarded lifecycle `new → triaged → assigned → in_progress →
+resolved → closed → archived`; invalid transitions are rejected and every transition is recorded on the immutable
+timeline. `resolved`/`closed` are operational feedback states only — **not** a customer-recovery/refund/compensation
+outcome (recovery remains NOT STARTED). Every feedback-owned record carries `tenant_id` (and `branch_id` where
+branch-scoped); a branch-restricted user sees only their branch's feedback; platform roles imply no feedback access.
+
+## 74.3 Assignment, tags, notes & timeline (ADR 0061; AFR-192..196)
+Assignment targets only a member with an active tenant membership whose branch scope includes the item's branch; a
+member whose membership is revoked/suspended fails closed (unassignable, no effective access). Assignment changes
+append to the timeline and an assignment history. Manual tags are tenant-owned (no cross-tenant application); internal
+notes are append-only, tenant/branch-scoped, and their free text is untrusted (escaped, never logged, not AI-fed in
+Step 8). The timeline (`FeedbackEvent`) is append-only (no `updated_at`; update/delete blocked at the model layer),
+not deletable, and sanitized (no tokens, secrets, or free-text answer content); it carries actor + tenant.
+
+## 74.4 Attachments & export (ADR 0062; AFR-197, 198, 202..204)
+Attachments are stored on a private tenant-prefixed disk (`tenants/{id}/feedback/{item_id}/...`) with no public disk
+or listing; user-supplied names are never a path segment (traversal prevented); MIME is validated by content
+inspection against an allowlist (not by extension/`Content-Type`); removal is a recorded remove-state. Export is a
+queued job writing a CSV to a private, expiring location; it is entitlement-gated via the single authoritative
+resolver and metered as idempotent tenant-scoped usage. The download re-authorizes the requesting user (ownership of
+the export record) and re-checks tenant/branch/content scope — no other user can fetch someone else's export and no
+link is public. Every exported cell beginning with `=`, `+`, `-`, `@`, tab, or CR is neutralized against
+CSV formula-injection; export fields are minimized.
+
+## 74.5 Search, bulk, entitlement, notification & audit (AFR-199..201, 205..208; rules 31, 33)
+Search uses native PostgreSQL FTS (`tsvector`/GIN) with a portable `LIKE` fallback; metadata search is available to
+any list-viewer while **content** search over free text is gated by the `feedback.view-content` permission and
+excluded from the query for users without it — never returned and never a match source. Bulk operations are bounded
+(hard cap), re-authorize the specific per-action permission per item, stay in tenant/branch scope, and are timelined.
+Base feedback access is entitlement-gated (`EnsureFeedbackEnabled`; unknown/ungranted keys fail closed; a commercial
+state never overrides a security suspension); usage meters are tenant-scoped and idempotent. Internal feedback
+notifications use the SF-05 dispatcher (retry-safe). Security-relevant feedback actions are audited with actor +
+tenant; metadata carries no token, secret, or free-text answer content. **Google Review anti-gating is preserved: a
+feedback state or score never determines whether Google Review access is shown** (rules 06, 18).
+
+## 74.6 Release gate & truthful status
+Step 8 GO requires all Step 8 tests green, security matrix + architecture + migration + audit + console suites green,
+Pint/PHPStan clean, secret scan clean, documentation gates green, the independent Step 8 security review PASS (no
+unresolved critical/high/medium), a clean-checkout Step 8 verification (`scripts/runtime/verify-step-8.sh` / `php
+artisan aish:verify-step-8`) on the exact merged SHA against real PostgreSQL 17 + Redis 7, authoritative Full CI green
+on the final head, merge evidence, and an exact-match annotated GO tag. Step 8 is **CODE COMPLETE and TESTED locally**
+and **IN PROGRESS toward GO** — NOT merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified against
+real infrastructure at authoring time. The target Step 8 GO tag
+`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go` attests feedback-operations foundation readiness
+only — not AI/recovery/SLA/Google, not deployment, pilot, or production readiness.
+
+## 74.7 Next step
+After Step 8 is merged, CI-green on the final head, clean-checkout-verified on the merged SHA, and GO-tagged, the next
+canonical capability is **customer recovery / recovery tickets** (Master Source §62 implementation order), which keeps
+its own independent GO/WATCH/NO-GO gate.
 
 ---
 

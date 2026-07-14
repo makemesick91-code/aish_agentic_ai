@@ -5,7 +5,9 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 ## Canonical documents
 | Document | Active version | Working copy | Preserved original | Notes |
 |----------|----------------|--------------|--------------------|-------|
-| Master Source | **2.8.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.8.0.md` | SPRINT-SF-05 Notification, Subscription, and Platform Admin Skeletons (§72); tenant-safe notifications, fail-closed entitlement resolver, separate least-privilege platform-admin plane |
+| Master Source | **2.10.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.10.0.md` | Step 8 Feedback Operations Foundation (§74); idempotent feedback projection + lifecycle, scope-validated assignment, tenant-isolated tags, append-only notes/timeline, private attachments, permission-aware search, bounded bulk, queued secure export |
+| Master Source (historical) | 2.9.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.9.0.md` | Step 7 Survey & CSAT Foundation (§73); immutable-versioned surveys, secure public invitation/token/QR, deterministic CSAT/NPS/CES; superseded by 2.10.0 |
+| Master Source (historical) | 2.8.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.8.0.md` | SPRINT-SF-05 Notification, Subscription, and Platform Admin Skeletons (§72); tenant-safe notifications, fail-closed entitlement resolver, separate least-privilege platform-admin plane; superseded by 2.9.0 |
 | Master Source (historical) | 2.7.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.7.0.md` | Step 6 SaaS Core Foundation (§71); auth/identity, tenant/branch + memberships, fail-closed context, RBAC/audit, isolation; superseded by 2.8.0 |
 | Master Source (historical) | 2.6.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.6.0.md` | Step 5 Runtime & Repository Bootstrap (§70); superseded by 2.7.0 |
 | Master Source (historical) | 2.5.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.5.0.md` | CICD-CTRL-1 Safe CI Runtime Control governance (§69); superseded by 2.6.0 |
@@ -27,9 +29,12 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 `2.4.0` (Domain/Branding/Environment/SaaS-Foundation planning / Step 4) →
 `2.5.0` (CICD-CTRL-1 Safe CI Runtime Control governance) →
 `2.6.0` (Runtime & Repository Bootstrap / Step 5) →
-`2.7.0` (SaaS Core Foundation / Step 6).
-**Active: 2.7.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
-`1.3.0` (Step 4; unchanged by CICD-CTRL-1, Step 5, and Step 6).
+`2.7.0` (SaaS Core Foundation / Step 6) →
+`2.8.0` (SPRINT-SF-05 Notification/Subscription/Platform-Admin skeletons) →
+`2.9.0` (Survey & CSAT Foundation / Step 7) →
+`2.10.0` (Feedback Operations Foundation / Step 8).
+**Active: 2.10.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
+`1.3.0` (Step 4; unchanged by CICD-CTRL-1, Step 5, Step 6, Step 7, and Step 8).
 **Active PRD: 1.3.0.**
 
 ## Documentation-foundation release (Step 1)
