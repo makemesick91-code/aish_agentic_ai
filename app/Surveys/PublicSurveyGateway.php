@@ -39,6 +39,7 @@ final class PublicSurveyGateway
         private readonly UsageMeter $usage,
         private readonly AuditRecorder $audit,
         private readonly NotificationDispatcher $dispatcher,
+        private readonly SurveyEntitlements $entitlements,
     ) {}
 
     /** Resolve a public campaign link for rendering (throws generically on any failure). */
@@ -141,6 +142,9 @@ final class PublicSurveyGateway
      */
     private function persist(Tenant $tenant, SurveyCampaign $campaign, ?SurveyInvitation $invitation, array $answers, array $meta): SurveyResponse
     {
+        // Fail closed on the monthly response entitlement before doing any work.
+        $this->entitlements->assertCanAcceptResponse($tenant);
+
         $version = SurveyVersion::findOrFail($campaign->survey_version_id);
         $specs = $this->validator->validate($version, $answers); // throws ResponseValidationException
 

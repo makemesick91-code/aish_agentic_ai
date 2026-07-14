@@ -14,11 +14,13 @@ use App\Surveys\SurveySummaryService;
 use App\Surveys\SurveyVersionPublisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\InteractsWithTenancy;
+use Tests\Concerns\ProvisionsSurveyPlan;
 use Tests\TestCase;
 
 final class SurveySummaryTest extends TestCase
 {
     use InteractsWithTenancy;
+    use ProvisionsSurveyPlan;
     use RefreshDatabase;
 
     private Tenant $tenant;
@@ -31,6 +33,7 @@ final class SurveySummaryTest extends TestCase
         $this->tenant = Tenant::factory()->create();
         $this->establishTenantContext($this->tenant);
         $this->actor = User::factory()->create();
+        $this->provisionSurveyPlan($this->tenant);
     }
 
     public function test_summary_aggregates_csat_nps_and_ces_deterministically(): void

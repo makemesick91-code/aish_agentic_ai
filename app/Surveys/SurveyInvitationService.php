@@ -8,7 +8,10 @@ use App\Audit\AuditRecorder;
 use App\Enums\InvitationStatus;
 use App\Models\SurveyCampaign;
 use App\Models\SurveyInvitation;
+use App\Models\Tenant;
 use App\Models\User;
+use App\Subscriptions\MeterKeys;
+use App\Subscriptions\UsageMeter;
 use App\Surveys\Exceptions\SurveyStateException;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +27,7 @@ final class SurveyInvitationService
     public function __construct(
         private readonly AuditRecorder $audit,
         private readonly SurveyInvitationMailer $mailer,
+        private readonly UsageMeter $meter,
     ) {}
 
     /**
@@ -65,6 +69,15 @@ final class SurveyInvitationService
 
             return new IssuedInvitation($winner, null);
         }
+
+        // Idempotent usage increment keyed by the invitation's opaque public id.
+        $this->meter->record(
+            Tenant::findOrFail($campaign->tenant_id),
+            MeterKeys::SURVEY_INVITATIONS_CREATED,
+            1,
+            'inv:'.$invitation->public_id,
+            actorId: $actor->id,
+        );
 
         // Audit records the public id only — never the token or its hash.
         $this->audit->record('survey.invitation.created', [

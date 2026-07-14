@@ -26,11 +26,13 @@ use App\Surveys\SurveyService;
 use App\Surveys\SurveyVersionPublisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\InteractsWithTenancy;
+use Tests\Concerns\ProvisionsSurveyPlan;
 use Tests\TestCase;
 
 final class PublicSurveyFlowTest extends TestCase
 {
     use InteractsWithTenancy;
+    use ProvisionsSurveyPlan;
     use RefreshDatabase;
 
     private Tenant $tenant;
@@ -43,6 +45,7 @@ final class PublicSurveyFlowTest extends TestCase
         $this->tenant = Tenant::factory()->create();
         $this->establishTenantContext($this->tenant);
         $this->actor = User::factory()->create();
+        $this->provisionSurveyPlan($this->tenant);
     }
 
     /** @return array{0: Survey, 1: SurveyVersion} */

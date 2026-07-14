@@ -21,12 +21,14 @@ use App\Surveys\SurveyVersionPublisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\Concerns\InteractsWithTenancy;
+use Tests\Concerns\ProvisionsSurveyPlan;
 use Tests\Concerns\ProvisionsTenants;
 use Tests\TestCase;
 
 final class SurveyNotificationTest extends TestCase
 {
     use InteractsWithTenancy;
+    use ProvisionsSurveyPlan;
     use ProvisionsTenants;
     use RefreshDatabase;
 
@@ -40,6 +42,7 @@ final class SurveyNotificationTest extends TestCase
         $this->tenant = $this->provisionTenant();
         [$this->actor] = $this->memberWithRole($this->tenant, Roles::BUSINESS_OWNER);
         $this->establishTenantContext($this->tenant);
+        $this->provisionSurveyPlan($this->tenant);
     }
 
     /** @return array{0: Survey, 1: SurveyVersion} */

@@ -97,6 +97,23 @@ class SurveyQuestion extends Model implements TenantOwned
         return 'ulid';
     }
 
+    /**
+     * The [min, max] numeric bounds for a scale question (NPS is fixed 0-10; others read
+     * scoring_config, defaulting to 1-5).
+     *
+     * @return array{0: int, 1: int}
+     */
+    public function scaleBounds(): array
+    {
+        if ($this->type === QuestionType::Nps) {
+            return [0, 10];
+        }
+
+        $config = $this->scoring_config ?? [];
+
+        return [(int) ($config['scale_min'] ?? 1), (int) ($config['scale_max'] ?? 5)];
+    }
+
     /** @return BelongsTo<SurveyVersion, $this> */
     public function version(): BelongsTo
     {
