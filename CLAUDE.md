@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.7.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.11.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -101,6 +101,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `31-notification-subscription-platform-admin-foundation.md` | Tenant-safe notification delivery + truthful states, subscription/entitlement (fail-closed resolver; commercial ≠ payment), separate least-privilege platform-admin plane (no impersonation) |
 | `32-survey-csat-foundation.md` | Tenant/branch-owned surveys, immutable versioning, question/answer integrity, hashed one-time invitation tokens + no-enumeration, deterministic CSAT/NPS/CES, consent semantics, single entitlement resolver, review anti-gating preserved |
 | `33-feedback-operations-foundation.md` | Idempotent feedback projection + lifecycle, scope-validated assignment + membership-revocation fail-close, tenant-isolated tags, append-only notes/timeline, private content-MIME-validated attachments, permission-aware search, bounded bulk, queued requester-scoped secure export, entitlement/usage, review anti-gating preserved |
+| `34-agentic-experience-os-architecture-baseline.md` | Experience OS domain boundaries + single source of truth, Customer 360 identity ownership (deterministic vs suggested, human-approved reversible merge/split), additive Experience Event Ledger preserving the Step 8 timeline, provider-neutral truthful channel adapters, bounded AI tool actions (mandatory high-risk approval, cost ceiling, kill switch, no duplicate action), additive reversible migration, truthful architecture-only status |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -189,8 +190,22 @@ re-authorization and F-2/F-3 LOW hardening FIXED, 14/14 other vectors PASS). **M
 **clean-checkout verified** on `6792db5` against real PostgreSQL 17 + Redis 7
 (`aish:verify-step-8` PASS; hermetic suite 354); GitHub Release published; evidence under `docs/evidence/step-8/` and
 `docs/release/STEP_8_TAG_VERIFICATION.md`.
-**Business/module implementation (AI/recovery/SLA/Google/agent/RAG/billing), deployment, pilot readiness, pilot
-runtime, and production readiness: NOT STARTED.**
+**Step 9 — Competitive Gap Audit & Architecture Re-baseline** (Master Source **v2.11.0** §75, PRD **v1.3.0** unchanged
+plus **Agentic Experience OS PRD Addendum v1.0.0**, ADRs 0063–0068, AFR-211..238, rule 34) is a
+**product-governance + architecture-lock + roadmap-lock** sprint delivered as **documentation/governance only** — no
+application feature, migration, table, or runtime is created and the Step 8 foundation is preserved unchanged. It
+delivers an evidence-based capability inventory, a ten-vendor competitor matrix + gap register, and locks: the Experience
+OS domain boundaries and single source of truth per capability (ADR 0063; no duplicate ownership), the Customer 360
+identity model with deterministic-vs-suggested links and human-approved reversible merge/split (ADR 0064), the additive
+Experience Event Ledger preserving the Step 8 immutable timeline (ADR 0065), the provider-neutral channel-adapter
+contract (ADR 0066), the AI tool-permission/human-approval contract with cost ceilings and kill switch (ADR 0067), and
+the additive/idempotent/reversible migration strategy (ADR 0068); plus the dependency-locked Wave 1–3 roadmap and an
+execution-ready Step 10 Customer 360 contract. The Step 9 GO tag
+(`aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`) attests **architecture/governance
+readiness only** — not implementation, deployment, pilot, or production readiness, and not that any domain is owned.
+**Next canonical step:** Step 10 — Customer 360 Foundation (contract locked, **NOT STARTED**).
+**Business/module implementation (Customer 360/AI/recovery/SLA/Google/agent/RAG/omnichannel/billing), deployment,
+pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 
 ## 6. Required pre-work / post-work checks

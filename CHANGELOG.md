@@ -6,6 +6,38 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [2026-07-15] — Step 9 (Master Source v2.11.0): Competitive Gap Audit & Architecture Re-baseline
+
+Target release: annotated tag `aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`.
+Base branch `main`, feature branch `feature/step-9-competitive-gap-architecture-rebaseline`. Product-governance +
+architecture-lock + roadmap-lock sprint. **Documentation/governance only — no application feature, migration, or
+runtime change; the Step 8 foundation is preserved unchanged.**
+
+### Added
+- Master Source **v2.11.0** (§75 Step 9); PRD unchanged at **v1.3.0** (Experience OS extensions in the **Agentic
+  Experience OS PRD Addendum v1.0.0**). ADRs **0063–0068**, **AFR-211..238**, **Claude rule 34**.
+- Evidence-based capability inventory (`docs/product/capability-inventory/STEP_9_CAPABILITY_INVENTORY.md`), competitor
+  capability matrix and gap register (`docs/product/competitive/`), and the Wave 1–3 roadmap lock
+  (`docs/product/EXPERIENCE_OS_ROADMAP.md`).
+- Architecture baseline (`docs/architecture/experience-os/`): domain boundary/source-of-truth map, Customer 360 identity
+  architecture, Experience Event Ledger (preserving the Step 8 timeline), provider-neutral channel-adapter contract,
+  AI tool-permission/human-approval contract, and additive migration/rollout strategy.
+- Security threat model (`docs/security/STEP_9_THREAT_MODEL.md`), observability contract
+  (`docs/operations/EXPERIENCE_OS_OBSERVABILITY_CONTRACT.md`), and the execution-ready Step 10 Customer 360 contract
+  (`docs/planning/STEP_10_CUSTOMER_360_IMPLEMENTATION_CONTRACT.md`).
+- Step 9 verification `scripts/docs/verify-step-9.sh` (artifact + ADR/AFR + version-consistency + no-stale-status +
+  secret-scan + Step 8 regression), wired into `scripts/docs/validate.sh`.
+
+### Changed
+- Corrected the Master Source header: Step 8 status advanced from the stale "IN PROGRESS toward GO / NOT merged" to the
+  truthful MERGED / GO TAGGED / CLEAN-CHECKOUT VERIFIED state; product status advanced to Step 9.
+- Re-sequenced the §62 implementation order: **Customer 360 (Step 10)** is now the immediate next foundation, ahead of
+  recovery tickets.
+
+### Preserved
+- All Step 5–8 code, tests, and gates unchanged; tenant isolation, human approval, Google Review anti-gating,
+  truthful-status, and evidence-before-claims all restated and preserved.
+
 ## [2026-07-15] — Step 8 (Master Source v2.10.0): Feedback Operations Foundation — MERGED & GO TAGGED
 
 Target release: annotated tag `aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`.
