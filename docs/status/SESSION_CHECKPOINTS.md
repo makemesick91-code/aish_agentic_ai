@@ -2,6 +2,26 @@
 
 Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Makassar.
 
+## Checkpoint 2026-07-15 — Autonomous Execution & Tooling Governance (Master Source v2.12.0)
+- **Branch:** `chore/claude-autonomous-execution-governance` · **Base:** `main`.
+- **Type:** tooling/process governance only — no application feature, migration, table, or runtime; Step 5–9 preserved.
+- **Decisions:**
+  - User-level autonomy is a deliberate opt-in in `~/.claude/settings.json` (`defaultMode=bypassPermissions`,
+    `skipDangerousModePermissionPrompt=true`, empty `ask`) paired with a 33-entry destructive `deny` set; effective for
+    future sessions; backed up to `~/.claude/settings.json.bak-20260715-194453`; **NOT committed** (rule 04, AFR-248).
+  - Project-level `.claude/settings.json` stays a contributor-safe baseline (release ops `ask`-gated; guard hook
+    registered) — autonomy is never a hidden downgrade for contributors (AFR-240). Deny set hardened (mkfs/dd/shred/
+    git clean/tag --delete/filter-repo).
+  - Real enforcement extended in `scripts/hooks/guard-dangerous-commands.sh` (blocks mkfs/`dd if=`/shred/`git clean -f`
+    in addition to force-push/tag-move/history-rewrite/secret-reads/publish/deploy/DNS/skip-CI) with positive+negative
+    cases in `scripts/hooks/test-guard.sh` — all pass (AFR-241).
+  - Genuine-blocker-only stopping; permanent prohibitions (no force-push/history-rewrite/tag-move, no secret in repo,
+    no gate weakening, no fabricated evidence, no external-authorization bypass, non-root execution) unchanged.
+- **Governance:** Master Source **v2.12.0** §76; ADR **0069**; Claude rule **35**; **AFR-239..249** (AEG-01..AEG-11);
+  decision **D-035**; CHANGELOG v2.12.0; VERSION_MATRIX + SHA256SUMS updated; CLAUDE.md/AGENTS.md pointers → v2.12.0.
+- **Environment:** user `fikri` (non-root, uid 1000); origin `makemesick91-code/aish_agentic_ai`; start SHA `3f537f3`.
+- **Status at checkpoint:** CODE/DOCS COMPLETE locally; validation → commit → PR → CI → merge → GO tag pending.
+
 ## Checkpoint 2026-07-15 — Step 8 Feedback Operations Foundation execution
 - **Branch:** `feature/step-8-feedback-operations-foundation` · **Base:** `main`.
 - **Decisions:**
