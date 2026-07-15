@@ -39,6 +39,12 @@ printf '%s' "$cmd" | grep -Eq '\.(pem|key|p12|pfx)([[:space:]]|$)' && block "rea
 # Reckless recursive delete of the whole tree / root.
 printf '%s' "$cmd" | grep -Eq 'rm[[:space:]]+-[a-z]*r[a-z]*f?[[:space:]]+(/|~|\*|\.)([[:space:]]|$)' && block "recursive delete of / ~ . or * is prohibited"
 
+# Filesystem / device destruction and force-clean of the working tree.
+printf '%s' "$cmd" | grep -Eq '(^|[[:space:]])mkfs([.-][a-z0-9]+)?([[:space:]]|$)' && block "filesystem creation (mkfs) is prohibited"
+printf '%s' "$cmd" | grep -Eq '(^|[[:space:]])dd[[:space:]]+if=' && block "raw disk write (dd if=) is prohibited"
+printf '%s' "$cmd" | grep -Eq '(^|[[:space:]])shred([[:space:]]|$)' && block "shred is prohibited"
+printf '%s' "$cmd" | grep -Eq 'git[[:space:]]+clean[[:space:]].*(-[a-z]*f|--force)' && block "git clean force-delete of untracked files is prohibited"
+
 # Implementation-phase supply-chain safeguards (Step 5+).
 # The Step-4 planning "install nothing" safeguard is superseded for application
 # implementation by the Step 5 Runtime & Repository Bootstrap Master Source update

@@ -3,6 +3,15 @@
 Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
+- **Autonomous Execution & Tooling Governance (Master Source v2.12.0 §76):** **IN PROGRESS toward GO** on branch
+  `chore/claude-autonomous-execution-governance`. Tooling/process governance only — no application feature, migration,
+  or runtime; Step 5–9 preserved. Delivered so far: user-level autonomous permission model
+  (`~/.claude/settings.json` — `bypassPermissions` + `skipDangerousModePermissionPrompt` + empty `ask` + 33-entry
+  destructive `deny`; backed up, not committed; effective next session); hardened contributor-safe project baseline
+  (`.claude/settings.json` — release ops `ask`-gated, expanded destructive `deny`, guard hook registered); extended real
+  PreToolUse enforcement hook (`scripts/hooks/guard-dangerous-commands.sh` now also blocks `mkfs`/`dd`/`shred`/
+  `git clean -f`; all `test-guard.sh` cases pass); ADR 0069; rule 35; AFR-239..249 (fitness AEG-01..AEG-11); D-035;
+  CHANGELOG v2.12.0. **Not yet merged / CI-green-on-CI / tagged**; PR/CI/merge/tag evidence forthcoming.
 - **Step 8 — Feedback Operations Foundation:** **MERGED** (PR #21, merge `6792db5`) and **GO TAGGED**
   (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled `6792db5`;
   local == remote == main). Authoritative Full CI green on `99d79ee` (run `29372058345`); **clean-checkout verified**

@@ -326,8 +326,25 @@ and the SPRINT-SF-05 GO gate. These are platform-core capabilities in top-level 
 | AFR-236 | Backfills MUST be idempotent, queued, chunked, and resumable with progress + failure visibility + DLQ; an idempotent `aish:*-reconcile` MUST exist as a controlled second read path (not an uncontrolled write path) | 0068,0060 | 34,03,26 | EOS-26 |
 | AFR-237 | New capabilities MUST be per-tenant feature-flagged (default off) and enabled only after backfill + verification; deployment ordering MUST be migrate → tolerant deploy → backfill → verify → flag with mixed-version tolerance | 0068 | 34,26 | EOS-27 |
 | AFR-238 | A tested restore MUST precede any pilot/production backfill and a backup MUST precede a large backfill; every backfill MUST be tenant-scoped with a post-backfill isolation check and a stated performance budget | 0068,0049 | 34,11,26 | EOS-28 |
+| AFR-239 | User-level coding-agent autonomy (`defaultMode = bypassPermissions`, `skipDangerousModePermissionPrompt = true`, empty `ask`) is permitted ONLY together with a destructive-operation `deny` set; the mode is effective for FUTURE sessions and MUST be reported truthfully | 0069 | 35,15 | AEG-01 |
+| AFR-240 | Project-level settings MUST remain a contributor-safe baseline (release ops `ask`-gated; destructive ops `deny`-listed; PreToolUse guard hook registered) and MUST NOT silently force unrestricted mode on other contributors | 0069 | 35,15 | AEG-02 |
+| AFR-241 | Prohibitions MUST be enforced by a real PreToolUse hook (`guard-dangerous-commands.sh`, exit 2 = block) regardless of permission mode — force-push, remote-ref/tag deletion, tag move, history rewrite, secret/dump reads, `mkfs`/`dd if=`/`shred`/`git clean -f`, package publish, cloud provisioning/deployment, DNS mutation, skip-CI — with positive+negative tests | 0069 | 35,13,15,28 | AEG-03 |
+| AFR-242 | Routine operations (bash/git/gh/composer/php/artisan/npm/test/lint/build/PR/CI/evidence) MAY run without per-action confirmation; recoverable failures MUST be diagnosed and fixed autonomously and MUST NOT be reported as blockers | 0069 | 35,09 | AEG-04 |
+| AFR-243 | Force-push/`-f`/`--force-with-lease`, history rewrite, tag move/deletion, destructive `reset --hard`/`clean -f`, production DB/volume deletion, committing any secret, weakening any test/scanner/branch-protection/release gate, and fabricating status/CI/merge/deployment/evidence remain permanently prohibited and MUST be enforced by deny rules + the guard hook, not prose | 0069 | 35,04,09,13,28 | AEG-05 |
+| AFR-244 | The agent MUST stop with a structured `BLOCKED` report only for a genuine blocker (missing credential/access; required MFA/OAuth/CAPTCHA/human step; provider outage; branch-protection human approval; unmitigated irreversible production risk; missing product decision; scope conflicting with security/privacy/isolation/compliance; unavailable privilege; unfakeable-and-unavailable evidence; external payment/contract) | 0069 | 35 | AEG-06 |
+| AFR-245 | The autonomous flow (branch → commit → push → PR → CI-fix → merge-when-eligible → verify-exact-SHA → clean-checkout → annotated immutable GO tag → evidence) MUST honor rule 13/28 gates; a GO tag is created only after all relevant gates pass with SHA-bound evidence and MUST NOT be moved | 0069,0044 | 35,13,28 | AEG-07 |
+| AFR-246 | Automation MUST NOT bypass external authorization boundaries (MFA, OAuth consent, CAPTCHA, branch protection, or credentials it does not hold) and MUST NOT use admin-bypass; security/tenant-isolation/privacy/auditability/truthful-completion outrank automation and convenience | 0069 | 35,04,13 | AEG-08 |
+| AFR-247 | Claude Code MUST run as a non-root user; unrestricted autonomous execution MUST NOT run as root on a production host | 0069 | 35,04 | AEG-09 |
+| AFR-248 | User-level settings, their backups, secrets, and tokens MUST NOT be committed; only project-level configuration, documentation, tests, and governance are versioned | 0069 | 35,04,24 | AEG-10 |
+| AFR-249 | Completion is evidence-based: no `GO`/`merged`/`deployed`/`verified` claim without corresponding actual evidence (PR, CI run, merge SHA, tag object/peeled commit, clean-checkout verification); the truthful-status vocabulary applies | 0069 | 35,09,13,27 | AEG-11 |
 
-**238 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7 + 23 Step 8 + 28 Step 9).**
+**249 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7 + 23 Step 8 + 28 Step 9 + 11 Autonomous Execution & Tooling Governance).**
+
+Autonomous Execution & Tooling Governance AFR-239..AFR-249 each map to ADR 0069 (with supporting CICD-CTRL-1 ADRs
+0042–0046), Claude rule 35, an autonomy fitness check (AEG-01..AEG-11), and enforcement/evidence artifacts
+(`scripts/hooks/guard-dangerous-commands.sh`, `scripts/hooks/test-guard.sh`, `.claude/settings.json`). No orphan
+permanent decision. This is tooling/process governance only: it adds no application feature, migration, or runtime, and
+the Step 5–9 foundations and all **NOT STARTED** items are unchanged.
 
 Step 9 (Competitive Gap Audit & Architecture Re-baseline) AFR-211..AFR-238 each map to an ADR (0063–0068), Claude
 rule 34, an Experience-OS fitness check (EOS-01..EOS-28), and design/evidence artifacts under

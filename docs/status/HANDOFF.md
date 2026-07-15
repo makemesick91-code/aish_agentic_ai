@@ -3,6 +3,18 @@
 Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`. For the next session/engineer.
 
 ## Where we are
+**Autonomous Execution & Tooling Governance (Master Source v2.12.0 §76)** is **IN PROGRESS toward GO** on branch
+`chore/claude-autonomous-execution-governance` — tooling/process governance only (no application feature/migration/
+runtime; Step 5–9 preserved). Configured user-level autonomy (`~/.claude/settings.json` `bypassPermissions` +
+`skipDangerousModePermissionPrompt` + empty `ask` + destructive `deny`; backed up as `~/.claude/settings.json.bak-*`;
+NOT committed; effective next session), hardened the contributor-safe project baseline `.claude/settings.json`,
+extended the real PreToolUse guard hook (`scripts/hooks/guard-dangerous-commands.sh` + `test-guard.sh`), and authored
+ADR 0069, rule 35, AFR-239..249, D-035, Master Source §76, and CHANGELOG v2.12.0. **Next:** run `scripts/docs/validate.sh`
+→ commit → push → draft PR → CI → ready → merge when green → verify merged SHA → annotated GO tag
+`aish-agentic-ai-autonomous-execution-governance-v1.0.0-go` → GitHub Release → post-tag evidence sync (update this file
+and `CURRENT_STATE.md` to MERGED/GO TAGGED). **Rollback:** restore `~/.claude/settings.json.bak-*` or set
+`defaultMode=default`; revert the governance commit/PR via git history.
+
 **Step 8 — Feedback Operations Foundation** is **MERGED** (PR #21, merge `6792db5`), **CLEAN-CHECKOUT VERIFIED** on
 `6792db5` against real PostgreSQL 17 + Redis 7, **GO TAGGED**
 (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled `6792db5`), and

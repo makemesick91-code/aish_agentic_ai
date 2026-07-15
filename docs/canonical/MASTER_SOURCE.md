@@ -6,7 +6,7 @@
 **Kategori produk:** Agentic AI Customer Experience, CSAT, Customer Recovery, dan Google Review Management Platform
 **Model bisnis:** Multi-tenant Software as a Service
 **Tipe dokumen:** Canonical Living Product Source
-**Versi:** 2.11.0
+**Versi:** 2.12.0
 **Status dokumen:** Active
 **Status produk:** Step 9 (Competitive Gap Audit & Architecture Re-baseline) — an architecture/governance LOCK that
 audits the real codebase, maps the Experience OS competitive landscape, and locks the domain boundaries, Customer 360
@@ -4409,6 +4409,74 @@ unchanged. Evidence under `docs/evidence/step-9/` and `docs/release/STEP_9_*`.
 After Step 9 is merged, CI-green on the final head, clean-checkout-verified on the merged SHA, and GO-tagged, the next
 canonical capability is **Step 10 — Customer 360 Foundation**, which keeps its own independent GO/WATCH/NO-GO gate and
 begins Wave 1 implementation.
+
+---
+
+# 76. Autonomous Execution and Tooling Governance (v2.12.0)
+
+**Type:** tooling / process governance — **not** a product step. No application feature, migration, table, or runtime is
+created; the Step 5–9 foundations and every **NOT STARTED** item are preserved unchanged.
+
+## 76.1 Decision
+The Claude Code coding agent operates under **autonomous execution**: routine engineering work runs without per-action
+Yes/No confirmation, and the agent stops only for a genuine, enumerated blocker. Autonomy removes friction; it does
+**not** widen the blast radius of a mistake, a hostile prompt, or a malicious input, and it does **not** weaken any
+security, tenant-isolation, privacy, auditability, or release guarantee.
+
+## 76.2 Permission model (defense in depth)
+- **User-level opt-in** (`~/.claude/settings.json`): `permissions.defaultMode = bypassPermissions`,
+  `skipDangerousModePermissionPrompt = true`, empty `permissions.ask`, paired with a destructive-operation
+  `permissions.deny` set. Effective for **future** sessions, not the writing session — reported truthfully.
+- **Project-level contributor-safe baseline** (`.claude/settings.json`, preserved): release operations
+  (`git push`/`merge`/`tag`, `gh pr merge`, `gh release`) stay `ask`-gated, destructive operations stay `deny`-listed,
+  and the PreToolUse guard hook stays registered. Autonomy is a per-user opt-in, never a hidden downgrade for
+  contributors.
+- **Real enforcement**: `scripts/hooks/guard-dangerous-commands.sh` (PreToolUse, exit 2 = block) blocks — regardless of
+  mode — force-push, remote-ref/tag deletion, tag move, history rewrite, secret/dump reads, filesystem/device
+  destruction (`mkfs`/`dd if=`/`shred`/`git clean -f`), package publish, cloud provisioning/deployment, DNS mutation,
+  and skip-CI directives; validated by `scripts/hooks/test-guard.sh`.
+
+## 76.3 Autonomous flow, gates preserved
+Branch → atomic commit → normal push → PR → CI observe/fix → merge when every required gate is green and branch
+protection allows → verify the exact merged SHA → clean-checkout verify → annotated immutable GO tag → evidence. The
+flow honors §66.10–§66.11 and §69 (rules 13, 28): SHA-bound evidence, no admin-bypass, no tag move, no false
+one-run-forever claim.
+
+## 76.4 Permanent prohibitions (unchanged)
+Force-push / history rewrite / tag move or deletion, destructive reset/clean, production database/volume deletion,
+committing any secret/token/backup, weakening or disabling a test/scanner/branch-protection/release gate, fabricating
+status/CI/merge/deployment/evidence, and bypassing external authorization (MFA, OAuth consent, branch protection, or
+absent credentials) remain prohibited and are enforced by deny rules + the guard hook. Claude Code runs **non-root**;
+unrestricted autonomous execution MUST NOT run as root on a production host. Security, tenant isolation, privacy,
+compliance, correctness, auditability, and truthful completion outrank automation (§57).
+
+## 76.5 Genuine-blocker-only stopping
+The agent stops with a structured `BLOCKED` report only for: a missing required credential/access; a required
+MFA/OAuth/CAPTCHA/hardware/human step; an inaccessible host/provider or provider outage; branch protection requiring a
+human approval it cannot give; an unmitigated irreversible production risk; a missing material product decision; a scope
+conflicting with security/privacy/tenant-isolation/compliance/permanent decisions; an unavailable safe privilege;
+required evidence that is unavailable and must not be fabricated; or a required external payment/purchase/contract.
+
+## 76.6 Governance mapping and evidence
+ADR 0069; Claude rule 35; AFR-239..249 (fitness AEG-01..AEG-11); decision D-035. Enforcement/evidence:
+`.claude/settings.json`, `.claude/settings.local.json`, `scripts/hooks/guard-dangerous-commands.sh`,
+`scripts/hooks/test-guard.sh`, `docs/governance/foundation-coverage-matrix.md`, `docs/status/CURRENT_STATE.md`,
+`CHANGELOG.md`.
+
+## 76.7 MASTER SOURCE UPDATE
+- **Previous version:** 2.11.0 → **New version:** 2.12.0
+- **Date:** 2026-07-15 (Asia/Makassar)
+- **Type:** minor — tooling/process governance addition (no product scope, feature, or architecture change)
+- **Affected sections:** new §76; §57, §66.6–§66.9, §69 referenced
+- **Decision:** adopt autonomous coding-agent execution with defense-in-depth permission model, real PreToolUse
+  enforcement, preserved release gates, and genuine-blocker-only stopping (D-035, ADR 0069, rule 35, AFR-239..249)
+- **Reason:** remove routine-confirmation friction and premature stops without weakening any security/privacy/isolation/
+  release guarantee; codify the owner's full-lifecycle delegation with permanent guardrails
+- **Impacts:** faster autonomous execution; unchanged security posture (deny set + real hook); contributors keep the
+  `ask`-gated baseline; no application/deployment/pilot/production change
+- **Status:** Active
+- **Evidence:** ADR 0069; rule 35; AFR-239..249; `scripts/hooks/test-guard.sh`; `CHANGELOG.md` v2.12.0 entry
+- **Changelog:** see root `CHANGELOG.md` v2.12.0.
 
 ---
 

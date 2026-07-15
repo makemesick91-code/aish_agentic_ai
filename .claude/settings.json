@@ -40,10 +40,18 @@
       "Bash(git tag -f:*)",
       "Bash(git tag -d:*)",
       "Bash(git push --delete:*)",
+      "Bash(git tag --delete:*)",
       "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git clean -fdx:*)",
+      "Bash(git clean -xdf:*)",
       "Bash(git rebase:*)",
       "Bash(git filter-branch:*)",
-      "Bash(rm -rf:*)"
+      "Bash(git filter-repo:*)",
+      "Bash(rm -rf:*)",
+      "Bash(mkfs:*)",
+      "Bash(dd if=:*)",
+      "Bash(shred:*)"
     ]
   },
   "hooks": {

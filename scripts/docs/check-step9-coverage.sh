@@ -37,12 +37,13 @@ done
 echo "== AFR-211..238 in catalog =="
 AFR=docs/architecture/APPLICATION_FOUNDATION_RULES.md
 for a in AFR-211 AFR-215 AFR-220 AFR-225 AFR-230 AFR-235 AFR-238; do need_grep "$AFR" "$a"; done
-need_grep "$AFR" "238 AFRs total"
+need_grep "$AFR" "28 Step 9"
+need_grep "$AFR" "AFRs total"
 
-echo "== Master Source v2.11.0 + section 75 =="
+echo "== Master Source active version >= 2.11.0 (Step 9 baseline preserved) + section 75 =="
 MS=docs/canonical/MASTER_SOURCE.md
 msver="$(grep -m1 -E '^\*\*Versi:\*\*' "$MS" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)"
-if [ "$msver" = "2.11.0" ]; then echo "OK: Master Source v2.11.0"; else echo "FAIL: Master Source version '$msver' != 2.11.0"; fail=1; fi
+if [ -n "$msver" ] && [ "$(printf '%s\n2.11.0\n' "$msver" | sort -V | head -1)" = "2.11.0" ]; then echo "OK: Master Source active v$msver (>= 2.11.0 Step 9 baseline)"; else echo "FAIL: Master Source version '$msver' regressed below the 2.11.0 Step 9 baseline"; fail=1; fi
 need_grep "$MS" "# 75. STEP 9"
 need_grep "$MS" "## Version 2.11.0"
 
@@ -65,6 +66,6 @@ need_grep docs/planning/STEP_10_CUSTOMER_360_IMPLEMENTATION_CONTRACT.md "Custome
 echo "== rule 34 + CLAUDE/AGENTS reference Step 9 =="
 need_grep CLAUDE.md "34-agentic-experience-os-architecture-baseline.md"
 need_grep CLAUDE.md "v2.11.0"
-need_grep AGENTS.md "v2.11.0"
+need_grep AGENTS.md "v$msver"
 
 if [ "$fail" -eq 0 ]; then echo "PASS: Step 9 competitive-gap/architecture-rebaseline coverage complete"; else echo "check-step9-coverage: FAILED"; exit 1; fi
