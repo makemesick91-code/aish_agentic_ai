@@ -5,7 +5,7 @@ knowledge. It stays in sync with `CLAUDE.md` and `.claude/rules/` — there is *
 
 ## Authority (read before acting)
 1. Latest explicit product-owner decision.
-2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.11.0**).
+2. Master Source — `docs/canonical/MASTER_SOURCE.md` (active **v2.12.0**).
 3. PRD — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved ADRs — `docs/decisions/adr/` (0001–0056) and `docs/decisions/DECISION_LOG.md`.
 5. Application Foundation Rules — `docs/architecture/APPLICATION_FOUNDATION_RULES.md` (AFR-001..170).

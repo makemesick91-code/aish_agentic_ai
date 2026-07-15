@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.11.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.12.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -102,6 +102,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `32-survey-csat-foundation.md` | Tenant/branch-owned surveys, immutable versioning, question/answer integrity, hashed one-time invitation tokens + no-enumeration, deterministic CSAT/NPS/CES, consent semantics, single entitlement resolver, review anti-gating preserved |
 | `33-feedback-operations-foundation.md` | Idempotent feedback projection + lifecycle, scope-validated assignment + membership-revocation fail-close, tenant-isolated tags, append-only notes/timeline, private content-MIME-validated attachments, permission-aware search, bounded bulk, queued requester-scoped secure export, entitlement/usage, review anti-gating preserved |
 | `34-agentic-experience-os-architecture-baseline.md` | Experience OS domain boundaries + single source of truth, Customer 360 identity ownership (deterministic vs suggested, human-approved reversible merge/split), additive Experience Event Ledger preserving the Step 8 timeline, provider-neutral truthful channel adapters, bounded AI tool actions (mandatory high-risk approval, cost ceiling, kill switch, no duplicate action), additive reversible migration, truthful architecture-only status |
+| `35-autonomous-execution-and-tooling-governance.md` | Autonomous coding-agent execution with defense in depth: user-level `bypassPermissions` opt-in + destructive `deny` set, contributor-safe project baseline (release ops `ask`-gated, guard hook registered), real PreToolUse enforcement hook (blocks force-push/tag-move/history-rewrite/secret-reads/`mkfs`/`dd`/`shred`/`git clean -f`/publish/deploy/DNS/skip-CI regardless of mode), autonomous branch→PR→merge→GO-tag→evidence honoring rules 13/28, genuine-blocker-only stopping, permanent no-force-push/no-secret/no-gate-weakening/no-fabricated-evidence, non-root execution, evidence-based completion |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -203,6 +204,14 @@ the additive/idempotent/reversible migration strategy (ADR 0068); plus the depen
 execution-ready Step 10 Customer 360 contract. The Step 9 GO tag
 (`aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`) attests **architecture/governance
 readiness only** — not implementation, deployment, pilot, or production readiness, and not that any domain is owned.
+**Autonomous Execution & Tooling Governance** (Master Source **v2.12.0** §76, PRD **v1.3.0** unchanged, ADR 0069,
+AFR-239..249, rule 35, D-035) adopts autonomous coding-agent execution with a defense-in-depth permission model
+(user-level `bypassPermissions` opt-in + destructive `deny` set; preserved contributor-safe project baseline; a real
+PreToolUse enforcement hook blocking force-push/tag-move/history-rewrite/secret-reads/`mkfs`/`dd`/`shred`/`git clean -f`/
+publish/deploy/DNS/skip-CI regardless of mode), an autonomous branch→PR→merge→GO-tag→evidence flow honoring rules 13/28,
+and genuine-blocker-only stopping — **tooling/process governance only**, no application feature/migration/runtime. **IN
+PROGRESS toward GO** (branch `chore/claude-autonomous-execution-governance`; not yet merged/CI-green/tagged; evidence
+forthcoming).
 **Next canonical step:** Step 10 — Customer 360 Foundation (contract locked, **NOT STARTED**).
 **Business/module implementation (Customer 360/AI/recovery/SLA/Google/agent/RAG/omnichannel/billing), deployment,
 pilot readiness, pilot runtime, and production readiness: NOT STARTED.**

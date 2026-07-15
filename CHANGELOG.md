@@ -6,6 +6,38 @@ This file records repository/documentation-foundation engineering changes.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/) principles; dates use `Asia/Makassar`.
 
+## [2026-07-15] — Autonomous Execution & Tooling Governance (Master Source v2.12.0)
+
+Target release: annotated tag `aish-agentic-ai-autonomous-execution-governance-v1.0.0-go`. Base branch `main`,
+feature branch `chore/claude-autonomous-execution-governance`. **Tooling/process governance only — no application
+feature, migration, table, or runtime change; the Step 5–9 foundations and every NOT STARTED item are preserved
+unchanged.**
+
+### Added
+- Master Source **v2.12.0** (§76 Autonomous Execution and Tooling Governance); PRD unchanged at **v1.3.0**. **ADR 0069**,
+  **AFR-239..249** (fitness AEG-01..AEG-11), **Claude rule 35**, decision **D-035**.
+- User-level autonomous permission model (`~/.claude/settings.json`, not committed): `defaultMode = bypassPermissions`,
+  `skipDangerousModePermissionPrompt = true`, empty `ask`, paired with a 33-entry destructive-operation `deny` set
+  (force-push/`-f`/`--force-with-lease`, ref/tag deletion, tag move, `reset --hard`, `git clean -f`,
+  `rebase`/`filter-branch`/`filter-repo`, `rm -rf` root/home, `mkfs`/`dd`/`shred`, `.env`/key/service-account reads).
+- Extended the real PreToolUse enforcement hook `scripts/hooks/guard-dangerous-commands.sh` to also block
+  filesystem/device destruction (`mkfs`, `dd if=`, `shred`) and `git clean` force-delete, with matching positive +
+  negative cases in `scripts/hooks/test-guard.sh` (all guard tests pass).
+
+### Changed
+- Hardened the project-level contributor-safe baseline `.claude/settings.json` deny set (added `git tag --delete`,
+  `git clean -fd/-fdx/-xdf`, `git filter-repo`, `mkfs`, `dd if=`, `shred`) while preserving the `ask`-gate on
+  `git push`/`merge`/`tag`, `gh pr merge`, `gh release` and the registered guard hook — autonomy stays a per-user
+  opt-in, never a hidden downgrade for contributors.
+- Updated active-version pointers to v2.12.0 in `CLAUDE.md`, `AGENTS.md`, `docs/decisions/VERSION_MATRIX.md`, and the
+  foundation coverage matrix; appended a v2.12.0 checksum record to `docs/evidence/source-checksums/SHA256SUMS.txt`.
+
+### Unchanged / NOT STARTED
+- No application feature, migration, table, or runtime; Step 5–9 foundations preserved. Business/module implementation,
+  deployment, pilot readiness, pilot runtime, and production readiness remain **NOT STARTED**. No domain is owned;
+  nothing is deployed. Force-push, history rewrite, tag move/deletion, secret-in-repo, gate weakening, and fabricated
+  evidence remain permanently prohibited.
+
 ## [2026-07-15] — Step 9 (Master Source v2.11.0): Competitive Gap Audit & Architecture Re-baseline
 
 Target release: annotated tag `aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`.
