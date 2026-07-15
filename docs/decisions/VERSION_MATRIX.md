@@ -5,7 +5,9 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 ## Canonical documents
 | Document | Active version | Working copy | Preserved original | Notes |
 |----------|----------------|--------------|--------------------|-------|
-| Master Source | **2.10.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.10.0.md` | Step 8 Feedback Operations Foundation (§74); idempotent feedback projection + lifecycle, scope-validated assignment, tenant-isolated tags, append-only notes/timeline, private attachments, permission-aware search, bounded bulk, queued secure export |
+| Master Source | **2.11.0** | `../canonical/MASTER_SOURCE.md` | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.11.0.md` | Step 9 Competitive Gap Audit & Architecture Re-baseline (§75); capability audit, competitor matrix + gap register, domain-boundary/source-of-truth lock, Customer 360 identity model, Experience Event Ledger (preserving the Step 8 timeline), channel-adapter + AI-tool-permission contracts, additive migration strategy, Wave 1–3 roadmap lock, and the Step 10 contract |
+| Master Source (historical) | 2.10.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.10.0.md` | Step 8 Feedback Operations Foundation (§74); idempotent feedback projection + lifecycle, scope-validated assignment, tenant-isolated tags, append-only notes/timeline, private attachments, permission-aware search, bounded bulk, queued secure export; superseded by 2.11.0 |
+| Agentic Experience OS PRD Addendum | **1.0.0** | `../product/AGENTIC_EXPERIENCE_OS_PRD_ADDENDUM.md` | — (in-place governance addendum) | Step 9 product-requirement extensions (Experience OS positioning, competitive synthesis, Wave 1–3); extends PRD v1.3.0, which is unchanged |
 | Master Source (historical) | 2.9.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.9.0.md` | Step 7 Survey & CSAT Foundation (§73); immutable-versioned surveys, secure public invitation/token/QR, deterministic CSAT/NPS/CES; superseded by 2.10.0 |
 | Master Source (historical) | 2.8.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.8.0.md` | SPRINT-SF-05 Notification, Subscription, and Platform Admin Skeletons (§72); tenant-safe notifications, fail-closed entitlement resolver, separate least-privilege platform-admin plane; superseded by 2.9.0 |
 | Master Source (historical) | 2.7.0 | — | `../canonical/source/MASTER_SOURCE_AISH_AGENTIC_AI_v2.7.0.md` | Step 6 SaaS Core Foundation (§71); auth/identity, tenant/branch + memberships, fail-closed context, RBAC/audit, isolation; superseded by 2.8.0 |
@@ -32,9 +34,11 @@ Rule: `.claude/rules/12`. Tracks canonical document versions, this repository's 
 `2.7.0` (SaaS Core Foundation / Step 6) →
 `2.8.0` (SPRINT-SF-05 Notification/Subscription/Platform-Admin skeletons) →
 `2.9.0` (Survey & CSAT Foundation / Step 7) →
-`2.10.0` (Feedback Operations Foundation / Step 8).
-**Active: 2.10.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
-`1.3.0` (Step 4; unchanged by CICD-CTRL-1, Step 5, Step 6, Step 7, and Step 8).
+`2.10.0` (Feedback Operations Foundation / Step 8) →
+`2.11.0` (Competitive Gap Audit & Architecture Re-baseline / Step 9).
+**Active: 2.11.0.** PRD lineage: `1.0.0` → `1.0.1` (normalization) → `1.1.0` (Step 2) → `1.2.0` (Step 3) →
+`1.3.0` (Step 4; unchanged by CICD-CTRL-1, Step 5, Step 6, Step 7, Step 8, and Step 9 — Step 9's product-requirement
+extensions are recorded in the Agentic Experience OS PRD Addendum v1.0.0).
 **Active PRD: 1.3.0.**
 
 ## Documentation-foundation release (Step 1)

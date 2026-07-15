@@ -171,6 +171,7 @@ SaaS Foundation and later steps. Recorded here so no permanent decision is orpha
 | Truthful system states | [10](../../.claude/rules/10-ui-ux-and-truthful-states.md), 27 | IMPLEMENTED (FOUNDATION) | Health probes + bootstrap surface are truthful |
 | CI/CD safe runtime control | [28](../../.claude/rules/28-safe-ci-runtime-control.md) | CONFIGURED + extended | Step 5 adds the real backend runtime gate |
 | Documentation living source / versioning | [12](../../.claude/rules/12-documentation-living-source-versioning.md) | ONGOING | Master Source v2.6.0 |
+| Agentic Experience OS architecture baseline (domain boundaries, Customer 360 identity, Event Ledger, channel adapters, AI tool permission, additive migration) | [34](../../.claude/rules/34-agentic-experience-os-architecture-baseline.md), 03, 20, 30 | ARCHITECTURE LOCK — LATER STEP (design) | Step 9 locks boundaries/roadmap (ADRs 0063–0068, AFR-211..238); Customer 360, recovery, AI, Google Review, omnichannel implementation NOT STARTED |
 
 No orphan permanent decision. Gaps: none for Step 5 scope; Step 6 SaaS-core foundations are `IN PROGRESS
 (FOUNDATION)` / `PLANNED` with verification, merge, and the GO tag pending (evidence forthcoming under
