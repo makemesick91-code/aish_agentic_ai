@@ -209,9 +209,13 @@ AFR-239..249, rule 35, D-035) adopts autonomous coding-agent execution with a de
 (user-level `bypassPermissions` opt-in + destructive `deny` set; preserved contributor-safe project baseline; a real
 PreToolUse enforcement hook blocking force-push/tag-move/history-rewrite/secret-reads/`mkfs`/`dd`/`shred`/`git clean -f`/
 publish/deploy/DNS/skip-CI regardless of mode), an autonomous branch→PR→merge→GO-tag→evidence flow honoring rules 13/28,
-and genuine-blocker-only stopping — **tooling/process governance only**, no application feature/migration/runtime. **IN
-PROGRESS toward GO** (branch `chore/claude-autonomous-execution-governance`; not yet merged/CI-green/tagged; evidence
-forthcoming).
+and genuine-blocker-only stopping — **tooling/process governance only**, no application feature/migration/runtime.
+**MERGED** (PR #25, merge `da456eb`) and **GO TAGGED**
+(`aish-agentic-ai-autonomous-execution-governance-v1.0.0-go`, object `e297e4a`, peeled `da456eb`;
+local == remote == main). Full CI green on ready run `29415074311` (Full documentation CI, Backend runtime CI, Workflow
+security, Required Gate); **clean-checkout verified** on `da456eb` (all doc gates, guard-hook tests, secret scan);
+independent security review PASS (GO); GitHub Release published. The GO tag attests tooling/process governance readiness
+only.
 **Next canonical step:** Step 10 — Customer 360 Foundation (contract locked, **NOT STARTED**).
 **Business/module implementation (Customer 360/AI/recovery/SLA/Google/agent/RAG/omnichannel/billing), deployment,
 pilot readiness, pilot runtime, and production readiness: NOT STARTED.**

@@ -20,7 +20,11 @@ Rule: `.claude/rules/14`. Append-only decision/checkpoint log. Times in Asia/Mak
 - **Governance:** Master Source **v2.12.0** §76; ADR **0069**; Claude rule **35**; **AFR-239..249** (AEG-01..AEG-11);
   decision **D-035**; CHANGELOG v2.12.0; VERSION_MATRIX + SHA256SUMS updated; CLAUDE.md/AGENTS.md pointers → v2.12.0.
 - **Environment:** user `fikri` (non-root, uid 1000); origin `makemesick91-code/aish_agentic_ai`; start SHA `3f537f3`.
-- **Status at checkpoint:** CODE/DOCS COMPLETE locally; validation → commit → PR → CI → merge → GO tag pending.
+- **Status at checkpoint:** **MERGED** (PR #25, merge `da456eb`), full CI green on ready run `29415074311`,
+  **clean-checkout verified** on `da456eb`, **GO TAGGED**
+  (`aish-agentic-ai-autonomous-execution-governance-v1.0.0-go`, object `e297e4a`, peeled `da456eb`), **RELEASE
+  PUBLISHED**; independent security review GO. Tag verification:
+  `docs/release/AUTONOMOUS_EXECUTION_GOVERNANCE_TAG_VERIFICATION.md`.
 
 ## Checkpoint 2026-07-15 — Step 8 Feedback Operations Foundation execution
 - **Branch:** `feature/step-8-feedback-operations-foundation` · **Base:** `main`.

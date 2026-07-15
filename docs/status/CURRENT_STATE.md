@@ -3,9 +3,13 @@
 Updated: 2026-07-15 (Asia/Makassar). Rule: `.claude/rules/14`.
 
 ## Truthful state
-- **Autonomous Execution & Tooling Governance (Master Source v2.12.0 §76):** **IN PROGRESS toward GO** on branch
-  `chore/claude-autonomous-execution-governance`. Tooling/process governance only — no application feature, migration,
-  or runtime; Step 5–9 preserved. Delivered so far: user-level autonomous permission model
+- **Autonomous Execution & Tooling Governance (Master Source v2.12.0 §76):** **MERGED** (PR #25, merge `da456eb`) and
+  **GO TAGGED** (`aish-agentic-ai-autonomous-execution-governance-v1.0.0-go`, object `e297e4a`, peeled `da456eb`;
+  local == remote == main). Full CI green on ready run `29415074311` (Full documentation CI, Backend runtime CI,
+  Workflow security, Required Gate); **clean-checkout verified** on `da456eb` (all doc gates, guard-hook tests, secret
+  scan); independent security review PASS (GO); GitHub Release published; tag verification in
+  `docs/release/AUTONOMOUS_EXECUTION_GOVERNANCE_TAG_VERIFICATION.md`. Tooling/process governance only — no application
+  feature, migration, or runtime; Step 5–9 preserved. Delivered: user-level autonomous permission model
   (`~/.claude/settings.json` — `bypassPermissions` + `skipDangerousModePermissionPrompt` + empty `ask` + 33-entry
   destructive `deny`; backed up, not committed; effective next session); hardened contributor-safe project baseline
   (`.claude/settings.json` — release ops `ask`-gated, expanded destructive `deny`, guard hook registered); extended real
