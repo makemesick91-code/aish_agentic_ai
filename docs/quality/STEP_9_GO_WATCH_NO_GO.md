@@ -33,12 +33,12 @@ Step 9 receives **GO** only when all acceptance criteria (prompt §12) hold with
 | 17 | Complete Step 10 execution contract exists | GO | `docs/planning/STEP_10_CUSTOMER_360_IMPLEMENTATION_CONTRACT.md` |
 | 18 | No Customer 360 production feature accidentally implemented | GO | `verify-step-9.sh` step 6: no app/ | database/migrations/ | routes/ | bootstrap/ change |
 | 19 | All applicable local quality gates pass | GO | `scripts/docs/validate.sh` ALL GATES PASSED; CI validators PASS |
-| 20 | Authoritative CI passes on exact final candidate SHA | PENDING | to be recorded in `docs/release/STEP_9_TAG_VERIFICATION.md` |
-| 21 | PR merged | PENDING | merge evidence forthcoming |
-| 22 | Fresh-clone verification passes at exact merge SHA | PENDING | clean-checkout evidence forthcoming |
-| 23 | Immutable annotated GO tag at that SHA | PENDING | tag evidence forthcoming |
-| 24 | GitHub Release published | PENDING | release evidence forthcoming |
-| 25 | Post-tag evidence synchronized without moving the tag | PENDING | post-tag evidence forthcoming |
+| 20 | Authoritative CI passes on exact final candidate SHA | GO | run `29406911168` on final head `e37a5e6` — Required Gate + all jobs pass |
+| 21 | PR merged | GO | PR #23 merged; merge SHA `2abf76a` |
+| 22 | Fresh-clone verification passes at exact merge SHA | GO | `verify-step-9` PASS + real-infra `verify-step-8` PASS (PostgreSQL 17.10 + Redis 7.4.9) on `2abf76a` |
+| 23 | Immutable annotated GO tag at that SHA | GO | tag object `2062d07f`, peeled `2abf76a`; local == remote |
+| 24 | GitHub Release published | GO | release for `aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go` |
+| 25 | Post-tag evidence synchronized without moving the tag | GO | this evidence PR; tag remains at `2abf76a` |
 
 ## 2. Hard NO-GO conditions (none present)
 Cross-tenant exposure; unauthorized publishing; PII/medical leakage; falsified success; uncontrolled duplicate action;
@@ -46,8 +46,10 @@ critical permission failure; unresolved critical incident; missing release-criti
 production implementation. **None present** — Step 9 is governance/design only and touched no runtime path.
 
 ## 3. Verdict
-**GO for the documentation/governance content** (criteria 1–19 met with evidence). Criteria 20–25 are the
-release-lifecycle gates completed during merge/tag/release; the final GO for the Step 9 tag is recorded in
-`docs/release/STEP_9_TAG_VERIFICATION.md` once CI-green-on-final-head, merge, clean-checkout verification, tag, and
-release evidence exist. Step 9 attests **architecture/governance readiness only** — not implementation, deployment,
-pilot, or production readiness, and not that any domain is owned.
+**GO** — all 25 criteria met with evidence. CI green on final head `e37a5e6` (run `29406911168`), PR #23 merged
+(`2abf76a`), clean-checkout verification PASS on `2abf76a` (`verify-step-9` + real-infra `verify-step-8` on
+PostgreSQL 17.10 + Redis 7.4.9), immutable annotated GO tag
+`aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go` (object `2062d07f`, peeled `2abf76a`),
+GitHub Release published, and post-tag evidence synchronized without moving the tag. Full evidence in
+`docs/release/STEP_9_TAG_VERIFICATION.md`. Step 9 attests **architecture/governance readiness only** — not
+implementation, deployment, pilot, or production readiness, and not that any domain is owned.

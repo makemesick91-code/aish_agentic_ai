@@ -12,7 +12,11 @@
 audits the real codebase, maps the Experience OS competitive landscape, and locks the domain boundaries, Customer 360
 identity model, Experience Event Ledger (preserving the Step 8 immutable timeline), provider-neutral channel-adapter
 contract, AI tool-permission/human-approval contract, and additive migration strategy for Wave 1–3 — is delivered as
-documentation/governance only (no application feature). Prior implemented baseline: **Step 8 Feedback Operations
+documentation/governance only (no application feature) and is **MERGED** (PR #23, merge `2abf76a`),
+**CLEAN-CHECKOUT VERIFIED** on `2abf76a` (`verify-step-9` + real-infra `verify-step-8` on PostgreSQL 17.10 + Redis
+7.4.9), **GO TAGGED** (`aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`, object `2062d07f`,
+peeled `2abf76a`; local == remote == main), and **RELEASE PUBLISHED** (authoritative Full CI green on final head
+`e37a5e6`, run `29406911168`). Prior implemented baseline: **Step 8 Feedback Operations
 Foundation** is **MERGED** (PR #21, merge `6792db5`) and **GO TAGGED**
 (`aish-agentic-ai-step-8-feedback-operations-foundation-v1.0.0-go`, object `43168d43`, peeled `6792db5`),
 **CLEAN-CHECKOUT VERIFIED** on `6792db5` against real PostgreSQL 17 + Redis 7 (`aish:verify-step-8`; hermetic suite),
@@ -248,9 +252,12 @@ Digunakan untuk:
 - Impacts: documentation/governance only — no table, migration, or runtime is created; the Step 8 foundation is
   preserved and unchanged; MVP scope (§47) and out-of-scope (§48) unchanged; Google Review anti-gating, human approval,
   tenant isolation, truthful-status, and evidence-before-claims all preserved and restated.
-- Status: architecture/governance LOCK. Step 9 attests architecture/governance readiness only — NOT application
-  implementation, deployment, pilot, or production readiness, and not that any domain is owned. Merge/CI/clean-checkout/
-  tag/release evidence under `docs/evidence/step-9/` and `docs/release/STEP_9_*`.
+- Status: MERGED (PR #23, merge `2abf76a`), CLEAN-CHECKOUT VERIFIED on `2abf76a` (verify-step-9 + real-infra
+  verify-step-8 on PostgreSQL 17.10 + Redis 7.4.9), GO TAGGED
+  (`aish-agentic-ai-step-9-competitive-gap-architecture-rebaseline-v1.0.0-go`, object `2062d07f`, peeled `2abf76a`),
+  and RELEASE PUBLISHED; authoritative Full CI green on final head `e37a5e6` (run `29406911168`). Step 9 attests
+  architecture/governance readiness only — NOT application implementation, deployment, pilot, or production readiness,
+  and not that any domain is owned. Evidence under `docs/evidence/step-9/` and `docs/release/STEP_9_*`.
 - Evidence: ADRs 0063–0068, Claude rule 34, AFR-211..238, `docs/architecture/experience-os/**`,
   `docs/product/capability-inventory/STEP_9_CAPABILITY_INVENTORY.md`, `docs/product/competitive/**`,
   `docs/security/STEP_9_THREAT_MODEL.md`, `docs/planning/STEP_10_CUSTOMER_360_IMPLEMENTATION_CONTRACT.md`.
