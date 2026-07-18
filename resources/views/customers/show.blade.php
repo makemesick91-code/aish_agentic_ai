@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Customer 360 — Aish Agentic AI')
-@section('heading', $customer->display_name ?? __('Unnamed customer'))
+{{-- e() is required: the layout renders @yield('heading') unescaped, and display_name originates
+     with an untrusted party (rule 36; rule 04). --}}
+@section('heading', e($customer->display_name ?? __('Unnamed customer')))
 @section('subheading', __('Canonical profile, resolved identities, consent history, and interaction timeline.'))
 
 @section('content')

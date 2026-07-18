@@ -145,6 +145,24 @@ final class CustomerMergeService
         }
 
         return DB::transaction(function () use ($mergeEvent, $reason, $actorUserId): CustomerMergeEvent {
+            [$first, $second] = $this->lockPair(
+                $mergeEvent->survivor_customer_id,
+                $mergeEvent->merged_customer_id,
+            );
+
+            $survivor = $first->id === $mergeEvent->survivor_customer_id ? $first : $second;
+            $merged = $first->id === $mergeEvent->merged_customer_id ? $first : $second;
+
+            // Defence in depth, mirroring merge(): a split writes to BOTH customers, so an actor
+            // who cannot reach either one must not be able to reverse it (rule 36; ADR 0072).
+            if (! CustomerBranchScope::canReach($survivor, $this->context)
+                || ! CustomerBranchScope::canReach($merged, $this->context)) {
+                throw CustomerMergeException::branchOutOfScope();
+            }
+
+            // Checked AFTER the rows are locked: reading it first lets two concurrent reversals
+            // both observe "not yet reversed" and append two split rows for one merge, which would
+            // make the append-only ledger claim the merge was reversed twice.
             $alreadyReversed = CustomerMergeEvent::query()
                 ->where('action', CustomerMergeEvent::ACTION_SPLIT)
                 ->where('reverses_merge_event_id', $mergeEvent->id)
@@ -153,14 +171,6 @@ final class CustomerMergeService
             if ($alreadyReversed) {
                 throw CustomerMergeException::alreadyReversed();
             }
-
-            [$first, $second] = $this->lockPair(
-                $mergeEvent->survivor_customer_id,
-                $mergeEvent->merged_customer_id,
-            );
-
-            $survivor = $first->id === $mergeEvent->survivor_customer_id ? $first : $second;
-            $merged = $first->id === $mergeEvent->merged_customer_id ? $first : $second;
 
             // Reversing out of order would restore links a later merge has since moved on.
             $laterMerge = CustomerMergeEvent::query()

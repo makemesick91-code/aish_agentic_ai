@@ -188,6 +188,13 @@ final class CustomerIdentityResolver
                 // A merged customer must never receive new links — follow the survivor pointer so
                 // late-arriving data lands on the customer that is actually in use (ADR 0072).
                 $customer = $this->survivorOf($customer);
+
+                // An erased customer must not be resurrected by a late-arriving identity: linking
+                // to it would rebuild a profile that was deliberately purged (rule 36).
+                if (! $customer->isLinkable()) {
+                    return IdentityResolution::anonymous(['customer:not-linkable']);
+                }
+
                 $customer->forceFill(['last_seen_at' => now()])->save();
             }
 
@@ -244,7 +251,9 @@ final class CustomerIdentityResolver
         }
 
         try {
-            CustomerIdentity::create([
+            $identity = new CustomerIdentity;
+
+            $identity->fill([
                 'customer_id' => $customer->id,
                 'source_type' => $source,
                 'identity_type' => $entry['normalized']->type,
@@ -253,10 +262,15 @@ final class CustomerIdentityResolver
                 'normalizer_version' => $entry['normalized']->normalizerVersion,
                 'provenance' => $entry['candidate']->provenance,
                 'confidence' => $entry['candidate']->confidence,
-                'is_deterministic' => true,
-                'is_verified' => true,
                 'last_seen_at' => now(),
             ]);
+
+            // Set explicitly, never by mass assignment: reaching this line already proves the
+            // candidate was verified (unverified candidates are filtered out in resolve()).
+            $identity->is_deterministic = true;
+            $identity->is_verified = true;
+
+            $identity->save();
 
             return true;
         } catch (UniqueConstraintViolationException) {

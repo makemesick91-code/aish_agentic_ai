@@ -66,9 +66,19 @@ class CustomerPolicy
         return $merged === null || $this->reachable($merged);
     }
 
-    public function split(User $user, Customer $customer): bool
+    /**
+     * Reversing a merge mutates BOTH customers — it restores identities and feedback onto the
+     * previously-merged one — so it requires reaching both, exactly like merge. Checking only the
+     * survivor would let a branch-restricted actor rewrite identity state for a customer outside
+     * their scope (rule 36; ADR 0072).
+     */
+    public function split(User $user, Customer $survivor, ?Customer $merged = null): bool
     {
-        return $user->can(Permissions::CUSTOMER_MERGE) && $this->reachable($customer);
+        if (! $user->can(Permissions::CUSTOMER_MERGE) || ! $this->reachable($survivor)) {
+            return false;
+        }
+
+        return $merged === null || $this->reachable($merged);
     }
 
     private function reachable(Customer $customer): bool

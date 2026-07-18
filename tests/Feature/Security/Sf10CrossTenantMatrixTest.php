@@ -6,6 +6,7 @@ namespace Tests\Feature\Security;
 
 use App\Authorization\Roles;
 use App\Customers\CustomerIdentityResolver;
+use App\Customers\CustomerInteractionsReadModel;
 use App\Customers\CustomerMergeService;
 use App\Customers\Exceptions\CustomerMergeException;
 use App\Customers\Identity\IdentityCandidate;
@@ -15,6 +16,7 @@ use App\Models\Branch;
 use App\Models\BranchAccessGrant;
 use App\Models\Customer;
 use App\Models\CustomerIdentity;
+use App\Models\FeedbackItem;
 use App\Models\Tenant;
 use App\Models\TenantMembership;
 use App\Models\User;
@@ -192,6 +194,99 @@ final class Sf10CrossTenantMatrixTest extends TestCase
 
         $this->assertContains($response->getStatusCode(), [302, 403]);
         $response->assertDontSee($customer->ulid);
+    }
+
+    /**
+     * Regression for the Step 10 security review (F-1, HIGH).
+     *
+     * A customer with a NULL primary branch is deliberately tenant-wide visible, so without an
+     * explicit branch predicate the 360 timeline would hand a branch-restricted viewer that
+     * customer's feedback from branches they cannot reach — a Step 8 branch-scoping bypass.
+     */
+    public function test_the_interactions_timeline_is_branch_scoped(): void
+    {
+        [$tenant, , $ownerMembership] = $this->workspace();
+
+        $this->establishTenantContext($tenant, $ownerMembership);
+        $branchA = Branch::factory()->create(['tenant_id' => $tenant->id]);
+        $branchB = Branch::factory()->create(['tenant_id' => $tenant->id]);
+
+        // Tenant-wide customer (null primary branch) with feedback in two different branches.
+        $customer = Customer::factory()->create([
+            'tenant_id' => $tenant->id,
+            'primary_branch_id' => null,
+        ]);
+
+        foreach ([$branchA, $branchB] as $branch) {
+            $item = FeedbackItem::factory()->create([
+                'tenant_id' => $tenant->id,
+                'branch_id' => $branch->id,
+            ]);
+            $item->forceFill(['customer_id' => $customer->id])->save();
+        }
+        $this->endRequestScope();
+
+        [$manager, $managerMembership] = $this->memberWithRole($tenant, Roles::BRANCH_MANAGER);
+        $managerMembership->forceFill(['all_branches' => false])->save();
+        BranchAccessGrant::query()->create([
+            'tenant_id' => $tenant->id,
+            'tenant_membership_id' => $managerMembership->id,
+            'branch_id' => $branchA->id,
+        ]);
+
+        $this->establishTenantContext($tenant, $managerMembership->fresh());
+
+        $readModel = app(CustomerInteractionsReadModel::class);
+        $interactions = $readModel->interactions($customer, $manager);
+        $summary = $readModel->summary($customer, $manager);
+
+        // Only the branch-A item is reachable; the branch-B item must not appear, and the counts
+        // must not disclose it either.
+        $this->assertCount(1, $interactions->items());
+        $this->assertSame($branchA->id, $interactions->items()[0]->branch_id);
+        $this->assertSame(1, $summary['feedback_count']);
+    }
+
+    /**
+     * Regression for the Step 10 security review (F-2, HIGH).
+     *
+     * A split writes to BOTH customers, so reversing a merge whose merged customer sits in an
+     * unreachable branch must be refused — otherwise a branch-restricted actor could rewrite
+     * identity state outside their scope.
+     */
+    public function test_a_branch_restricted_member_cannot_reverse_a_merge_involving_an_unreachable_customer(): void
+    {
+        [$tenant, , $ownerMembership] = $this->workspace();
+
+        $this->establishTenantContext($tenant, $ownerMembership);
+        $branchA = Branch::factory()->create(['tenant_id' => $tenant->id]);
+        $branchB = Branch::factory()->create(['tenant_id' => $tenant->id]);
+
+        $survivor = Customer::factory()->create([
+            'tenant_id' => $tenant->id,
+            'primary_branch_id' => $branchA->id,
+        ]);
+        $merged = Customer::factory()->create([
+            'tenant_id' => $tenant->id,
+            'primary_branch_id' => $branchB->id,
+        ]);
+
+        $event = app(CustomerMergeService::class)->merge($survivor, $merged, 'Merged by a tenant-wide operator.');
+        $this->endRequestScope();
+
+        // An operator who holds customer.merge but can only reach branch A.
+        [, $restrictedMembership] = $this->memberWithRole($tenant, Roles::BUSINESS_OWNER);
+        $restrictedMembership->forceFill(['all_branches' => false])->save();
+        BranchAccessGrant::query()->create([
+            'tenant_id' => $tenant->id,
+            'tenant_membership_id' => $restrictedMembership->id,
+            'branch_id' => $branchA->id,
+        ]);
+
+        $this->establishTenantContext($tenant, $restrictedMembership->fresh());
+
+        $this->expectException(CustomerMergeException::class);
+        app(CustomerMergeService::class)->split($event, 'Attempting an out-of-scope reversal.');
     }
 
     /**

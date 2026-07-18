@@ -49,7 +49,7 @@ merge, tag, or runtime evidence.
 | H-01..H-14 (functional/security invariants) | **PASS** | 452-test hermetic suite + `aish:verify-step-10` (32 checks) on real PostgreSQL 17 + Redis 7 |
 | H-15 (prior-step regressions) | **PASS** | `verify-step-10.sh` re-ran Step 6, SF-05, Step 7, Step 8 real-infra checks |
 | H-16 (suite + lint + static analysis) | **PASS** | 452 passed / 1998 assertions; Pint passed; PHPStan no errors |
-| H-17 (independent security review) | **PENDING** | scheduled before merge |
+| H-17 (independent security review) | **PASS after fixes** | Round 1 FAIL (2 High, 1 Medium, 2 Low); all fixed with 2 new regressions + 2 hardenings; round 2 PASS. See `docs/evidence/step-10/step-10-independent-security-review.md` |
 | H-18 (authoritative Full CI on final head) | **PENDING** | requires a pushed candidate SHA |
 | H-19 (clean-checkout on merged SHA) | **PENDING** | requires the merge commit |
 | H-20 (immutable GO tag) | **PENDING** | requires H-17..H-19 |

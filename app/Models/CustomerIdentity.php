@@ -64,11 +64,14 @@ class CustomerIdentity extends Model implements TenantOwned
         'normalizer_version',
         'provenance',
         'confidence',
-        'is_deterministic',
-        'is_verified',
         'first_seen_at',
         'last_seen_at',
     ];
+
+    // NOTE: `is_verified` and `is_deterministic` are deliberately absent from $fillable. They decide
+    // whether an identity may link automatically, so they must only ever be set explicitly by the
+    // resolver after its own verification gate — never carried in from an array that might one day
+    // originate with a request (rule 36; ADR 0064).
 
     protected static function booted(): void
     {

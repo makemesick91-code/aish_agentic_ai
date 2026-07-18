@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -57,6 +58,19 @@ return new class extends Migration
             $table->index(['tenant_id', 'customer_id']);
             $table->index(['tenant_id', 'source_type']);
         });
+
+        // Make ADR 0071 structural, not merely enforced by a model hook: a PII identity must never
+        // carry a plaintext value, even if written by a raw query, an import, or future code that
+        // bypasses Eloquent. Applied on PostgreSQL (the production driver); SQLite cannot add a
+        // CHECK constraint via ALTER, and the hermetic suite is covered by the model-layer guard
+        // plus tests/Feature/Sf10MigrationIntegrityTest.php.
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement(<<<'SQL'
+                ALTER TABLE customer_identities
+                ADD CONSTRAINT customer_identities_no_plaintext_pii
+                CHECK (identity_type NOT IN ('email', 'phone') OR value_normalized IS NULL)
+            SQL);
+        }
     }
 
     public function down(): void

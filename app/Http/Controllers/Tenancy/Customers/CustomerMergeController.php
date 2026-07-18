@@ -71,8 +71,10 @@ final class CustomerMergeController extends Controller
     public function destroy(SplitCustomerRequest $request, CustomerMergeEvent $mergeEvent): RedirectResponse
     {
         $survivor = Customer::query()->findOrFail($mergeEvent->survivor_customer_id);
+        $merged = Customer::query()->findOrFail($mergeEvent->merged_customer_id);
 
-        $this->authorize('split', $survivor);
+        // Authorize the PAIR: a split writes to the previously-merged customer too.
+        $this->authorize('split', [$survivor, $merged]);
 
         try {
             $this->entitlements->assertMergeEnabled($this->context->tenant());

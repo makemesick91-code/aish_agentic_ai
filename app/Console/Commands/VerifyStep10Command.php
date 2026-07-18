@@ -12,8 +12,6 @@ use App\Customers\CustomerEntitlements;
 use App\Customers\CustomerIdentityResolver;
 use App\Customers\CustomerInteractionsReadModel;
 use App\Customers\CustomerMergeService;
-use App\Customers\Exceptions\CustomerEntitlementDeniedException;
-use App\Customers\Exceptions\CustomerMergeException;
 use App\Customers\Identity\IdentityCandidate;
 use App\Enums\CustomerConsentType;
 use App\Enums\CustomerIdentitySource;
@@ -346,7 +344,8 @@ final class VerifyStep10Command extends Command
     {
         try {
             $operation();
-        } catch (CustomerMergeException|CustomerEntitlementDeniedException|\Throwable) {
+        } catch (\Throwable) {
+            // Any refusal counts: the point is that the operation did NOT silently succeed.
             $this->ok($label);
 
             return;

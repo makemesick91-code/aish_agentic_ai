@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Customers;
 
 use App\Authorization\Permissions;
+use App\Feedback\Support\FeedbackBranchScope;
 use App\Models\Customer;
 use App\Models\FeedbackItem;
 use App\Models\User;
+use App\Tenancy\TenantContext;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
@@ -26,7 +28,10 @@ final class CustomerInteractionsReadModel
     /** Hard ceiling so a customer with a long history can never produce an unbounded query. */
     private const MAX_PER_PAGE = 100;
 
-    public function __construct(private readonly CustomerConsentService $consents) {}
+    public function __construct(
+        private readonly CustomerConsentService $consents,
+        private readonly TenantContext $context,
+    ) {}
 
     /**
      * Interactions for a customer, newest first, filtered by what the viewer may see.
@@ -44,6 +49,12 @@ final class CustomerInteractionsReadModel
             ->with(['branch:id,name'])
             ->orderByDesc('created_at')
             ->orderByDesc('id');
+
+        // Customer 360 must not become a way around Step 8 branch scoping. A customer with a null
+        // primary branch is deliberately tenant-wide visible, so without this the timeline would
+        // hand a branch-restricted viewer that customer's feedback from branches they cannot reach
+        // (rule 03, rule 33, rule 36).
+        FeedbackBranchScope::apply($query, $this->context);
 
         // Free-text feedback content stays gated by the Step 8 permission. Customer 360 must not
         // become a way to read content a viewer could not read in the Feedback Inbox (rule 33/36).
@@ -64,6 +75,10 @@ final class CustomerInteractionsReadModel
         $scopeIds = $this->customerScopeIds($customer);
 
         $base = FeedbackItem::query()->whereIn('customer_id', $scopeIds);
+
+        // Counts and first/last timestamps disclose out-of-branch activity just as surely as the
+        // rows themselves, so the same branch predicate applies here.
+        FeedbackBranchScope::apply($base, $this->context);
 
         return [
             'feedback_count' => (clone $base)->count(),
