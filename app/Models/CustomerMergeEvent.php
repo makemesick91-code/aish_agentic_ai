@@ -42,6 +42,7 @@ class CustomerMergeEvent extends Model implements TenantOwned
     public const UPDATED_AT = null;
 
     protected $fillable = [
+        'tenant_id',
         'action',
         'survivor_customer_id',
         'merged_customer_id',

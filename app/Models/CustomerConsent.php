@@ -33,15 +33,16 @@ use Illuminate\Support\Str;
  */
 class CustomerConsent extends Model implements TenantOwned
 {
-    /** @use HasFactory<CustomerConsentFactory> */
     use BelongsToTenant;
 
+    /** @use HasFactory<CustomerConsentFactory> */
     use HasFactory;
 
     /** Append-only: no updated_at column (rule 36). */
     public const UPDATED_AT = null;
 
     protected $fillable = [
+        'tenant_id',
         'customer_id',
         'consent_type',
         'accepted',

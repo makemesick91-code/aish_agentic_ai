@@ -24,6 +24,9 @@ final readonly class IdentityResolution
         public array $suggestedReasons = [],
     ) {}
 
+    /**
+     * @param  list<string>  $suggestedReasons
+     */
     public static function anonymous(array $suggestedReasons = []): self
     {
         return new self(null, false, 0, $suggestedReasons);

@@ -40,15 +40,18 @@ use Illuminate\Support\Str;
  */
 class Customer extends Model implements TenantOwned
 {
-    /** @use HasFactory<CustomerFactory> */
     use BelongsToTenant;
 
+    /** @use HasFactory<CustomerFactory> */
     use HasFactory;
 
     /** Columns that must never change once the row exists — identity provenance stays truthful. */
     private const IMMUTABLE = ['ulid', 'tenant_id'];
 
     protected $fillable = [
+        // Stamped from TenantContext by BelongsToTenant, which rejects any mismatch — fillable is
+        // the repo-wide convention for tenant-owned models and is enforced by a fitness function.
+        'tenant_id',
         'primary_branch_id',
         'display_name',
         'contact_email',

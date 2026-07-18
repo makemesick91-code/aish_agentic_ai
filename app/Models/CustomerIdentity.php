@@ -42,9 +42,9 @@ use Illuminate\Support\Str;
  */
 class CustomerIdentity extends Model implements TenantOwned
 {
-    /** @use HasFactory<CustomerIdentityFactory> */
     use BelongsToTenant;
 
+    /** @use HasFactory<CustomerIdentityFactory> */
     use HasFactory;
 
     /**
@@ -55,6 +55,7 @@ class CustomerIdentity extends Model implements TenantOwned
     private const IMMUTABLE = ['ulid', 'tenant_id', 'identity_type', 'value_hash', 'normalizer_version'];
 
     protected $fillable = [
+        'tenant_id',
         'customer_id',
         'source_type',
         'identity_type',
@@ -103,8 +104,12 @@ class CustomerIdentity extends Model implements TenantOwned
      */
     private function guardAgainstPlaintextPii(): void
     {
-        if ($this->identity_type instanceof CustomerIdentityType
-            && $this->identity_type->isPii()
+        // Read through getAttribute so the guard also holds mid-creation, before the cast has
+        // definitely produced an enum instance.
+        $type = $this->getAttribute('identity_type');
+
+        if ($type instanceof CustomerIdentityType
+            && $type->isPii()
             && $this->value_normalized !== null) {
             throw new \RuntimeException(
                 'A PII customer identity must not store a plaintext value (rule 36; ADR 0071).'
