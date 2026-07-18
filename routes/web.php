@@ -16,6 +16,9 @@ use App\Http\Controllers\PublicSurvey\SurveyQrController;
 use App\Http\Controllers\Tenancy\AuditLogController;
 use App\Http\Controllers\Tenancy\BranchController;
 use App\Http\Controllers\Tenancy\BranchSelectionController;
+use App\Http\Controllers\Tenancy\Customers\CustomerConsentController;
+use App\Http\Controllers\Tenancy\Customers\CustomerController;
+use App\Http\Controllers\Tenancy\Customers\CustomerMergeController;
 use App\Http\Controllers\Tenancy\Feedback\FeedbackAttachmentController;
 use App\Http\Controllers\Tenancy\Feedback\FeedbackBulkController;
 use App\Http\Controllers\Tenancy\Feedback\FeedbackController;
@@ -35,6 +38,7 @@ use App\Http\Controllers\Tenancy\Survey\SurveyPreviewController;
 use App\Http\Controllers\Tenancy\Survey\SurveyResultController;
 use App\Http\Controllers\Tenancy\TenantProfileController;
 use App\Http\Controllers\Tenancy\TenantSelectionController;
+use App\Http\Middleware\EnsureCustomer360Enabled;
 use App\Http\Middleware\EnsureFeedbackEnabled;
 use Illuminate\Support\Facades\Route;
 
@@ -142,6 +146,20 @@ Route::middleware('tenant')->group(function (): void {
         Route::post('/feedback-bulk', [FeedbackBulkController::class, 'store'])->name('feedback.bulk');
         Route::post('/feedback-exports', [FeedbackExportController::class, 'store'])->name('feedback.exports.store');
         Route::get('/feedback-exports/{export}/download', [FeedbackExportController::class, 'download'])->name('feedback.exports.download');
+    });
+
+    /*
+     * STEP 10 — Customer 360. Gated by the authoritative CUSTOMER_360_ENABLED entitlement; every
+     * action additionally authorizes server-side via CustomerPolicy. {customer} and {mergeEvent}
+     * bind by opaque ULID, never a sequential id. There is deliberately no bulk merge route
+     * (rule 36; ADR 0072).
+     */
+    Route::middleware(EnsureCustomer360Enabled::class)->group(function (): void {
+        Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');
+        Route::post('/customers/{customer}/consents', [CustomerConsentController::class, 'store'])->name('customers.consents.store');
+        Route::post('/customers/{customer}/merge', [CustomerMergeController::class, 'store'])->name('customers.merge');
+        Route::delete('/customer-merges/{mergeEvent}', [CustomerMergeController::class, 'destroy'])->name('customers.merge.reverse');
     });
 });
 

@@ -282,6 +282,28 @@ jobs:
           MAIL_MAILER: log
         run: php artisan aish:verify-step-8
 
+      - name: Verify Step 10 Customer 360 foundation (real infra)
+        # Step 10: exercises verified-only deterministic linking, anonymous-never-creates,
+        # idempotent resolution, cross-tenant hash non-correlation, no plaintext PII in identity
+        # rows, no-delete reversible merge/split, append-only ledgers, consent semantics,
+        # permission-aware read-model, entitlement gating, metering, and audit sanitization on real
+        # infrastructure (rule 36).
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: "5432"
+          DB_DATABASE: aish_agentic_ai
+          DB_USERNAME: aish
+          DB_PASSWORD: aish_ci_ephemeral
+          REDIS_CLIENT: predis
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: "6379"
+          CACHE_STORE: redis
+          QUEUE_CONNECTION: redis
+          SESSION_DRIVER: redis
+          MAIL_MAILER: log
+        run: php artisan aish:verify-step-10
+
   required-gate:
     name: Required Gate
     needs: [classify-changes, draft-fast-ci, full-documentation-ci, workflow-security-ci, backend-runtime-ci]

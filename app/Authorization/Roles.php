@@ -48,6 +48,8 @@ final class Roles
                 ...Permissions::surveyPermissions(),
                 // Full tenant-wide feedback operations, including bulk actions and export.
                 ...Permissions::feedbackPermissions(),
+                // Full Customer 360, including the high-blast-radius merge/split authority.
+                ...Permissions::customerPermissions(),
             ],
 
             // Branch-scoped operational view; sees only its granted branch(es).
@@ -61,6 +63,8 @@ final class Roles
                 ...Permissions::SURVEY_BRANCH_VIEW,
                 // Branch-scoped feedback operations (no tenant-wide bulk actions).
                 ...Permissions::FEEDBACK_BRANCH_OPS,
+                // Branch-scoped customer work; merge/split is withheld from branch operators.
+                ...Permissions::CUSTOMER_BRANCH_OPS,
             ],
 
             // Read-only foundation visibility.
@@ -72,6 +76,8 @@ final class Roles
                 ...Permissions::SURVEY_READ_ONLY,
                 // Safe metadata + summary view only (never response content, no mutation).
                 ...Permissions::FEEDBACK_READ_ONLY,
+                // Customer metadata only — never contact PII (rule 36).
+                ...Permissions::CUSTOMER_READ_ONLY,
             ],
         ];
     }

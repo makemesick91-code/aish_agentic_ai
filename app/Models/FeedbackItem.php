@@ -144,6 +144,18 @@ class FeedbackItem extends Model implements TenantOwned
         return $this->belongsTo(Branch::class);
     }
 
+    /**
+     * The canonical Customer 360 profile this item belongs to, when a deterministic identity was
+     * resolved. Read-side only: the customer domain is the sole writer of `customer_id`, which is
+     * why the column is not fillable here (rule 36; ADR 0070).
+     *
+     * @return BelongsTo<Customer, $this>
+     */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
     /** @return BelongsTo<SurveyResponse, $this> */
     public function surveyResponse(): BelongsTo
     {
