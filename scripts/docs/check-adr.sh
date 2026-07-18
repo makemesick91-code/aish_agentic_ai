@@ -8,7 +8,7 @@ DIR="docs/decisions/adr"
 fail=0
 
 # 1. Sequential unique numbering 0001..0046 (each exactly one file, 4-digit ids).
-LAST=53
+LAST=72
 for i in $(seq 1 "$LAST"); do
   n="$(printf '%04d' "$i")"
   matches=( "$DIR/${n}-"*.md )
