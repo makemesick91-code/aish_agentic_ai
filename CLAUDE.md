@@ -19,7 +19,7 @@ on chat history as the only place a decision exists.**
 Authoritative knowledge, highest precedence first:
 
 1. Latest explicit product-owner decision.
-2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.12.0**).
+2. Highest-version canonical **Master Source** — `docs/canonical/MASTER_SOURCE.md` (active **v2.13.0**).
 3. Newest approved **PRD** — `docs/canonical/PRD.md` (active **v1.3.0**).
 4. Approved **ADRs** — `docs/architecture/adr/`, `docs/decisions/adr/`, and `docs/decisions/DECISION_LOG.md`.
 5. Other repository documentation.
@@ -103,6 +103,7 @@ Read the relevant file before acting in its area. Each rule is enforceable (`MUS
 | `33-feedback-operations-foundation.md` | Idempotent feedback projection + lifecycle, scope-validated assignment + membership-revocation fail-close, tenant-isolated tags, append-only notes/timeline, private content-MIME-validated attachments, permission-aware search, bounded bulk, queued requester-scoped secure export, entitlement/usage, review anti-gating preserved |
 | `34-agentic-experience-os-architecture-baseline.md` | Experience OS domain boundaries + single source of truth, Customer 360 identity ownership (deterministic vs suggested, human-approved reversible merge/split), additive Experience Event Ledger preserving the Step 8 timeline, provider-neutral truthful channel adapters, bounded AI tool actions (mandatory high-risk approval, cost ceiling, kill switch, no duplicate action), additive reversible migration, truthful architecture-only status |
 | `35-autonomous-execution-and-tooling-governance.md` | Autonomous coding-agent execution with defense in depth: user-level `bypassPermissions` opt-in + destructive `deny` set, contributor-safe project baseline (release ops `ask`-gated, guard hook registered), real PreToolUse enforcement hook (blocks force-push/tag-move/history-rewrite/secret-reads/`mkfs`/`dd`/`shred`/`git clean -f`/publish/deploy/DNS/skip-CI regardless of mode), autonomous branch→PR→merge→GO-tag→evidence honoring rules 13/28, genuine-blocker-only stopping, permanent no-force-push/no-secret/no-gate-weakening/no-fabricated-evidence, non-root execution, evidence-based completion |
+| `36-customer-360-identity-and-consent-foundation.md` | Single tenant-scoped customer ownership (no parallel master/consent store/timeline), centralized versioned normalization + keyed tenant-bound identity hashing with no plaintext PII, verified-only deterministic linking with human-approved suggestions, no-delete fully reversible snapshot-based merge/split, append-only identity/merge/consent history, derived permission-aware interactions read-model, additive idempotent resumable backfill preserving Step 8 |
 
 Codex semantic instructions live in `AGENTS.md` (root) + nested `docs/*/AGENTS.md`, `scripts/AGENTS.md`,
 `app/AGENTS.md`, `tests/AGENTS.md`; Codex execution safety in `.codex/` — all kept in sync with these rules
@@ -216,8 +217,25 @@ local == remote == main). Full CI green on ready run `29415074311` (Full documen
 security, Required Gate); **clean-checkout verified** on `da456eb` (all doc gates, guard-hook tests, secret scan);
 independent security review PASS (GO); GitHub Release published. The GO tag attests tooling/process governance readiness
 only.
-**Next canonical step:** Step 10 — Customer 360 Foundation (contract locked, **NOT STARTED**).
-**Business/module implementation (Customer 360/AI/recovery/SLA/Google/agent/RAG/omnichannel/billing), deployment,
+**Step 10 — Customer 360 Foundation** (Master Source **v2.13.0** §77, PRD **v1.3.0** unchanged, ADRs 0070–0072,
+AFR-250..262, rule 36) delivers the canonical customer identity layer every later Experience OS capability depends on:
+a tenant-scoped `Customer` aggregate owned solely by Customer Profile & Identity Resolution (no parallel customer
+master, consent store, or competing timeline); centralized versioned normalization plus **keyed tenant-bound HMAC**
+identity hashing with **no plaintext PII** on identity rows, so the table is neither offline-enumerable nor a
+cross-tenant correlation oracle; **verified-only** deterministic linking with probabilistic matches remaining
+human-approved suggestions and anonymous sources never creating a customer; human-approved, **no-delete, fully
+reversible** merge/split with an append-only sanitized snapshot recording the exact moved id set (no bulk merge;
+dual-branch reachability required); append-only versioned consent whose resolution folds in the merge chain so a merge
+cannot discard a do-not-contact; a **derived, non-materialized**, permission-aware interactions read-model over the
+preserved Step 8 sources; entitlement gating via the single authoritative resolver with idempotent metering; and an
+additive, idempotent, resumable backfill (`aish:customer-reconcile`). Step 10 is **CODE COMPLETE** and **TESTED
+locally** (hermetic suite 452 passing; Pint/PHPStan clean; `aish:verify-step-10` 32 checks green on real PostgreSQL 17
++ Redis 7 alongside the Step 6/SF-05/Step 7/Step 8 real-infra regressions), and is **IN PROGRESS toward GO** — NOT yet
+merged, NOT tagged, NOT CI-green-on-CI, and NOT clean-checkout-verified; evidence is forthcoming under
+`docs/evidence/step-10/`.
+**Next canonical step:** Step 11 — Customer Recovery OS (Ticket, SLA, Escalation & Resolution), which consumes the
+Step 10 Customer 360 contracts — **NOT STARTED**.
+**Business/module implementation (recovery/SLA/AI/Google/agent/RAG/omnichannel/billing), deployment,
 pilot readiness, pilot runtime, and production readiness: NOT STARTED.**
 No domain is owned; nothing is deployed.
 

@@ -338,7 +338,29 @@ and the SPRINT-SF-05 GO gate. These are platform-core capabilities in top-level 
 | AFR-248 | User-level settings, their backups, secrets, and tokens MUST NOT be committed; only project-level configuration, documentation, tests, and governance are versioned | 0069 | 35,04,24 | AEG-10 |
 | AFR-249 | Completion is evidence-based: no `GO`/`merged`/`deployed`/`verified` claim without corresponding actual evidence (PR, CI run, merge SHA, tag object/peeled commit, clean-checkout verification); the truthful-status vocabulary applies | 0069 | 35,09,13,27 | AEG-11 |
 
-**249 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7 + 23 Step 8 + 28 Step 9 + 11 Autonomous Execution & Tooling Governance).**
+| AFR-250 | Customer 360 MUST be platform-core in top-level `app/` namespaces (`app/Customers/**`, `app/Models/Customer*`), NOT inside `app/Modules/`; business modules remain NOT STARTED | 0070,0057,0060 | 36,20,34 | C36-01 |
+| AFR-251 | Customer Profile & Identity Resolution MUST be the single writer of `customers`, `customer_identities`, `customer_merge_events`, and `customer_consents`; other domains reference a customer id and MUST NOT create, merge, or mutate identity; no parallel customer master, duplicate consent store, or competing customer timeline | 0070,0063,0064 | 36,34,03 | C36-02 |
+| AFR-252 | The Customer 360 interactions timeline MUST be a derived, non-materialized, permission-filtered, paginated read-model over sources the customer domain does not own; it MUST NOT write to any feedback table and MUST preserve the Step 8 immutable timeline as authoritative | 0070,0065 | 36,34,33 | C36-03 |
+| AFR-253 | Identity normalization MUST be centralized and versioned; email local parts MUST be preserved verbatim (no dot-stripping or `+tag` removal); a phone MUST resolve to unambiguous E.164 or be refused as a deterministic identity | 0071 | 36,04 | C36-04 |
+| AFR-254 | Identity values MUST be stored as a keyed hash bound to the tenant (HMAC with an `APP_KEY`-derived pepper concatenated with `tenant_id`); a plain unsalted digest MUST NOT be used and the pepper MUST NOT be logged, committed, or audited | 0071 | 36,04,24 | C36-05 |
+| AFR-255 | Plaintext email/phone MUST NOT be persisted on `customer_identities`; contact PII lives on the customer record behind `customer.view-contact`, and duplicates are prevented by a database unique `(tenant_id, identity_type, value_hash)` index | 0071,0064 | 36,04,07 | C36-06 |
+| AFR-256 | Only a verified identity MAY link automatically; probabilistic matches MUST remain human-approved suggestions; anonymous responses MUST NOT silently create or link a customer and an IP MUST NOT be an identity | 0064,0071 | 36,32,18 | C36-07 |
+| AFR-257 | A merge MUST NOT delete: the non-surviving customer is retained with status `merged` and a survivor pointer, preserving its identities and consent history | 0072,0064 | 36,07 | C36-08 |
+| AFR-258 | Every merge MUST append an immutable sanitized snapshot recording both customers' pre-merge state and the exact moved identity/feedback id set; a split MUST restore from that snapshot and MUST NOT re-derive the reversal from current state | 0072 | 36,07 | C36-09 |
+| AFR-259 | A split MUST be a new appended event referencing the merge it reverses; merge/consent history MUST be append-only (no `updated_at`; update/delete blocked at the model layer) and MUST NOT be deletable | 0072,0064 | 36,07 | C36-10 |
+| AFR-260 | Merge and split MUST require human approval, the `customer.merge` permission, and reachability of BOTH customers' branch scopes; self-merge, merging an already-merged customer, double reversal, and out-of-order reversal MUST be refused; concurrent merges MUST use deterministic-order row locking; bulk merge MUST NOT exist | 0072 | 36,03,30 | C36-11 |
+| AFR-261 | Consent history MUST be versioned and append-only with the consent text version recorded; an absent decision MUST NOT be treated as permission; an explicit do-not-contact MUST override every purpose; effective consent MUST fold in the merge chain; survey completion is NOT marketing consent | 0064 | 36,32,07 | C36-12 |
+| AFR-262 | Customer migrations MUST be additive only (no Step 8 column altered/dropped, no backfill inside a migration); backfill/reconciliation MUST be queued-capable, chunked, resumable, idempotent, tenant-scoped, and non-destructive, and unlinked feedback MUST remain valid; entitlement decisions MUST use the single authoritative resolver and usage meters MUST be idempotent | 0068,0070 | 36,26,31 | C36-13 |
+
+**262 AFRs total (72 Step 3 + 32 Step 4 + 22 CICD-CTRL-1 + 7 Step 5 + 21 Step 6 + 16 SPRINT-SF-05 + 17 Step 7 + 23 Step 8 + 28 Step 9 + 11 Autonomous Execution & Tooling Governance + 13 Step 10).**
+
+Step 10 AFR-250..AFR-262 each map to an ADR (0070–0072 with supporting 0057, 0060, 0063–0065, 0068), Claude rule 36, a
+Customer 360 fitness check (C36-01..C36-13), and test/verification evidence
+(`tests/Architecture/Sf10BoundariesTest.php`, `tests/Feature/Security/Sf10CrossTenantMatrixTest.php`,
+`tests/Feature/Customer360/**`, `aish:verify-step-10`). No orphan permanent decision. Step 10 delivers one canonical
+tenant-scoped customer identity with reversible, auditable identity operations; Customer Recovery (Step 11), the
+Experience Event Ledger runtime, transaction/service-event ingestion, Google Review, AI, omnichannel, analytics,
+public API, billing, deployment, pilot, and production remain **NOT STARTED**.
 
 Autonomous Execution & Tooling Governance AFR-239..AFR-249 each map to ADR 0069 (with supporting CICD-CTRL-1 ADRs
 0042–0046), Claude rule 35, an autonomy fitness check (AEG-01..AEG-11), and enforcement/evidence artifacts

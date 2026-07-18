@@ -6,9 +6,19 @@
 **Kategori produk:** Agentic AI Customer Experience, CSAT, Customer Recovery, dan Google Review Management Platform
 **Model bisnis:** Multi-tenant Software as a Service
 **Tipe dokumen:** Canonical Living Product Source
-**Versi:** 2.12.0
+**Versi:** 2.13.0
 **Status dokumen:** Active
-**Status produk:** Step 9 (Competitive Gap Audit & Architecture Re-baseline) — an architecture/governance LOCK that
+**Status produk:** **Step 10 — Customer 360 Foundation** implements the canonical tenant-scoped `Customer` aggregate,
+source-identity resolution (verified-only deterministic linking; probabilistic matches remain human-approved
+suggestions), human-approved fully reversible no-delete merge/split with an append-only sanitized snapshot ledger,
+append-only versioned consent history, a derived permission-aware Customer 360 interactions read-model over the
+preserved Step 8 sources, an entitlement-gated tenant UI, and an additive idempotent resumable backfill
+(`aish:customer-reconcile`). Step 10 is **CODE COMPLETE** and **TESTED locally** (full hermetic suite 452 passing;
+Pint/PHPStan clean; `aish:verify-step-10` 32 checks green against real PostgreSQL 17 + Redis 7 together with the
+Step 6/SF-05/Step 7/Step 8 real-infra regressions), and is **IN PROGRESS toward GO** — **NOT** yet merged, **NOT**
+tagged, **NOT** CI-green-on-CI, and **NOT** clean-checkout-verified on a merged SHA; merge/CI/tag evidence is
+forthcoming under `docs/evidence/step-10/`. Prior baseline: **Step 9** (Competitive Gap Audit & Architecture
+Re-baseline) — an architecture/governance LOCK that
 audits the real codebase, maps the Experience OS competitive landscape, and locks the domain boundaries, Customer 360
 identity model, Experience Event Ledger (preserving the Step 8 immutable timeline), provider-neutral channel-adapter
 contract, AI tool-permission/human-approval contract, and additive migration strategy for Wave 1–3 — is delivered as
@@ -23,8 +33,9 @@ Foundation** is **MERGED** (PR #21, merge `6792db5`) and **GO TAGGED**
 Authoritative Full CI green on `99d79ee` (run `29372058345`), GitHub Release published, and post-tag evidence
 synchronized (PR #22, merge `189382e`); the independent Step 8 security review is PASS after fixes (1 HIGH + 2 LOW
 fixed, 14/14 other vectors PASS). **Step 7** MERGED (`1b1ba86`) and GO TAGGED; **SPRINT-SF-05** MERGED (`ca0bea6`) and
-GO TAGGED; **Step 6** MERGED and GO TAGGED. **Next:** Step 10 — Customer 360 Foundation (contract locked, NOT STARTED).
-Customer 360, recovery, SLA, AI, Google Review, agent/RAG, omnichannel, analytics, public API, billing/payment,
+GO TAGGED; **Step 6** MERGED and GO TAGGED. **Next:** Step 11 — Customer Recovery OS (Ticket, SLA, Escalation &
+Resolution), which consumes the Step 10 Customer 360 contracts and is **NOT STARTED**.
+Customer recovery, SLA, AI, Google Review, agent/RAG, omnichannel, analytics, public API, billing/payment,
 deployment, pilot, and production remain **NOT STARTED**; no domain owned, nothing deployed.
 **Pemilik produk:** Aish Tech Solution
 **Repository kanonik:** `https://github.com/makemesick91-code/aish_agentic_ai`
@@ -224,6 +235,55 @@ Digunakan untuk:
 ---
 
 # 6. CHANGELOG BASELINE
+
+## Version 2.13.0 — Step 10 Customer 360 Foundation
+
+**MASTER SOURCE UPDATE**
+- Previous version: 2.12.0 → New version: 2.13.0
+- Date: 2026-07-18 (Asia/Makassar)
+- Type: minor (new platform-core capability on the Step 6/SF-05/Step 7/Step 8 substrate; no vision, business-model, or
+  architecture-style change; additive schema only)
+- Affected sections: header status (product status advanced to Step 10 IN PROGRESS toward GO; next step corrected to
+  Step 11 Customer Recovery OS), §6 changelog, new §77.
+- Decision: implement the **Customer 360 Foundation** — a canonical tenant-scoped `Customer` aggregate owned solely by
+  Customer Profile & Identity Resolution; source identities stored as a keyed tenant-bound HMAC with no plaintext PII;
+  verified-only deterministic linking with probabilistic matches remaining human-approved suggestions;
+  anonymous-never-creates; human-approved, fully reversible, no-delete merge/split with an append-only sanitized
+  snapshot ledger; append-only versioned consent history whose resolution folds in the merge chain; a derived,
+  non-materialized, permission-aware interactions read-model over the preserved Step 8 sources; entitlement gating
+  through the single authoritative resolver with idempotent usage metering; and an additive, idempotent, resumable
+  backfill.
+- Reason: every later Experience OS capability (Step 11 Customer Recovery, Google Review, conversations, AI) must
+  reference one canonical customer identity. Building recovery first would have forced a parallel customer model and a
+  later breaking migration (rule 26: each step starts only after the prior step is merged and GO-tagged).
+- Impacts:
+  - **Scope:** adds Customer 360 to the implemented baseline; no MVP scope item is removed.
+  - **Roadmap:** Step 10 delivered; Step 11 Customer Recovery OS becomes the next canonical step.
+  - **Architecture:** ADR 0070 (platform-core placement + derived read-model), ADR 0071 (versioned normalization +
+    keyed tenant-bound hashing), ADR 0072 (no-delete reversible snapshot-based merge/split); AFR-250..262; rule 36.
+  - **Database:** additive only — `customers`, `customer_identities`, `customer_merge_events`, `customer_consents`,
+    plus a nullable `feedback_items.customer_id` with a composite `(tenant_id, customer_id)` FK. No Step 8 column is
+    altered or dropped; no backfill runs inside a migration; unlinked feedback remains valid.
+  - **Security:** identity values are never stored in plaintext and never appear in logs, audit, or snapshots; the
+    tenant is bound into the hash key so identity rows cannot correlate a person across tenants; contact PII is gated
+    by `customer.view-contact`; merge requires `customer.merge` plus reachability of BOTH customers.
+  - **Privacy:** consent history is versioned and append-only; survey completion is not marketing consent; an absent
+    decision is never treated as permission; a merge cannot discard a recorded do-not-contact.
+  - **Operational:** `aish:customer-reconcile` is idempotent and resumable; `aish:verify-step-10` and
+    `scripts/runtime/verify-step-10.sh` prove the foundation on real PostgreSQL 17 + Redis 7 and re-run every prior
+    step's real-infra regression; `backend-runtime-ci` gained the Step 10 gate.
+  - **Cost:** negligible; no materialized projection, no reprojection jobs, one HMAC per identity write.
+- Status: **CODE COMPLETE**, **TESTED locally**, **IN PROGRESS toward GO** — not merged, not tagged, not
+  CI-green-on-CI, not clean-checkout-verified on a merged SHA.
+- Evidence: `app/Customers/**`, `app/Models/Customer*`, `database/migrations/2026_07_18_1000*`,
+  `tests/Feature/Customer360/**`, `tests/Feature/Security/Sf10CrossTenantMatrixTest.php`,
+  `tests/Architecture/Sf10BoundariesTest.php`, `tests/Feature/Sf10MigrationIntegrityTest.php`,
+  `tests/Feature/Audit/Sf10AuditTest.php`, `tests/Feature/Console/Sf10CommandsTest.php`;
+  `docs/decisions/adr/0070..0072`; `.claude/rules/36-*`; `docs/security/STEP_10_THREAT_MODEL.md`;
+  `docs/quality/STEP_10_GO_WATCH_NO_GO.md`; `docs/evidence/step-10/`.
+- Superseded: no prior decision is reversed. The Step 9 statement that Customer 360 is **NOT STARTED** is superseded
+  by this entry for Step 10 only; every other **NOT STARTED** item stands unchanged.
+- Changelog: Step 10 Customer 360 Foundation implemented as platform-core with reversible identity operations.
 
 ## Version 2.11.0 — Step 9 Competitive Gap Audit & Architecture Re-baseline
 
@@ -4477,6 +4537,88 @@ ADR 0069; Claude rule 35; AFR-239..249 (fitness AEG-01..AEG-11); decision D-035.
 - **Status:** Active
 - **Evidence:** ADR 0069; rule 35; AFR-239..249; `scripts/hooks/test-guard.sh`; `CHANGELOG.md` v2.12.0 entry
 - **Changelog:** see root `CHANGELOG.md` v2.12.0.
+
+---
+
+# 77. STEP 10 — CUSTOMER 360 FOUNDATION (v2.13.0)
+
+**Type:** platform-core capability on the Step 6 / SPRINT-SF-05 / Step 7 / Step 8 substrate. Additive schema only; no
+Step 8 record is altered; every **NOT STARTED** item outside this section is preserved unchanged.
+
+## 77.1 Decision
+Deliver the canonical **Customer 360 Foundation**: one tenant-scoped `Customer` aggregate, source-identity resolution,
+human-approved reversible merge/split, versioned append-only consent, a derived interactions read-model, and an
+additive backfill of existing Step 8 data — implementing the contract locked by ADR 0064 and
+`docs/planning/STEP_10_CUSTOMER_360_IMPLEMENTATION_CONTRACT.md`.
+
+## 77.2 Ownership and placement
+Customer 360 is **platform-core** in top-level `app/` namespaces (`app/Customers/**`, `app/Models/Customer*`), not
+inside `app/Modules/` (ADR 0070). Customer Profile & Identity Resolution is the **single writer** of `customers`,
+`customer_identities`, `customer_merge_events`, and `customer_consents`; every other domain references a customer id
+and never creates, merges, or mutates identity. Business modules remain **NOT STARTED**.
+
+## 77.3 Identity resolution
+Normalization is centralized and versioned (`IdentityNormalizer`): email is lowercased and NFKC-normalized with the
+local part preserved verbatim (no dot-stripping or `+tag` removal, because a wrong collapse silently merges two real
+people); phone must resolve to unambiguous E.164 or is refused as a deterministic identity. Values are stored as
+`HMAC-SHA256` keyed with an `APP_KEY`-derived pepper **bound to `tenant_id`**, so identity rows are neither an
+offline-enumerable customer directory nor a cross-tenant correlation oracle (ADR 0071). Plaintext email/phone is never
+persisted on an identity row. Only a **verified** identity links automatically; an unverified value is a suggestion.
+Anonymous sources never create a customer, and an IP is not an identity. Duplicates are prevented by a database unique
+`(tenant_id, identity_type, value_hash)` index.
+
+## 77.4 Merge and split
+A merge **never deletes**: the non-surviving customer is retained with status `merged` and a survivor pointer, and the
+append-only `customer_merge_events` ledger records a sanitized snapshot plus the exact moved id set, so a split is a
+precise inverse rather than a reconstruction (ADR 0072). A split is a new appended event; the original merge row is
+never updated or deleted. Merge and split require human approval, the `customer.merge` permission, and reachability of
+**both** customers' branch scopes; merging an already-merged customer, self-merge, double reversal, and out-of-order
+reversal are refused; both rows are locked in deterministic id order. There is **no bulk merge**.
+
+## 77.5 Consent
+Consent and communication-preference history is versioned and append-only, recording the consent text version and
+source. An absent decision is **not** permission; an explicit do-not-contact overrides every purpose; and effective
+consent folds in the merge chain, so absorbing a duplicate can never launder away that person's objection. Survey
+completion is not marketing consent (rule 32).
+
+## 77.6 Interactions read-model
+The Customer 360 timeline is a **derived, non-materialized** projection over the preserved Step 8
+`feedback_items`/`feedback_events` — never a competing stored timeline (ADR 0063, 0065, 0070). It writes to no feedback
+table, is permission-filtered at read time (free-text content stays gated by `feedback.view-content`; contact PII by
+`customer.view-contact`), is bounded and paginated, and is correct immediately after a merge or its reversal with no
+reprojection job. The Experience Event Ledger will later become an additional source behind the same interface.
+
+## 77.7 Schema and backfill
+Additive migrations only: `customers`, `customer_identities`, `customer_merge_events`, `customer_consents`, and a
+nullable `feedback_items.customer_id` with a composite `(tenant_id, customer_id)` FK that makes a cross-tenant link
+structurally impossible. No migration performs a backfill. `aish:customer-reconcile` links existing feedback where a
+verified identity exists — idempotent, chunked, resumable, tenant-scoped, non-destructive, and dry-runnable. The only
+identity Step 10 treats as verified for survey-sourced feedback is the recipient address of a **redeemed** survey
+invitation. Unlinked feedback remains valid.
+
+## 77.8 Authorization, entitlement, and audit
+Permissions: `customer.view`, `customer.view-contact`, `customer.manage`, `customer.merge` — merge is withheld from
+branch operators and contact PII from read-only members. Entitlements `customer-360.enabled` and
+`customer-360.merge.enabled` resolve through the single authoritative resolver and fail closed; usage meters
+`customers.created` and `customer_identities.linked` are tenant-scoped and idempotent. Every identity-changing action
+is audited with sanitized metadata carrying ids, counts, and provenance only — never an identity value, contact detail,
+or consent prose.
+
+## 77.9 Preserved guarantees
+Google Review anti-gating is untouched: a customer's identity, consent, or merge state **never** determines review
+access. Step 10 sends no customer data to an AI provider and performs no AI-assisted matching; identity resolution is
+deterministic, rule-based, and explainable. Platform roles grant no tenant customer data.
+
+## 77.10 Verification
+`aish:verify-step-10` (32 positive and negative checks) and `scripts/runtime/verify-step-10.sh` prove the foundation on
+real PostgreSQL 17 + Redis 7 and re-run the Step 6, SF-05, Step 7, and Step 8 real-infra regressions unchanged. The
+`backend-runtime-ci` gate runs the Step 10 verification on every ready PR.
+
+## 77.11 Truthful status
+The Step 10 GO tag, once created, attests **Customer 360 foundation readiness only**. It does not attest Customer
+Recovery (Step 11), transaction or service-event ingestion, the Experience Event Ledger runtime, Google Review, AI,
+omnichannel, analytics, public API, billing, deployment, pilot readiness, or production readiness — all of which remain
+**NOT STARTED** — and it does not claim any domain is owned or any infrastructure provisioned.
 
 ---
 
