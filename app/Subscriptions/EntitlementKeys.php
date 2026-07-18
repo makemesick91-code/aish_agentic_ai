@@ -40,6 +40,12 @@ final class EntitlementKeys
 
     public const FEEDBACK_BULK_ACTIONS_ENABLED = 'feedback.bulk-actions.enabled';
 
+    // Step 10 — Customer 360 Foundation (rule 36).
+    public const CUSTOMER_360_ENABLED = 'customer-360.enabled';
+
+    /** Merge/split is gated separately so it can be withheld from a plan without losing the 360 view. */
+    public const CUSTOMER_360_MERGE_ENABLED = 'customer-360.merge.enabled';
+
     public const GOOGLE_LOCATIONS_MAX = 'google_locations.max';
 
     public const AI_ANALYSES_MONTHLY = 'ai_analyses.monthly';
@@ -67,6 +73,8 @@ final class EntitlementKeys
             self::FEEDBACK_ATTACHMENTS_ENABLED => FeatureType::Boolean,
             self::FEEDBACK_EXPORTS_ENABLED => FeatureType::Boolean,
             self::FEEDBACK_BULK_ACTIONS_ENABLED => FeatureType::Boolean,
+            self::CUSTOMER_360_ENABLED => FeatureType::Boolean,
+            self::CUSTOMER_360_MERGE_ENABLED => FeatureType::Boolean,
             self::GOOGLE_LOCATIONS_MAX => FeatureType::Integer,
             self::AI_ANALYSES_MONTHLY => FeatureType::Integer,
             self::API_ENABLED => FeatureType::Boolean,

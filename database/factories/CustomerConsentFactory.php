@@ -16,13 +16,17 @@ class CustomerConsentFactory extends Factory
 {
     protected $model = CustomerConsent::class;
 
+    /**
+     * Resolved on demand so that `forCustomer()` — which overrides both tenant_id and customer_id —
+     * never triggers the creation of a stray customer in a different tenant.
+     */
+    private ?Customer $fallbackCustomer = null;
+
     public function definition(): array
     {
-        $customer = Customer::factory()->create();
-
         return [
-            'tenant_id' => $customer->tenant_id,
-            'customer_id' => $customer->id,
+            'tenant_id' => fn (): int => $this->fallbackCustomer()->tenant_id,
+            'customer_id' => fn (): int => $this->fallbackCustomer()->id,
             'consent_type' => CustomerConsentType::FollowUp,
             'accepted' => true,
             'consent_text_version' => 'v1',
@@ -58,5 +62,10 @@ class CustomerConsentFactory extends Factory
             'consent_type' => CustomerConsentType::DoNotContact,
             'accepted' => true,
         ]);
+    }
+
+    private function fallbackCustomer(): Customer
+    {
+        return $this->fallbackCustomer ??= Customer::factory()->create();
     }
 }

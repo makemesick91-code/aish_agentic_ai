@@ -98,6 +98,20 @@ final class Permissions
 
     public const FEEDBACK_SUMMARY_VIEW = 'feedback.summary.view';
 
+    // Step 10 — Customer 360 Foundation (rule 36).
+    public const CUSTOMER_VIEW = 'customer.view';
+
+    /** Reading contact PII (email/phone) — deliberately separate from CUSTOMER_VIEW. */
+    public const CUSTOMER_VIEW_CONTACT = 'customer.view-contact';
+
+    public const CUSTOMER_MANAGE = 'customer.manage';
+
+    /**
+     * Merge and split. Separated from CUSTOMER_MANAGE because an incorrect merge is the
+     * highest-blast-radius action in Customer 360 (rule 36; ADR 0072).
+     */
+    public const CUSTOMER_MERGE = 'customer.merge';
+
     /** @return list<string> */
     public static function surveyPermissions(): array
     {
@@ -139,6 +153,32 @@ final class Permissions
             self::FEEDBACK_SUMMARY_VIEW,
         ];
     }
+
+    /** @return list<string> */
+    public static function customerPermissions(): array
+    {
+        return [
+            self::CUSTOMER_VIEW,
+            self::CUSTOMER_VIEW_CONTACT,
+            self::CUSTOMER_MANAGE,
+            self::CUSTOMER_MERGE,
+        ];
+    }
+
+    /**
+     * Branch-scoped operational customer work. Merge is intentionally EXCLUDED: a branch operator
+     * must not reshape tenant-wide customer identity (rule 36; ADR 0072).
+     */
+    public const CUSTOMER_BRANCH_OPS = [
+        self::CUSTOMER_VIEW,
+        self::CUSTOMER_VIEW_CONTACT,
+        self::CUSTOMER_MANAGE,
+    ];
+
+    /** Safe read-only customer visibility — metadata only, never contact PII. */
+    public const CUSTOMER_READ_ONLY = [
+        self::CUSTOMER_VIEW,
+    ];
 
     /** Branch-scoped operational feedback work (no tenant-wide bulk actions). */
     public const FEEDBACK_BRANCH_OPS = [
@@ -197,6 +237,7 @@ final class Permissions
             self::CONTEXT_SWITCH_BRANCH,
             ...self::surveyPermissions(),
             ...self::feedbackPermissions(),
+            ...self::customerPermissions(),
         ];
     }
 }

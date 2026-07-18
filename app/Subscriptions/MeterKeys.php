@@ -29,6 +29,12 @@ final class MeterKeys
     /** Feedback exports created (Step 8). */
     public const FEEDBACK_EXPORTS_CREATED = 'feedback_exports.created';
 
+    /** Step 10: a canonical customer created by the identity resolver (rule 36). */
+    public const CUSTOMERS_CREATED = 'customers.created';
+
+    /** Step 10: a source identity deterministically linked to a customer. */
+    public const CUSTOMER_IDENTITIES_LINKED = 'customer_identities.linked';
+
     /** @return list<string> */
     public static function all(): array
     {
@@ -39,6 +45,8 @@ final class MeterKeys
             self::FEEDBACK_ITEMS_PROJECTED,
             self::FEEDBACK_ATTACHMENTS_UPLOADED_BYTES,
             self::FEEDBACK_EXPORTS_CREATED,
+            self::CUSTOMERS_CREATED,
+            self::CUSTOMER_IDENTITIES_LINKED,
         ];
     }
 
